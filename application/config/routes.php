@@ -59,7 +59,10 @@ $route['motos'] = 'veiculos/show/motos';
 $route['admin'] = 'admin/view';
 $route['admin/(:any)'] = 'admin/view/$1';
 
-$route['(:any)'] = 'pages/view/$1';
+
+$route['assets/(:any)'] = 'assets/$1';
+
+//$route['(:any)'] = 'pages/view/$1';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
