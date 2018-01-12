@@ -26,4 +26,12 @@
             $this->load->view('admin/'.$page, $data);
             $this->load->view('templates/admin-footer', $data);
         }
+
+        public function login(){
+            $data['title'] = 'Login';
+    
+            $this->load->view('templates/admin-header', $data);
+            $this->load->view('admin/login', $data);
+            $this->load->view('templates/admin-footer', $data);
+        }
     }
