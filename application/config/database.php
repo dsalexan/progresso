@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'progressoveiculos.com.br:3306',
-	'username' => 'progress',
-	'password' => 'carrosmarcio',
+	'hostname' => 'localhost:3306',
+	'username' => 'root',
+	'password' => 'thinker',
 	'database' => 'progress_site',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

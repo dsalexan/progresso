@@ -52,8 +52,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['default_controller'] = 'pages/view';
 
+/* Como a ideia é fazer os tipos funcionarem dinamicamente, é necessaria uma query que busque as urls no banco e marque as rotas
 $route['carros'] = 'veiculos/show/carros';
-$route['motos'] = 'veiculos/show/motos';
+$route['carros/page/(:num)'] = 'veiculos/page/carros/$1';
+
+$route['motos'] = 'veiculos/show/motos';*/
+
+require_once( BASEPATH .'database/DB.php');
+$db =& DB();
+$db->select('id_tipo');
+$db->select('url');
+$db->where('id_tipo > 0');
+$query = $db->get( 'veiculos_tipos' );
+$result = $query->result();
+foreach( $result as $row ) {
+    $route[ $row->url ] = 'veiculos/show/'.$row->url;
+    $route[ $row->url.'/page/(:num)' ] = 'veiculos/page/'.$row->id_tipo.'/$1';
+}
+
+$route['veiculos/search'] = 'veiculos/search';
 
 
 $route['admin'] = 'admin/view';
