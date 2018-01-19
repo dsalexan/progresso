@@ -41,6 +41,11 @@
         public function search(){
             $search = $this->input->get('q');
 
-            echo $search;
+            $elastic = new Elastic();
+            $elastic->Init();
+            $result = $elastic->Search($search);
+
+            echo $search.'</br></br></br>';
+            echo '<pre>'; print_r($result); echo '</pre>';
         }
     }
