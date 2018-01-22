@@ -40,12 +40,19 @@
 
         public function search(){
             $search = $this->input->get('q');
-
-            $elastic = new Elastic();
-            $elastic->Init();
-            $result = $elastic->Search($search);
+            $result = $this->veiculos_model->pesquisar_termo($search);
 
             echo $search.'</br></br></br>';
             echo '<pre>'; print_r($result); echo '</pre>';
+        }
+
+        public function info($id_tipo, $id_veiculo){
+            if($this->veiculos_model->checar_status($id_veiculo)){
+                $data = $this->veiculos_model->get_veiculo($id_veiculo);
+                
+                echo '<pre>'; echo print_r($data); echo '</pre>';
+            }else{
+                show_404();
+            }
         }
     }

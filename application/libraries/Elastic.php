@@ -78,9 +78,19 @@ class Elastic{
 
     public function InsertData(){
         
-        $sql = "SELECT id_veiculo, nome_tipo, nome_marca, nome_modelo, IF(opcionais IS NULL, '', opcionais) AS opcionais, combustivel, estado, cor, ano, observacoes ".
+        $sql = "SELECT id_veiculo, ".
+                    "nome_tipo, ".
+                    "nome_marca, ".
+                    "nome_modelo, ".
+                    "IF(opcionais IS NULL, '', opcionais) AS opcionais, ".
+                    "combustivel, ".
+                    "IF(estado = 'Novo', 'novo, nova', 'usado, usada') AS estado, ".
+                    "cor, ".
+                    "ano, ".
+                    "observacoes ".
                 "FROM visao_veiculos ".
                 "WHERE status = 1";
+                
                 
         //require_once( BASEPATH .'database/DB.php');
         $db =& DB();
@@ -97,15 +107,15 @@ class Elastic{
                 ) ,
             );
 
-            $params['body'][] = ['nome_tipo' => $row->nome_tipo, 
-                                'nome_marca' => $row->nome_marca, 
-                                'nome_modelo' => $row->nome_modelo, 
-                                'opcionais' => $row->opcionais, 
-                                'combustivel' => $row->combustivel, 
-                                'estado' => $row->estado, 
-                                'cor' => $row->cor,
-                                'ano' => $row->ano, 
-                                'observacoes' => $row->observacoes, ];
+            $params['body'][] = ['nome_tipo' => $row->nome_tipo,
+                                    'nome_marca' => $row->nome_marca,
+                                    'nome_modelo' => $row->nome_modelo,
+                                    'opcionais' => $row->opcionais,
+                                    'combustivel' => $row->combustivel,
+                                    'estado' => $row->estado,
+                                    'cor' => $row->cor,
+                                    'ano' => $row->ano,
+                                    'observacoes' => $row->observacoes, ];
         }
 
         $this->Mapping();
@@ -121,9 +131,18 @@ class Elastic{
 
     public function InsertNode($novo_id_veiculo){
 
-        $sql = "SELECT id_veiculo, nome_tipo, nome_marca, nome_modelo, opcionais, combustivel, estado, cor, ano, observacoes ".
+        $sql = "SELECT id_veiculo, ".
+                    "nome_tipo, ".
+                    "nome_marca, ".
+                    "nome_modelo, ".
+                    "IF(opcionais IS NULL, '', opcionais) AS opcionais, ".
+                    "combustivel, ".
+                    "IF(estado = 'Novo', 'novo, nova', 'usado, usada') AS estado, ".
+                    "cor, ".
+                    "ano, ".
+                    "observacoes ".
                 "FROM visao_veiculos ".
-                "WHERE id_veiculo = $novo_id_veiculo";
+                "WHERE status = 1";
                 
         //require_once( BASEPATH .'database/DB.php');
         $db =& DB();
@@ -153,9 +172,18 @@ class Elastic{
 
     public function UpdateNode($_id_veiculo){
 
-        $sql = "SELECT id_veiculo, nome_tipo, nome_marca, nome_modelo, opcionais, combustivel, estado, cor, ano, observacoes ".
+        $sql = "SELECT id_veiculo, ".
+                    "nome_tipo, ".
+                    "nome_marca, ".
+                    "nome_modelo, ".
+                    "IF(opcionais IS NULL, '', opcionais) AS opcionais, ".
+                    "combustivel, ".
+                    "IF(estado = 'Novo', 'novo, nova', 'usado, usada') AS estado, ".
+                    "cor, ".
+                    "ano, ".
+                    "observacoes ".
                 "FROM visao_veiculos ".
-                "WHERE id_veiculo = $_id_veiculo";
+                "WHERE status = 1";
                 
         //require_once( BASEPATH .'database/DB.php');
         $db =& DB();
@@ -194,29 +222,35 @@ class Elastic{
         return true;
     }
 
-    public function Search($query){
+    public function Search($query, $params=false){
 
         $result = array();
 
         $i = 0;
-        $params = ['index' => 'veiculos',
-                    'type' => 'veiculo',
-                    'body' => [
-                        'query' => [
-                            'match' => [
-                                'nome_tipo' => $query ],],], ];
-        
+        if(!$params){
+            $params = ['index' => 'veiculos',
+                        'type' => 'veiculo',
+                        'body' => [
+                            'query' => $query,], ];
+        }
+            
         $query = $this->client->search($params);
 
         $hits = sizeof($query['hits']['hits']);
         $hit = $query['hits']['hits'];
+
         $result['searchfound'] = $hits;
 
         while($i < $hits){
             $result['result'][$i] = $query['hits']['hits'][$i]['_source'];
+            $result['result'][$i]['_id'] = $query['hits']['hits'][$i]['_id'];
+            $result['result'][$i]['_score'] = $query['hits']['hits'][$i]['_score'];
+            $result['ids'][$i]['_id'] = $query['hits']['hits'][$i]['_id'];
+            $result['ids'][$i]['_score'] = $query['hits']['hits'][$i]['_score'];
+
             $i++;
         }
 
         return $result;
     }
-}
+}   
