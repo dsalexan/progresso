@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $(".button").click(function(){
+    $(".buttona").click(function(){
         //alert('caraaa');
 
         //http://localhost:90/progresso/veiculos/search?q=moto+novo

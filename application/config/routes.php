@@ -76,6 +76,7 @@ $route['veiculos/search'] = 'veiculos/search';
 
 $route['admin'] = 'admin/view';
 $route['admin/login'] = 'admin/login';
+$route['admin/validate'] = 'admin/validate';
 $route['admin/(:any)'] = 'admin/view/$1';
 
 

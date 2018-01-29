@@ -21,16 +21,21 @@
             return $query->result_array();
         }
 
-        public function get_veiculos_destaque($id_tipo){
+        public function get_veiculos_destaque($id_tipo, $status_destaque){
             $this->db->where('id_tipo', $id_tipo);
-            $this->db->where('destaque', 1);
+            $this->db->where('destaque', $status_destaque);
             $query = $this->db->get('veiculos');
 
             return $query->result_array();
         }
 
         public function get_veiculos_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina){
-            $query = $this->db->query('SELECT * FROM veiculos WHERE id_tipo = '. $id_tipo .' LIMIT '. $qtd_por_pagina .' OFFSET '. (($numero_pagina-1) * $qtd_por_pagina));
+            $offset = (($numero_pagina-1) * $qtd_por_pagina);
+            $query = $this->db->query('SELECT * 
+                                        FROM veiculos 
+                                        WHERE id_tipo = '. $id_tipo . 'm0
+                                        LIMIT '. $qtd_por_pagina .'
+                                        OFFSET '. $offset);
             return $query->result_array();
         }
 

@@ -20,9 +20,10 @@
             if ($_404) show_404();
             
             $data['title'] = $nome_plural;
-            $data['veiculos'] = $this->veiculos_model->get_veiculos_destaque($id_tipo);
+            $data['destaques'] = $this->veiculos_model->get_veiculos_destaque($id_tipo, 1);
+            $data['veiculos'] = $this->veiculos_model->get_veiculos_destaque($id_tipo, 0);
 
-            echo '<pre>'; print_r($data['veiculos']); echo '</pre>';
+            //echo '<pre>'; print_r($data['veiculos']); echo '</pre>';
     
             $this->load->view('templates/header', $data);
             $this->load->view('veiculos/show', $data);
@@ -30,11 +31,11 @@
         }
 
         public function page($id_tipo, $numero_pagina){
-            $qtd_por_pagina = 4; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
+            $qtd_por_pagina = 10; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
             if($this->input->post('qtd_por_pagina')) $qtd_por_pagina = $this->input->post('qtd_por_pagina');
 
             $data = $this->veiculos_model->get_veiculos_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina);
-            echo json_encode($data, JSON_UNESCAPED_UNICODE);
+            echo '<pre>'; echo json_encode($data, JSON_PRETTY_PRINT); echo '</pre>';
 
         }
 
