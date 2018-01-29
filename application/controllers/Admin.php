@@ -21,10 +21,16 @@
                 show_404();
             }
             
+            //$data['semantic'] = true;
+            $data['bootstrap'] = true;
+            $data['assets'] = ['css' => ['dashboard.css'],
+                                'js' => ['admin.js', 'modal.min.js']];
             $data['title'] = $pageNames[$page];
     
             $this->load->view('templates/header', $data);
+            $this->load->view('templates/admin-header', $data);
             $this->load->view('admin/'.$page, $data);
+            $this->load->view('templates/admin-footer', $data);
             $this->load->view('templates/footer', $data);
         }
 
@@ -60,5 +66,23 @@
                 $this->session->set_flashdata('invalid_credentials', 'O nome de usuário e/ou senha informados são inválidos.');
                 redirect('admin/login');
             }
+        }
+
+        public function logout(){
+            $usuario_logado = $this->session->userdata('logged_user');//Array gerado pelo seu algotitmo de "login" e gravado na SESSION
+            if(!isset($usuario_logado)){
+                redirect('admin');
+            }
+
+            $this->session->unset_userdata('logged_user');
+            $this->session->set_flashdata('logout_successful', 'Você encerrou sua sessão.');
+            redirect('admin/login');
+
+        }
+
+        public function google(){
+            $data['title'] = 'google-oauth';
+
+            $this->load->view('admin/google-api/oauth', $data);
         }
     }

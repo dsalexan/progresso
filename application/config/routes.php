@@ -76,11 +76,14 @@ $route['veiculos/search'] = 'veiculos/search';
 
 $route['admin'] = 'admin/view';
 $route['admin/login'] = 'admin/login';
+$route['admin/logout'] = 'admin/logout';
 $route['admin/validate'] = 'admin/validate';
 $route['admin/(:any)'] = 'admin/view/$1';
 
 
 $route['assets/(:any)'] = 'assets/$1';
+
+$route['oauth2callback'] = 'admin/google';
 
 $route['(:any)'] = 'pages/view/$1';
 
