@@ -5,10 +5,12 @@ class Google{
 
     public $client;
     public $analytics;
+    public $CONNECTION_ATTEMPTS;
 
     public function __construct(){
 
         $KEY_FILE_LOCATION = FCPATH . '/service-account-credentials.json';
+        $this->CONNECTION_ATTEMPTS = 4;
 
         // Create and configure a new client object.
         $this->client = new Google_Client();
@@ -20,7 +22,23 @@ class Google{
 
     // PEGA O RELATÓRIO COM BASE NA QUERY
     function bachtGet($body){
-        return $this->analytics->reports->batchGet( $body );
+        $tries = $this->CONNECTION_ATTEMPTS;
+        $return = array();
+        $return['attempts'] = 1;
+
+        while($tries > 1){
+            try{
+                $return['result'] = $this->analytics->reports->batchGet( $body );
+                $tries = 0;
+            }catch (Exception $e){
+                // echo 'Exceção capturada: ' . $e->getMessage();
+                $return['result'] = null;
+                $return['attempts'] += 1;
+            }
+            $tries -= 1;
+        }
+
+        return $return;
     }
 
     // TRANSFORMA A SAÍDA DO BACHTGET EM U ARRAY ASSOCITIVO SIMPLES
@@ -61,6 +79,44 @@ class Google{
         }
 
         return $results;
+    }
+
+    function get_dimensions($report){
+        $result = array();
+
+        $rows = $report->getData()->getRows();
+
+        for($i=0; $i < count($rows); $i++){
+            $result[] = $rows[$i]->getDimensions()[0];
+        }
+
+        return $result;
+    }
+
+    function get_metrics($report){
+        $result = array();
+
+        $header = $report->getColumnHeader();
+        $metricHeaders = $header->getMetricHeader()->getMetricHeaderEntries();
+
+        $rows = $report->getData()->getRows();
+
+        for($i=0; $i < count($rows); $i++){
+            $metrics = $rows[$i]->getMetrics()[0]->getValues();
+
+            for($m = 0; $m < count($metrics); $m++){
+                $metric = $metricHeaders[$m]->getName();
+                $value = $metrics[$m];
+
+                if(!array_key_exists($metric, $result)){
+                    $result[$metric] = array();
+                }
+
+                $result[$metric][] = $value;
+            }
+        }
+
+        return $result;
     }
 
     // FUNÇÃO SOMENTE PARA TESTES

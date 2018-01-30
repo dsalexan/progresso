@@ -78,6 +78,7 @@ $route['admin'] = 'admin/view';
 $route['admin/login'] = 'admin/login';
 $route['admin/logout'] = 'admin/logout';
 $route['admin/validate'] = 'admin/validate';
+$route['admin/analytics'] = 'admin/analytics';
 $route['admin/(:any)'] = 'admin/view/$1';
 
 

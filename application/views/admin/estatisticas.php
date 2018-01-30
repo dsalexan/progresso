@@ -2,7 +2,7 @@
 
     // Call the Analytics Reporting API V4.
     // $response = $this->google->getReport();
-    $response = $this->analytics_model->get_acessos_semanal();
+    $response = $this->analytics_model->get_acesso_semanal();
 
     // Print the response.
     // echo '<pre>'; $this->google->printResults($response); echo '</pre>';

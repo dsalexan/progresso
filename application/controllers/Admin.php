@@ -24,7 +24,10 @@
             //$data['semantic'] = true;
             $data['bootstrap'] = true;
             $data['assets'] = ['css' => ['dashboard.css'],
-                                'js' => ['admin.js', 'modal.min.js']];
+                                'js' => [     
+                                    'moment-with-locales.js',
+                                    'Chart.min.js',
+                                    'admin.js']];
             $data['title'] = $pageNames[$page];
     
             $this->load->view('templates/header', $data);
@@ -84,5 +87,25 @@
             $data['title'] = 'google-oauth';
 
             $this->load->view('admin/google-api/oauth', $data);
+        }
+
+        public function analytics(){
+            $tables = $this->input->post('tables');
+            $tables = ['acesso_semanal'];
+
+            if(!isset($tables)){
+                echo "Nothing here.";
+                return;
+            }
+
+            $result = array();
+            foreach($tables as $table){
+                $function = 'get_'.$table;
+                $result[$table] = $this->analytics_model->$function();
+            }
+
+            echo $out_json = json_encode($result);
+            
+
         }
     }

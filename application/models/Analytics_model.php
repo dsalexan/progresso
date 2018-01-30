@@ -7,7 +7,7 @@
             $this->VIEW_ID = "168276981";
         }
 
-        public function get_acessos_semanal(){
+        public function get_acesso_semanal(){
           
             // especifica o tempo
             $dateRange = new Google_Service_AnalyticsReporting_DateRange();
@@ -37,8 +37,17 @@
             $body = new Google_Service_AnalyticsReporting_GetReportsRequest();
             $body->setReportRequests( array( $request) );
 
-            $reports = $this->google->bachtGet( $body );
+            $reports = $this->google->bachtGet($body);
 
-            return $this->google->build_array($reports);
+            $result=array();
+            $result['attempts'] = $reports['attempts'];
+
+            //echo $reports['attempts'];
+            if(!isset($reports['result'])) return $result;
+
+            $result += $this->google->get_metrics($reports['result'][0]);
+            $result += array("dimensions" => $this->google->get_dimensions($reports['result'][0]));
+
+            return $result;
         }
     }
