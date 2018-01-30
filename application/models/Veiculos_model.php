@@ -3,6 +3,8 @@
 
         public function __construct(){
             $this->load->database();
+            $this->elastic = new Elastic();
+            $this->elastic->Init();
         }
 
         public function get_tipos(){
@@ -116,9 +118,7 @@
             ]];
 
             
-            $elastic = new Elastic();
-            $elastic->Init();
-            $result = $elastic->Search($query);
+            $result = $this->elastic->Search($query);
 
             return $result;
 

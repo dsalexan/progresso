@@ -18,6 +18,52 @@ class Google{
         $this->analytics = new Google_Service_AnalyticsReporting($this->client);      
     }
 
+    // PEGA O RELATÓRIO COM BASE NA QUERY
+    function bachtGet($body){
+        return $this->analytics->reports->batchGet( $body );
+    }
+
+    // TRANSFORMA A SAÍDA DO BACHTGET EM U ARRAY ASSOCITIVO SIMPLES
+    function build_array($reports){ // só funciona pra UMA DIMENSÃO
+        $results = array();
+
+        for ( $reportIndex = 0; $reportIndex < count( $reports ); $reportIndex++ ) {
+            $result = array();
+            $report = $reports[$reportIndex]; //pega o report de índice REPORT_INDEX
+
+            $header = $report->getColumnHeader();
+            $dimensionHeaders = $header->getDimensions();
+            $metricHeaders = $header->getMetricHeader()->getMetricHeaderEntries();
+            $rows = $report->getData()->getRows();
+            
+            if(!isset($dimensionHeaders)) $dimensionHeaders = [];
+
+            for($r = 0; $r < count($rows); $r++){
+                $row = $rows[$r];
+
+                $dimension = $row->getDimensions()[0];
+                $metrics = $row->getMetrics()[0]->getValues();
+
+                if(!array_key_exists($dimension, $result)){ // se for a primeira fez coloca a dimensão no array
+                    $result[$dimension] = array();
+                }
+
+                for($m = 0; $m < count($metrics); $m++){
+                    $metric = $metricHeaders[$m]->getName();
+                    $values = $metrics[$m];
+
+                    $result[$dimension][$metric] = $values;
+                }
+            }
+            
+
+            $results[] = $result;
+        }
+
+        return $results;
+    }
+
+    // FUNÇÃO SOMENTE PARA TESTES
     function getReport() {
 
         // Replace with your view ID. E.g., XXXX.
@@ -41,9 +87,11 @@ class Google{
       
         $body = new Google_Service_AnalyticsReporting_GetReportsRequest();
         $body->setReportRequests( array( $request) );
+        
         return $this->analytics->reports->batchGet( $body );
     }
       
+    //FUNCAO SOMENTE PARA TESTES
     function printResults($reports) {
         for ( $reportIndex = 0; $reportIndex < count( $reports ); $reportIndex++ ) {
             $report = $reports[ $reportIndex ];
