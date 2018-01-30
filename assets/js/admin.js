@@ -1,3 +1,12 @@
+var minimal_date;
+var min_date;
+var max_date;
+var chart_data;
+
+
+get_chart_data();
+//chart_update(moment('20180120'), moment());
+// load_chart_data(8, 1); //ultima semana
 
 $(document).ready(function(){
     
@@ -7,63 +16,143 @@ $(document).ready(function(){
 
     $("#dashboard").dimmer('show');
 
-    $('#range-1').range({
-        min: 0,
-        max: 10,
-        start: 0,
-        onChange: function(value){
-            
-        }
+
+    $('#rangestart').calendar({
+        type: 'date',
+        endCalendar: $('#rangeend'),
+        minDate: new Date("01/22/2018"),
+        maxDate: new Date()
+    });
+
+    $('#rangeend').calendar({
+        type: 'date',
+        startCalendar: $('#rangestart'),
+        minDate: new Date("01/22/2018"),
+        maxDate: new Date()
+    });
+
+    $('#rangesubmit').click(function(){
+        var s = moment($('#rangestart').calendar('get date'));
+        var e = moment($('#rangeend').calendar('get date'));
+        
+        chart_update(s, e);
     });
 });
 
 
-$.ajax({
-    url: base_url('admin/analytics'),
-    type: 'POST',
-    data: {
-        'tables': ['acesso_semanal']
-    },
-    cache: false,
-    type: 'json',
-    success: function(text_data) {
+function chart_update(start_date, end_date){
+    var t = moment();
+    var re_query = false;
 
-        $("#dashboard").dimmer('hide');
-
-        var data = JSON.parse(text_data);
-        var dimensions_formatted = [];
-
-        data.acesso_semanal.dimensions.forEach(function(valor){
-            var date = moment(valor);
-            dimensions_formatted.push(date.locale('pt-br').format('L'));
-        });
-
-        var ctx = $("#myChart");
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: dimensions_formatted,
-                datasets: [{
-                data: data.acesso_semanal.sessions,
-                lineTension: 0,
-                backgroundColor: 'transparent',
-                borderColor: '#007bff',
-                borderWidth: 4,
-                pointBackgroundColor: '#007bff'
-                }]
-            },
-            options: {
-                scales: {
-                yAxes: [{
-                    ticks: {
-                    beginAtZero: false
-                    }
-                }]
-                },
-                legend: {
-                display: false,
-                }
-            }
-        });
+    if(start_date.isBefore(min_date, 'days')){
+        s = start_date;
+        re_query = true;
+    }else{
+        s = min_date;
     }
-});
+
+    if(end_date.isAfter(max_date, 'days')){
+        e = end_date;
+        re_query = true;
+    }else{
+        e = max_date;
+    }
+
+    if(re_query){
+        var period = [
+            t.diff(s, 'days'),
+            t.diff(e, 'days')
+        ];
+        get_chart_data(s, e, period);
+    }else{
+        s = t.diff(start_date, 'days');
+        e = t.diff(end_date, 'days');
+
+        load_chart_data(s+1, e+1);
+    }
+}
+
+function get_chart_data(start_date=null, end_date=null, period=null){
+    
+    $("#dashboard").dimmer('show');
+
+    if(start_date == null) start_date = moment().add(-3, 'days');
+    if(end_date == null) end_date = moment();
+    if(period == null) period = [3, 0];
+    period_string = [period[0] + "daysAgo", period[1] + "daysAgo"];
+
+
+    $.ajax({
+        url: base_url('admin/analytics'),
+        type: 'POST',
+        dataType : "json",
+        data: {
+            'tables': ['acesso_semanal'],
+            'period': [period_string[0], period_string[1]]
+        },
+        persist: [start_date, end_date],
+        success: function(data) {
+
+            var dimensions_formatted = [];
+
+            data.acesso_semanal.dimensions.forEach(function(valor){
+                var date = moment(valor);
+                dimensions_formatted.push(date.locale('pt-br').format('L'));
+            });
+
+            data.acesso_semanal.dimensions_formatted = dimensions_formatted;
+
+            chart_data = data;
+
+            min_date = moment(data.acesso_semanal.dimensions[0]);
+            max_date = moment(data.acesso_semanal.dimensions[dimensions_formatted.length-1]);
+            
+            $("#rangestart").calendar('set date', new Date(this.persist[0].format('L')));
+            $("#rangeend").calendar('set date', new Date(this.persist[1].format('L')));
+
+            
+            chart_update(this.persist[0], this.persist[1]);
+        }
+    });
+}
+
+function load_chart_data(start_index, end_index){
+
+    var week = [];
+    var week_sessions = [];
+
+    for(i=start_index; i >= end_index; i--){
+        week.push(chart_data.acesso_semanal.dimensions_formatted[chart_data.acesso_semanal.dimensions_formatted.length-i]);
+        week_sessions.push(chart_data.acesso_semanal.sessions[chart_data.acesso_semanal.sessions.length-i])
+    }
+
+    var ctx = $("#myChart");
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: week,
+            datasets: [{
+            data: week_sessions,
+            lineTension: 0,
+            backgroundColor: 'transparent',
+            borderColor: '#007bff',
+            borderWidth: 4,
+            pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+            yAxes: [{
+                ticks: {
+                beginAtZero: false
+                }
+            }]
+            },
+            legend: {
+            display: false,
+            }
+        }
+    });
+            
+    $("#dashboard").dimmer('hide');
+}

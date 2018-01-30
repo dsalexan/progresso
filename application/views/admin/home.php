@@ -4,16 +4,22 @@
 </div>
 
 <div class="ui top attached right aligned segment">
-    <div class="ui secondary menu visible">
-        <div class="right menu">
-            <div class="item">
-                <div class="ui labeled icon input">
-                    <i class="calendar icon"></i>
-                    <input type="text" placeholder="mysite.com">
+    <div class="ui calendar" id="rangestart" style="display: inline-block">
+        <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Data Inicial">
+        </div>
+    </div>
+
+    <div class="ui calendar" id="rangeend" style="display: inline-block">
+        <div class="ui input left icon action">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Data Final">
+            <div class="ui animated button" tabindex="0" id="rangesubmit">
+                <div class="visible content">Mostrar</div>
+                <div class="hidden content">
+                    <i class="area chart icon"></i>
                 </div>
-            </div>
-            <div class="item">
-                <div class="ui range" id="range-1"></div>
             </div>
         </div>
     </div>

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/dsalexan/progresso#readme",
   "dependencies": {
-    "semantic-ui": "^2.2.14"
+    "semantic-ui": "^2.2.14",
+    "semantic-ui-calendar": "0.0.8"
   }
 }

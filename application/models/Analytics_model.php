@@ -7,12 +7,12 @@
             $this->VIEW_ID = "168276981";
         }
 
-        public function get_acesso_semanal(){
+        public function get_acesso_semanal($startDate, $endDate){
           
             // especifica o tempo
             $dateRange = new Google_Service_AnalyticsReporting_DateRange();
-            $dateRange->setStartDate("7daysAgo");
-            $dateRange->setEndDate("today");
+            $dateRange->setStartDate($startDate);
+            $dateRange->setEndDate($endDate);
           
             // pede o numero de sessoes e pageviews
             $sessions = new Google_Service_AnalyticsReporting_Metric();

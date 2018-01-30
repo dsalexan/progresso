@@ -32,11 +32,17 @@
                         'loader.min.css',
                         'input.min.css',
                         'icon.min.css',
-                        'menu.min.css',
-                        'item.min.css'],
+                        'transition.min.css',
+                        'popup.min.css',
+                        'table.min.css',
+                        'calendar.min.css',
+                        'button.min.css'],
                     'js' => [
                         'site.min.js',  
-                        'dimmer.min.js', ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+                        'dimmer.min.js',
+                        'transition.min.js',
+                        'popup.min.js',
+                        'calendar.min.js' ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = ['css' => ['dashboard.css', 'range.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
@@ -107,7 +113,9 @@
 
         public function analytics(){
             $tables = $this->input->post('tables');
-            $tables = ['acesso_semanal'];
+            $period = $this->input->post('period');
+            // $tables = ['acesso_semanal'];
+            // $period = ['3daysAgo', 'today'];
 
             if(!isset($tables)){
                 echo "Nothing here.";
@@ -117,7 +125,7 @@
             $result = array();
             foreach($tables as $table){
                 $function = 'get_'.$table;
-                $result[$table] = $this->analytics_model->$function();
+                $result[$table] = $this->analytics_model->$function($period[0], $period[1]);
             }
 
             echo $out_json = json_encode($result);
