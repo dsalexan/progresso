@@ -1,0 +1,19 @@
+{
+  "name": "progresso-veiculos",
+  "version": "2.0.0",
+  "description": "What is CodeIgniter ###################",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsalexan/progresso.git"
+  },
+  "author": "ECTM Jr.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dsalexan/progresso/issues"
+  },
+  "homepage": "https://github.com/dsalexan/progresso#readme"
+}
