@@ -21,13 +21,28 @@
                 show_404();
             }
             
-            //$data['semantic'] = true;
             $data['bootstrap'] = true;
-            $data['assets'] = ['css' => ['dashboard.css'],
+            $data['semantic'] = [
+                    'css' => [
+                        'site.min.css', 
+                        'reset.min.css', 
+                        'container.min.css', 
+                        'dimmer.min.css', 
+                        'segment.min.css', 
+                        'loader.min.css',
+                        'input.min.css',
+                        'icon.min.css',
+                        'menu.min.css',
+                        'item.min.css'],
+                    'js' => [
+                        'site.min.js',  
+                        'dimmer.min.js', ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+            $data['assets'] = ['css' => ['dashboard.css', 'range.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
                                     'Chart.min.js',
-                                    'admin.js']];
+                                    'admin.js',
+                                    'range.js']];
             $data['title'] = $pageNames[$page];
     
             $this->load->view('templates/header', $data);
@@ -44,8 +59,9 @@
             }
 
 
-            $data['semantic'] = true; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             //$data['bootstrap'] = true;
+            $data['semantic'] = ['css' => ['site.min.css', 'reset.min.css', 'container.min.css', 'icon.min.css', 'message.min.css', 'input.min.css', 'form.min.css', 'button.min.css'],
+                                  'js' => ['site.min.js', 'form.min.js', ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = ['css' => ['login.css'],
                                 'js' => ['login.js']];
             $data['title'] = 'Login';

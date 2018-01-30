@@ -9,10 +9,18 @@
 <?php endif ?>
 
 <?php if(isset($semantic)): ?>
-<script src="<?php echo base_url('assets/semantic/semantic.min.js'); ?>"></script>
+<?php
+    foreach ($semantic as $folder => $files){
+        if($folder == 'js'){
+            foreach($files as $file){
+                ?><script src="<?php echo base_url('assets/semantic/dist/components/'.$file); ?>" type="text/javascript"></script><?php
+            }
+        }
+    } 
+?>
 <?php endif ?>
 
-<!-- LOADING PAGE ASSETS -->
+<!-- LOADING PAGE ASSETS -->semantic/dist/components
 <?php 
     // dentro de assets/css e assets/js podem ter arquivos especificos pra cada página. No controlador eu especifico que arquivos eu quero carregar dessas páginas
     // e nos loops abaixo eu pego esses arquivos especificados no controlador e puxo eles

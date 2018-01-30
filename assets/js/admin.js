@@ -1,14 +1,20 @@
 
 $(document).ready(function(){
-    let Dimmer = require('semantic-ui-dimmer');
-    $.fn.dimmer = Dimmer;
     
     $("#logout").click(function(event){
         return confirm("Tem certeza que deseja sair?");
     });
 
-
     $("#dashboard").dimmer('show');
+
+    $('#range-1').range({
+        min: 0,
+        max: 10,
+        start: 0,
+        onChange: function(value){
+            
+        }
+    });
 });
 
 
@@ -22,7 +28,8 @@ $.ajax({
     type: 'json',
     success: function(text_data) {
 
-        return;
+        $("#dashboard").dimmer('hide');
+
         var data = JSON.parse(text_data);
         var dimensions_formatted = [];
 

@@ -16,7 +16,16 @@
         <?php endif ?>
         
         <?php if(isset($semantic)): ?>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/semantic/semantic.min.css'); ?>">
+        <!-- para melhorar o tempo de carregamento da página os modulos do semantic são carregados a medida que são utilizados -->
+        <?php
+            foreach ($semantic as $folder => $files){
+                if($folder == 'css'){
+                    foreach($files as $file){
+                        ?><link href="<?php echo base_url('assets/semantic/dist/components/'.$file); ?>" rel="stylesheet" type="text/css" /><?php
+                    }
+                }
+            }   
+        ?>
         <?php endif ?>
 
         <!-- LOADING PAGE ASSETS -->

@@ -33,7 +33,7 @@
             <input type="password" name="password" placeholder="Senha">
         </div>
     </div>
-    <div class="fluid ui submit button">Entrar</div>
+    <div class="fluid ui submit button"  tabindex="0">Entrar</div>
     <div class="ui error message"></div>
     </form>
 
