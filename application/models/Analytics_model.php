@@ -50,4 +50,43 @@
 
             return $result;
         }
+
+        public function get_fontes_trafego(){
+            // especifica o tempo
+            $dateRange = new Google_Service_AnalyticsReporting_DateRange();
+            $dateRange->setStartDate("31daysAgo");
+            $dateRange->setEndDate("today");
+          
+            // pede o numero de sessoes e pageviews
+            $sessions = new Google_Service_AnalyticsReporting_Metric();
+            $sessions->setExpression("ga:sessions");
+            $sessions->setAlias("sessions");
+
+            // especifica que é pra separar por data
+            $source = new Google_Service_AnalyticsReporting_Dimension();
+            $source->setName("ga:source");
+          
+            // monta a query
+            $request = new Google_Service_AnalyticsReporting_ReportRequest();
+            $request->setViewId($this->VIEW_ID);
+            $request->setDateRanges($dateRange);
+            $request->setDimensions(array($source));
+            $request->setMetrics(array($sessions));
+          
+            $body = new Google_Service_AnalyticsReporting_GetReportsRequest();
+            $body->setReportRequests( array( $request) );
+
+            $reports = $this->google->bachtGet($body);
+
+            $result=array();
+            $result['attempts'] = $reports['attempts'];
+
+            //echo $reports['attempts'];
+            if(!isset($reports['result'])) return $result;
+
+            $result += $this->google->get_metrics($reports['result'][0]);
+            $result += array("dimensions" => $this->google->get_dimensions($reports['result'][0]));
+
+            return $result;
+        }
     }

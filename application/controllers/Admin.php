@@ -36,13 +36,16 @@
                         'popup.min.css',
                         'table.min.css',
                         'calendar.min.css',
-                        'button.min.css'],
+                        'button.min.css',
+                        'modal.min.css',
+                        'grid.min.css'],
                     'js' => [
                         'site.min.js',  
                         'dimmer.min.js',
                         'transition.min.js',
                         'popup.min.js',
-                        'calendar.min.js' ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+                        'calendar.min.js',
+                        'modal.min.js' ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = ['css' => ['dashboard.css', 'range.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
@@ -111,21 +114,17 @@
             $this->load->view('admin/google-api/oauth', $data);
         }
 
-        public function analytics(){
-            $tables = $this->input->post('tables');
-            $period = $this->input->post('period');
-            // $tables = ['acesso_semanal'];
-            // $period = ['3daysAgo', 'today'];
-
-            if(!isset($tables)){
-                echo "Nothing here.";
-                return;
-            }
-
+        public function analytics($table){
             $result = array();
-            foreach($tables as $table){
-                $function = 'get_'.$table;
-                $result[$table] = $this->analytics_model->$function($period[0], $period[1]);
+
+            if($table == "acesso_semanal"){
+                $period = $this->input->post('period');
+                 
+                $result[$table] = $this->analytics_model->get_acesso_semanal($period[0], $period[1]);
+            }elseif($table == "fontes_trafego"){
+                //$result[$table] = $this->analytics_model->get_fontes_trafego();
+                $cached_result = '{"fontes_trafego":{"attempts":1,"sessions":["42","3","1","72","2"],"dimensions":["(direct)","bing","br.yhs4.search.yahoo.com","google","lm.facebook.com"]}}';
+                $result = json_decode($cached_result);
             }
 
             echo $out_json = json_encode($result);

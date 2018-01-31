@@ -9,14 +9,14 @@
     </ul>
 </nav>
 
-<div id="logout-confirmation" class="ui modal mini">
+<div id="logout-confirmation" class="ui modal mini" style="bottom: auto">
   <div class="header">Confirmação</div>
   <div class="content">
     <p>Tem certeza que deseja sair?</p>
   </div>
   <div class="actions">
-    <div class="ui approve button">Sim</div>
-    <div class="ui cancel button">Não</div>
+    <div class="ui negative button">Não</div>
+    <a class="ui positive button" href="<?= base_url('admin/logout') ?>">Sim</a>
   </div>
 </div>
 

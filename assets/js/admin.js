@@ -5,16 +5,20 @@ var chart_data;
 
 
 get_chart_data();
-//chart_update(moment('20180120'), moment());
-// load_chart_data(8, 1); //ultima semana
+//get_traffic_data();
 
 $(document).ready(function(){
     
     $("#logout").click(function(event){
-        return confirm("Tem certeza que deseja sair?");
+        //return confirm("Tem certeza que deseja sair?");
+
+        event.preventDefault();
+
+        $("#logout-confirmation").modal('show');
     });
 
     $("#dashboard").dimmer('show');
+    $("#traffic_table").dimmer('show');
 
 
     $('#rangestart').calendar({
@@ -76,18 +80,17 @@ function get_chart_data(start_date=null, end_date=null, period=null){
     
     $("#dashboard").dimmer('show');
 
-    if(start_date == null) start_date = moment().add(-3, 'days');
+    if(start_date == null) start_date = moment().add(-30, 'days');
     if(end_date == null) end_date = moment();
-    if(period == null) period = [3, 0];
+    if(period == null) period = [30, 0];
     period_string = [period[0] + "daysAgo", period[1] + "daysAgo"];
 
 
     $.ajax({
-        url: base_url('admin/analytics'),
+        url: base_url('admin/analytics/acesso_semanal'),
         type: 'POST',
         dataType : "json",
         data: {
-            'tables': ['acesso_semanal'],
             'period': [period_string[0], period_string[1]]
         },
         persist: [start_date, end_date],
@@ -155,4 +158,35 @@ function load_chart_data(start_index, end_index){
     });
             
     $("#dashboard").dimmer('hide');
+}
+
+function get_traffic_data(){
+    $.ajax({
+        url: base_url('admin/analytics/fontes_trafego'),
+        type: 'GET',
+        dataType : "json",
+        success: function(data) {
+
+            $("#traffic_table table tbody").empty();
+
+            for($i=0; $i < data.fontes_trafego.dimensions.length; $i++){
+                
+                icon_type = 'folder';
+                source = data.fontes_trafego.dimensions[$i];
+                session = data.fontes_trafego.sessions[$i];
+
+                table_row = '<tr>' +
+                    '<td>' +
+                        '<i class="'+$icon_type+' icon"></i> '+$source +
+                    '</td>' +
+                    '<td>'+$session+'</td>' +
+                '</tr>';
+
+                $("#traffic_table table tbody").append(table_row);
+            }
+
+            $('#traffic_table').dimmer('hide');
+
+        }
+    });
 }
