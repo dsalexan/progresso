@@ -5,7 +5,7 @@ var chart_data;
 
 
 get_chart_data();
-//get_traffic_data();
+get_traffic_data();
 
 $(document).ready(function(){
     
@@ -80,9 +80,12 @@ function get_chart_data(start_date=null, end_date=null, period=null){
     
     $("#dashboard").dimmer('show');
 
-    if(start_date == null) start_date = moment().add(-30, 'days');
+    if(start_date == null) {
+        start_date = moment().add(-30, 'days');
+        if(start_date.isBefore(moment('20180122'))) start_date = moment('20180122');
+    }
     if(end_date == null) end_date = moment();
-    if(period == null) period = [30, 0];
+    if(period == null) period = [moment().diff(start_date, 'days'), moment().diff(end_date, 'days')];
     period_string = [period[0] + "daysAgo", period[1] + "daysAgo"];
 
 
@@ -160,6 +163,10 @@ function load_chart_data(start_index, end_index){
     $("#dashboard").dimmer('hide');
 }
 
+function wordInString(s, word){
+    return new RegExp( '\\b' + word + '\\b', 'i').test(s);
+  }
+
 function get_traffic_data(){
     $.ajax({
         url: base_url('admin/analytics/fontes_trafego'),
@@ -172,14 +179,22 @@ function get_traffic_data(){
             for($i=0; $i < data.fontes_trafego.dimensions.length; $i++){
                 
                 icon_type = 'folder';
+
                 source = data.fontes_trafego.dimensions[$i];
+                if(wordInString(source, 'bing')) icon_type = 'windows';
+                else if(wordInString(source, 'yahoo')) icon_type = 'yahoo';
+                else if(wordInString(source, 'google')) icon_type = 'google';
+                else if(wordInString(source, 'facebook')) icon_type = 'facebook';
+                
+
+
                 session = data.fontes_trafego.sessions[$i];
 
                 table_row = '<tr>' +
                     '<td>' +
-                        '<i class="'+$icon_type+' icon"></i> '+$source +
+                        '<i class="'+icon_type+' icon"></i> '+source +
                     '</td>' +
-                    '<td>'+$session+'</td>' +
+                    '<td>'+session+'</td>' +
                 '</tr>';
 
                 $("#traffic_table table tbody").append(table_row);

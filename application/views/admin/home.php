@@ -40,43 +40,43 @@
             <h3>Origem de Tráfego</h3>
         </div>
     
-    <div id="traffic_table" class="ui basic blurring segment dimmable dimmed">
-        
-        <div class="ui active inverted dimmer">
-            <div class="ui text loader">Acessando Google Analytics</div>
+        <div id="traffic_table" class="ui basic blurring segment dimmable dimmed">
+            
+            <div class="ui active inverted dimmer">
+                <div class="ui text loader">Acessando Google Analytics</div>
+            </div>
+
+            <table class="ui table">
+                <thead>
+                    <tr>
+                        <th>Origem</th>
+                        <th>Acessos</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <i class="folder icon"></i> ectmjr.com.br
+                        </td>
+                        <td>42</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="folder icon"></i> unifesp.com.br
+                        </td>
+                        <td>52</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="folder icon"></i> progressoveiculos.com.br
+                        </td>
+                        <td>81</td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
-
-        <table class="ui table">
-            <thead>
-                <tr>
-                    <th>Origem</th>
-                    <th>Acessos</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>
-                        <i class="folder icon"></i> ectmjr.com.br
-                    </td>
-                    <td>42</td>
-                </tr>
-                <tr>
-                    <td>
-                        <i class="folder icon"></i> unifesp.com.br
-                    </td>
-                    <td>52</td>
-                </tr>
-                <tr>
-                    <td>
-                        <i class="folder icon"></i> progressoveiculos.com.br
-                    </td>
-                    <td>81</td>
-                </tr>
-            </tbody>
-        </table>
-
-    </div>
 
     </div>
     <div class="ten wide column">
