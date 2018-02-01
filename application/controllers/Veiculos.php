@@ -65,6 +65,7 @@
         public function node($action){
             if($action=="reset"){
                 $this->veiculos_model->reset_node();
+                echo 'Node reset complete';
             }
         }
     }

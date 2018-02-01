@@ -169,39 +169,18 @@
                                         'estado' => $row->estado,
                                         'cor' => $row->cor,
                                         'ano' => $row->ano,
-                                        'observacoes' => $row->observacoes
+                                        'observacoes' => $row->observacoes,
+                                        'nome_exibicao' => [
+                                            ['input' => $this->tokenize($row->nome_tipo), 'weight' => 4],
+                                            ['input' => $this->tokenize($row->nome_marca), 'weight' => 3],
+                                            ['input' => $this->tokenize($row->nome_modelo), 'weight' => 3],
+                                            ['input' => $this->tokenize($row->observacoes), 'weight' => 1],
+                                        ]
                                     ];
 
-                $nome_exibicao = array();
-                $fields = [
-                    ['input' => [$row->nome_tipo], 'weight' => 4],
-                    ['input' => [$row->nome_marca], 'weight' => 3],
-                    ['input' => [$row->nome_modelo], 'weight' => 3],
-                    ['input' => [$row->observacoes], 'weight' => 1]
-                ];
-
-                foreach($fields as $field){
-                    //tokenize input by space in a array (which will be aded as the input)
-                    //um for pra cada espaço dentro do input escolhido, e a cda iteração agente mata a primeira palavra e insereo resto como um input
-                    //tudo tem o msm pesso
-                    $original_input = $field['input'][0];
-                    //echo 'TOKENIZING '.$original_input.'</br>';
-
-                    $tokenized_input = $this->tokenize($original_input);
-
-                    //echo '<pre>'; print_r($tokenized_input); echo '</pre>';
-                    //echo '</br>';
-
-                    $nome_exibicao[] = ['input' => $tokenized_input, 'weight'=> $field['weight']];
-                    
-                }
-
-                $params['body']['nome_exibicao'] = $fields;
-
-                
-                echo '<pre>'; echo json_encode($params, JSON_PRETTY_PRINT); echo '</pre>';
-                echo '</br>';
             }
+            // echo '<pre>'; echo json_encode($params, JSON_PRETTY_PRINT); echo '</pre>';
+            // echo '</br>';
 
             $responses = $this->elastic->client->bulk($params);
 
