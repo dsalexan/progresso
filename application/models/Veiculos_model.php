@@ -3,8 +3,14 @@
 
         public function __construct(){
             $this->load->database();
-            $this->elastic = new Elastic();
-            $this->elastic->Init();
+
+
+            // $this->load->library('elastic');
+            
+            // $this->elastic = new Elastic();
+
+            // $this->elastic_online = $this->elastic->Init();
+            $this->elastic_online = false;
         }
 
         public function get_tipos(){
@@ -101,6 +107,8 @@
         }
 
         public function pesquisar_termo($search){
+            if(!$this->elastic_online) return array();
+
             $query = ['multi_match' => [
                         'query' => $search,
                         'type' => 'best_fields',

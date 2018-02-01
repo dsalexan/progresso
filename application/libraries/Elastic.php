@@ -14,10 +14,18 @@ class Elastic{
             'https://localhost:9200'  // SSL to IP + Port
         ];
 
-            $this->client = ClientBuilder::create()
-                                    ->setHosts($hosts)
-                                    ->build();
+        $this->client = ClientBuilder::create()
+                                ->setHosts($hosts)
+                                ->build();
     }
+
+    /*
+        MODIFICAÇÕES
+            - mapping, insertData, insertNode, updateNode, deleteNode, Search deveriam ir tudo pra uma
+                classe node, que deveria estar numa pasta nodes e que eu deveria dar um jeito de carregar
+                no autoload.php como um model
+    
+    */
 
     public function Mapping(){
         $params = [
@@ -67,13 +75,19 @@ class Elastic{
 
     public function Init($reset=FALSE){ //verifica se existe o indice, se nao existir ele puxa os dados do banco
         $params = ['index' => 'veiculos'];
-        $bool = $this->client->indices()->exists($params);
+        try{
+            $bool = $this->client->indices()->exists($params);
+        }catch (Exception $e){
+            return false;
+        }
 
         if(!$bool or $reset) { // se n existe
             if($reset) $this->Reset();
 
             $this->InsertData();
         }
+
+        return true;
     }
 
     public function InsertData(){
