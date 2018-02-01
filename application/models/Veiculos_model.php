@@ -3,14 +3,8 @@
 
         public function __construct(){
             $this->load->database();
-
-
-            // $this->load->library('elastic');
             
-            // $this->elastic = new Elastic();
-
-            // $this->elastic_online = $this->elastic->Init();
-            $this->elastic_online = false;
+            $this->load->model('nodes/veiculos_node', 'node');
         }
 
         public function get_tipos(){
@@ -107,7 +101,7 @@
         }
 
         public function pesquisar_termo($search){
-            if(!$this->elastic_online) return array();
+            if(!$this->node->online) return array();
 
             $query = ['multi_match' => [
                         'query' => $search,
@@ -126,7 +120,7 @@
             ]];
 
             
-            $result = $this->elastic->Search($query);
+            $result = $this->node->search($query);
 
             return $result;
 
