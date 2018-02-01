@@ -37,16 +37,20 @@
                         'table.min.css',
                         'calendar.min.css',
                         'button.min.css',
-                        'modal.min.css',
-                        'grid.min.css'],
-                    'js' => [
+                        'modal.min.css', // admin header
+                        'grid.min.css',
+                        'search.min.css' // admin header
+                    ],'js' => [
                         'site.min.js',  
                         'dimmer.min.js',
                         'transition.min.js',
                         'popup.min.js',
                         'calendar.min.js',
-                        'modal.min.js' ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
-            $data['assets'] = ['css' => ['dashboard.css', 'range.css'],
+                        'modal.min.js', // admin header
+                        'search.min.js', // admin header
+                        'api.min.js', // admin header
+                    ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
                                     'Chart.min.js',

@@ -68,7 +68,7 @@ $result = $query->result();
 foreach( $result as $row ) {
     $route[ $row->url ] = 'veiculos/show/'.$row->url;
     $route[ $row->url.'/page/(:num)' ] = 'veiculos/page/'.$row->id_tipo.'/$1';
-    $route[ $row->url.'/(:num)' ] = 'veiculos/info/'.$row->id_tipo.'/$1';
+    $route[ $row->url.'/(:num)' ] = 'veiculos/info/$1';
 }
 
 $route['veiculos/node/(:any)'] = 'veiculos/node/$1';

@@ -149,7 +149,7 @@
             }';
 
             
-            $result = $this->node->suggest($query);
+            $result = json_encode($this->node->suggest($query), JSON_PRETTY_PRINT);
 
             return $result;
         }

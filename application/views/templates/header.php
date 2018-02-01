@@ -49,8 +49,10 @@
         <link href="<?php echo base_url('assets/css/general.css'); ?>" rel="stylesheet" type="text/css" />
 
         <script>
-            function base_url(url = ''){
+            function base_url(url = '', type = ''){
                 var base = "<?= base_url(); ?>";
+
+                if(type=="HTTPLESS") base = base.replace('http:', '');
 
                 return base + url;
             }

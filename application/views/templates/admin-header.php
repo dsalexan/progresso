@@ -1,7 +1,13 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="<?= base_url(); ?>">Progresso Veículos</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Procurar" aria-label="Procurar">
+    <div id="searcher" class="ui fluid category search" style="width: 100%">
+        <div class="ui left icon input" style="width: 100%">
+            <input class="dark-prompt prompt form-control form-control-dark w-100" type="text" placeholder="Procurar" aria-label="Procurar">
+            <i class="search icon" style="color: #EEE"></i>
+        </div>
+        <div class="results"></div>
+    </div>
     <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
         <a id="logout" class="nav-link" href="<?= base_url('admin/logout') ?>" >Sair</a>

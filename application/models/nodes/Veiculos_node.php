@@ -270,22 +270,10 @@
                 
             $query = $this->elastic->client->search($params);
     
-            return $query['suggest'];
-
-            $hits = sizeof($query['hits']['hits']);
-            $hit = $query['hits']['hits'];
+            $query = $query['suggest']['veiculo-suggest'][0]['options'];
     
-            $result['searchfound'] = $hits;
-    
-            while($i < $hits){
-                $result['result'][$i] = $query['hits']['hits'][$i]['_source'];
-                $result['result'][$i]['_id'] = $query['hits']['hits'][$i]['_id'];
-                $result['result'][$i]['_score'] = $query['hits']['hits'][$i]['_score'];
-                $result['ids'][$i]['_id'] = $query['hits']['hits'][$i]['_id'];
-                $result['ids'][$i]['_score'] = $query['hits']['hits'][$i]['_score'];
-    
-                $i++;
-            }
+            $result['searchfound'] = count($query);
+            $result['results'] = $query;
     
             return $result;
         }

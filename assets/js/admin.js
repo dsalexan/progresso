@@ -41,6 +41,41 @@ $(document).ready(function(){
         
         chart_update(s, e);
     });
+
+
+    $("#searcher").search({
+        type: 'category',
+        minCharacters: 3,
+        apiSettings: {
+            onResponse: function(serverResponse) {
+                var
+                    response = {
+                        results: {}
+                    }
+                ;
+                //translate Server API response to work with search
+                $.each(serverResponse.results, function(index, result) {
+                    
+                    // create new language category
+                    if(response.results[result._source.nome_tipo] === undefined) {
+                        response.results[result._source.nome_tipo] = {
+                        name    : result._source.nome_tipo,
+                        results : []
+                        };
+                    }
+                    
+                    //add result to category
+                    response.results[result._source.nome_tipo].results.push({
+                        title: result._source.nome_marca,
+                        description: result._source.nome_modelo,
+                        url: base_url('veiculos/info/' + result._id)
+                    });
+                });
+                return response;
+            },
+            url: base_url('veiculos/search?type=c&q={query}', 'HTTPLESS')
+        }
+    });
 });
 
 
