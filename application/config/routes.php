@@ -71,7 +71,9 @@ foreach( $result as $row ) {
     $route[ $row->url.'/(:num)' ] = 'veiculos/info/'.$row->id_tipo.'/$1';
 }
 
+$route['veiculos/node/(:any)'] = 'veiculos/node/$1';
 $route['veiculos/search'] = 'veiculos/search';
+$route['veiculos/auto_complete'] = 'veiculos/auto_complete';
 
 
 $route['admin'] = 'admin/view';

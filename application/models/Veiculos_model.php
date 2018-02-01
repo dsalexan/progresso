@@ -100,6 +100,11 @@
             return sizeof($result)>0;
         }
 
+        public function reset_node(){
+            $this->node->delete();
+            $this->node->create();
+        }
+
         public function pesquisar_termo($search){
             if(!$this->node->online) return array();
 
@@ -121,8 +126,31 @@
 
             
             $result = $this->node->search($query);
+            return $result;
+        }
+
+        // todo arrumar um jeito de retornar um tamanhho ilimitado?
+        public function auto_complete($search){
+            if(!$this->node->online) return array();
+
+            $query = '{
+                "suggest": {
+                    "veiculo-suggest": {
+                        "prefix": "'.$search.'",
+                        "completion": {
+                            "field": "nome_exibicao",
+                            "size": 10,
+                            "fuzzy":{
+                                "fuzziness": 1
+                            }
+                        }
+                    }
+                }
+            }';
+
+            
+            $result = $this->node->suggest($query);
 
             return $result;
-
         }
     }

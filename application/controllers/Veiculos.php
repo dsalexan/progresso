@@ -41,7 +41,12 @@
 
         public function search(){
             $search = $this->input->get('q');
-            $result = $this->veiculos_model->pesquisar_termo($search);
+            $type = $this->input->get('type');
+
+            $function = 'pesquisar_termo'; // TYPE: r
+            if($type == 'c') $function = 'auto_complete';
+
+            $result = $this->veiculos_model->$function($search);
 
             echo $search.'</br></br></br>';
             echo '<pre>'; print_r($result); echo '</pre>';
@@ -54,6 +59,12 @@
                 echo '<pre>'; echo print_r($data); echo '</pre>';
             }else{
                 show_404();
+            }
+        }
+
+        public function node($action){
+            if($action=="reset"){
+                $this->veiculos_model->reset_node();
             }
         }
     }
