@@ -46,7 +46,7 @@
             $function = 'pesquisar_termo'; // TYPE: r
             if($type == 'c') $function = 'auto_complete';
 
-            $result = $this->veiculos_model->$function($search);
+            $result = json_encode($this->veiculos_model->$function($search), JSON_UNESCAPED_UNICODE);
 
             echo $result;
             // echo '<pre>'; print_r($result); echo '</pre>';
