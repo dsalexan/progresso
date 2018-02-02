@@ -73,7 +73,7 @@ $(document).ready(function(){
                 });
                 return response;
             },
-            url: base_url('veiculos/search?type=c&q={query}', 'HTTPLESS')
+            url: base_url('veiculos/search.json?type=c&q={query}', 'HTTPLESS')
         }
     });
 });

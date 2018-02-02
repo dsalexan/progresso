@@ -73,6 +73,7 @@ foreach( $result as $row ) {
 
 $route['veiculos/node/(:any)'] = 'veiculos/node/$1';
 $route['veiculos/search'] = 'veiculos/search';
+$route['veiculos/search.json'] = 'veiculos/search/json';
 $route['veiculos/auto_complete'] = 'veiculos/auto_complete';
 
 

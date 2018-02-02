@@ -1,8 +1,7 @@
 <?php
     class Veiculos extends CI_Controller{
 
-        public function show($tipo)
-        {
+        public function show($tipo){
             $tipos = $this->veiculos_model->get_tipos_url();
 
             //checa se a pagina existe
@@ -22,11 +21,28 @@
             $data['title'] = $nome_plural;
             $data['destaques'] = $this->veiculos_model->get_veiculos_destaque($id_tipo, 1);
             $data['veiculos'] = $this->veiculos_model->get_veiculos_destaque($id_tipo, 0);
+                
+            $data['bootstrap'] = true;
+            $data['semantic'] = [
+                    'css' => [],
+                    'js' => []
+                ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+            $data['assets'] = [
+                'css' => [
+                    'font-awesome.min.css', 'search.css'
+                ],
+                'js' => [
+                    'tether.min.js',
+                    'search.js'
+                ]];
+
 
             //echo '<pre>'; print_r($data['veiculos']); echo '</pre>';
     
             $this->load->view('templates/header', $data);
+            $this->load->view('templates/common-header', $data);
             $this->load->view('veiculos/show', $data);
+            $this->load->view('templates/common-footer', $data);
             $this->load->view('templates/footer', $data);
         }
 
@@ -39,17 +55,41 @@
 
         }
 
-        public function search(){
+        public function search($mode=false){
             $search = $this->input->get('q');
             $type = $this->input->get('type');
 
-            $function = 'pesquisar_termo'; // TYPE: r
-            if($type == 'c') $function = 'auto_complete';
+            if($mode == 'json'){
+                $function = 'pesquisar_termo'; // TYPE: r
+                if($type == 'c') $function = 'auto_complete';
 
-            $result = json_encode($this->veiculos_model->$function($search), JSON_UNESCAPED_UNICODE);
+                $result = json_encode($this->veiculos_model->$function($search), JSON_UNESCAPED_UNICODE);
 
-            echo $result;
-            // echo '<pre>'; print_r($result); echo '</pre>';
+                echo $result;
+            }else{
+                $data['title'] = "Pesquisa";
+                $data['query'] = $search;
+                
+                $data['bootstrap'] = true;
+                $data['semantic'] = [
+                        'css' => [],
+                        'js' => []
+                    ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+                $data['assets'] = [
+                    'css' => [
+                        'font-awesome.min.css', 'search.css'
+                    ],
+                    'js' => [
+                        'tether.min.js',
+                        'search.js'
+                    ]];
+
+                $this->load->view('templates/header', $data);
+                $this->load->view('templates/common-header', $data);
+                $this->load->view('veiculos/search', $data);
+                $this->load->view('templates/common-footer', $data);
+                $this->load->view('templates/footer', $data);
+            }
         }
 
         public function info($id_veiculo){

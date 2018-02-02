@@ -20,7 +20,7 @@
 ?>
 <?php endif ?>
 
-<!-- LOADING PAGE ASSETS -->semantic/dist/components
+<!-- LOADING PAGE ASSETS -->
 <?php 
     // dentro de assets/css e assets/js podem ter arquivos especificos pra cada página. No controlador eu especifico que arquivos eu quero carregar dessas páginas
     // e nos loops abaixo eu pego esses arquivos especificados no controlador e puxo eles
