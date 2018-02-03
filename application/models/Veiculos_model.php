@@ -88,7 +88,19 @@
             $result[0]['combustiveis'] = $this->get_combustiveis($id_veiculo);
             $result[0]['imagens'] = $this->get_imagens($id_veiculo);
 
-            return $result;
+            return $result[0];
+        }
+
+        public function get_veiculo_display($id_veiculo){ // só pega os dados que vao ser mostrados no card
+            $this->db->where('id_veiculo', $id_veiculo);
+            $result = $this->db->get('veiculos')->result_array();
+
+            $result[0]['tipo'] = $this->get_tipo($result[0]['id_tipo'])[0];
+            $result[0]['marca'] = $this->get_marca($result[0]['id_marca'])[0];
+            $result[0]['modelo'] = $this->get_modelo($result[0]['id_modelo'])[0];
+            $result[0]['imagens'] = $this->get_imagens($id_veiculo);
+
+            return $result[0];
         }
 
         public function checar_status($id_veiculo){
@@ -99,6 +111,8 @@
 
             return sizeof($result)>0;
         }
+
+        /* ELASTIC SEARCH*/
 
         public function reset_node(){
             $this->node->delete();

@@ -59,21 +59,57 @@
             $search = $this->input->get('q');
             $type = $this->input->get('type');
 
+            $result = '';
+
             if($mode == 'json'){
-                $function = 'pesquisar_termo'; // TYPE: r
-                if($type == 'c') $function = 'auto_complete';
+                if($type == 'c') {
 
-                $result = json_encode($this->veiculos_model->$function($search), JSON_UNESCAPED_UNICODE);
+                    $result = json_encode($this->veiculos_model->auto_complete($search), JSON_UNESCAPED_UNICODE);
+                    // $result = json_encode($this->veiculos_model->$function($search), JSON_PRETTY_PRINT);
+                }else{
+                    $documents = $this->veiculos_model->pesquisar_termo($search);
+                    foreach($documents['ids'] as $id_veiculo){
+                        $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['_id']);
+                    }
 
-                echo $result;
+                    
+                    $result = json_encode($veiculos, JSON_PRETTY_PRINT);
+                    // $result = json_encode($this->veiculos_model->pesquisar_termo($search), JSON_PRETTY_PRINT);
+                }
+
+                // echo $result;
+                echo '<pre>'; echo $result; echo '</pre>';
             }else{
+                
+                $documents = $this->veiculos_model->pesquisar_termo($search);
+                foreach($documents['ids'] as $id_veiculo){
+                    $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['_id']);
+                }
+
+
+
                 $data['title'] = "Pesquisa";
                 $data['query'] = $search;
+                $data['results'] = $veiculos;
                 
                 $data['bootstrap'] = true;
                 $data['semantic'] = [
-                        'css' => [],
-                        'js' => []
+                        'css' => [
+                            'site.min.css', 
+                            'reset.min.css', 
+                            'container.min.css', 
+                            'dimmer.min.css', 
+                            'card.min.css',
+                            'image.min.css',
+                            'reveal.min.css',
+                            'grid.min.css',
+                            'icon.min.css',
+                            'label.min.css'
+                        ],
+                        'js' => [
+                            'site.min.js', 
+                            'dimmer.min.js',
+                        ]
                     ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
                 $data['assets'] = [
                     'css' => [

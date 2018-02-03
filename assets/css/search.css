@@ -3067,3 +3067,11 @@ body {
 	margin:auto!important;
 }
 }
+
+
+
+.ui.card a:hover{
+    color: #d11717 !important;
+    background: none;
+    text-decoration: none;
+}
