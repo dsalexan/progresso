@@ -18,7 +18,7 @@
 
             if ($_404) show_404();
 
-            $qtd_por_pagina = 3; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
+            $qtd_por_pagina = 5; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
             if($this->input->post('qtd_por_pagina')) $qtd_por_pagina = $this->input->post('qtd_por_pagina');
 
             $ids = $this->veiculos_model->get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, 1);
@@ -46,7 +46,9 @@
                     'reveal.min.css',
                     'icon.min.css',
                     'label.min.css',
-                    'message.min.css'
+                    'message.min.css',
+                    'button.min.css',
+                    'segment.min.css'
                 ],
                 'js' => [
                     'site.min.js', 
