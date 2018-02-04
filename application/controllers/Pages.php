@@ -31,9 +31,10 @@
                     'search.js'
                 ]];
 
-    
             $this->load->view('templates/header', $data);
+            $this->load->view('templates/common-header', $data);
             $this->load->view('pages/'.$page, $data);
+            $this->load->view('templates/common-footer', $data);
             $this->load->view('templates/footer', $data);
         }
     }

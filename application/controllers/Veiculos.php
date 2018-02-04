@@ -17,23 +17,52 @@
             }
 
             if ($_404) show_404();
-            
+
+            $qtd_por_pagina = 3; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
+            if($this->input->post('qtd_por_pagina')) $qtd_por_pagina = $this->input->post('qtd_por_pagina');
+
+            $ids = $this->veiculos_model->get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, 1);
+            if($ids == []) $this->session->set_flashdata('no_results', 'Não possuímos veículos desse tipo registrados.');
+
+            $veiculos = array();
+            foreach($ids as $id_veiculo){
+                $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['id_veiculo']);
+            }
+
+
             $data['title'] = $nome_plural;
-            $data['destaques'] = $this->veiculos_model->get_veiculos_destaque($id_tipo, 1);
-            $data['veiculos'] = $this->veiculos_model->get_veiculos_destaque($id_tipo, 0);
+            $data['query'] = $nome_plural;
+            $data['results'] = $veiculos;
                 
             $data['bootstrap'] = true;
             $data['semantic'] = [
-                    'css' => [],
-                    'js' => []
+                'css' => [
+                    'site.min.css', 
+                    'reset.min.css', 
+                    'container.min.css', 
+                    'dimmer.min.css', 
+                    'card.min.css',
+                    'image.min.css',
+                    'reveal.min.css',
+                    'icon.min.css',
+                    'label.min.css',
+                    'message.min.css'
+                ],
+                'js' => [
+                    'site.min.js', 
+                    'dimmer.min.js',
+                ]
                 ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = [
                 'css' => [
-                    'font-awesome.min.css', 'search.css'
+                    'font-awesome.min.css', 
+                    'search.css',
+                    'display.css'
                 ],
                 'js' => [
                     'tether.min.js',
-                    'search.js'
+                    'search.js',
+                    'display.js'
                 ]];
 
 
@@ -50,7 +79,7 @@
             $qtd_por_pagina = 10; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
             if($this->input->post('qtd_por_pagina')) $qtd_por_pagina = $this->input->post('qtd_por_pagina');
 
-            $data = $this->veiculos_model->get_veiculos_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina);
+            $data = $this->veiculos_model->get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina);
             echo '<pre>'; echo json_encode($data, JSON_PRETTY_PRINT); echo '</pre>';
 
         }
@@ -175,7 +204,6 @@
                         'card.min.css',
                         'image.min.css',
                         'reveal.min.css',
-                        'grid.min.css',
                         'icon.min.css',
                         'label.min.css',
                         'message.min.css'

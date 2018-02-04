@@ -1,0 +1,6 @@
+.ui.card.displayed{
+    border-top-left-radius: 0.285714rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0.285714rem;
+}
