@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                             <div class="extra content">
-                                <a style="">
+                                <a style="" href="<?= base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']); ?>">
                                     <i class="tag icon"></i><?= $veiculo['marca']['nome']; ?>
                                 </a>
                             </div>
