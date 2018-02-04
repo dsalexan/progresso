@@ -55,9 +55,50 @@
 
         }
 
+        public function marca($id_tipo, $id_marca){
+            $marca = $this->veiculos_model->get_marca($id_marca);
+
+            if($marca == null) show_404();
+
+            $ids = $this->veiculos_model->get_ids_veiculo_por_marca($id_tipo, $id_marca);
+            if($ids == []) $this->session->set_flashdata('no_results', 'Essa marca não possui veículos registrados.');
+
+            $veiculos = array();
+            foreach($ids as $id_veiculo){
+                $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['id_veiculo']);
+            }
+
+
+            $data['title'] = "Marca";
+            $data['query'] = $marca['nome'];
+            $data['results'] = $veiculos;
+
+            $this->view_veiculos_display($data);
+        }
+
         public function search($mode=false){
             $search = $this->input->get('q');
             $type = $this->input->get('type');
+
+            // PREPARAR FILTRO DE PESQUISA
+            $id_marca = (null !== $this->input->get('marca')) ? $this->input->get('marca') : null;
+            $id_modelo = (null !== $this->input->get('modelo')) ? $this->input->get('modelo') : null;
+            $id_tipo = (null !== $this->input->get('tipo')) ? $this->input->get('tipo') : null;
+            $min_valor = (null !== $this->input->get('min_valor')) ? $this->input->get('min_valor') : null;
+            $max_valor = (null !== $this->input->get('max_valor')) ? $this->input->get('max_valor') : null;
+
+            $filtro = [];
+            if(isset($id_marca)) $filtro['id_marca'] = $id_marca;
+            if(isset($id_modelo)) $filtro['id_modelo'] = $id_modelo;
+            if(isset($id_tipo)) $filtro['id_tipo'] = $id_tipo;
+            if(isset($min_valor) or isset($max_valor)){
+                $filtro['valor'] = [null, null];
+                if(isset($min_valor)) $filtro['valor'][0] = $min_valor;
+                if(isset($max_valor)) $filtro['valor'][1] = $max_valor;
+            }
+            if($filtro == array()) $filtro = false;
+            // $filtro = false;
+            
 
             $result = '';
 
@@ -68,11 +109,15 @@
                     // $result = json_encode($this->veiculos_model->$function($search), JSON_PRETTY_PRINT);
                 }else{
                     $documents = $this->veiculos_model->pesquisar_termo($search);
-                    foreach($documents['ids'] as $id_veiculo){
-                        $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['_id']);
+
+                    $veiculos = [];
+                    if($documents['searchfound'] > 0){
+                        foreach($documents['ids'] as $id_veiculo){
+                            if($this->veiculos_model->crosscheck_veiculo_filtro($id_veiculo['_id'], $filtro))
+                                $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['_id']);
+                        }
                     }
 
-                    
                     $result = json_encode($veiculos, JSON_PRETTY_PRINT);
                     // $result = json_encode($this->veiculos_model->pesquisar_termo($search), JSON_PRETTY_PRINT);
                 }
@@ -82,49 +127,21 @@
             }else{
                 
                 $documents = $this->veiculos_model->pesquisar_termo($search);
-                foreach($documents['ids'] as $id_veiculo){
-                    $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['_id']);
+                $veiculos = [];
+                if($documents['searchfound'] > 0){
+                    foreach($documents['ids'] as $id_veiculo){
+                        if($this->veiculos_model->crosscheck_veiculo_filtro($id_veiculo['_id'], $filtro))
+                            $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['_id']);
+                    }
                 }
 
-
-
+                if($veiculos == []) $this->session->set_flashdata('no_results', 'Sua busca não retornou resultados.');
+            
                 $data['title'] = "Pesquisa";
                 $data['query'] = $search;
                 $data['results'] = $veiculos;
-                
-                $data['bootstrap'] = true;
-                $data['semantic'] = [
-                        'css' => [
-                            'site.min.css', 
-                            'reset.min.css', 
-                            'container.min.css', 
-                            'dimmer.min.css', 
-                            'card.min.css',
-                            'image.min.css',
-                            'reveal.min.css',
-                            'grid.min.css',
-                            'icon.min.css',
-                            'label.min.css'
-                        ],
-                        'js' => [
-                            'site.min.js', 
-                            'dimmer.min.js',
-                        ]
-                    ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
-                $data['assets'] = [
-                    'css' => [
-                        'font-awesome.min.css', 'search.css'
-                    ],
-                    'js' => [
-                        'tether.min.js',
-                        'search.js'
-                    ]];
 
-                $this->load->view('templates/header', $data);
-                $this->load->view('templates/common-header', $data);
-                $this->load->view('veiculos/search', $data);
-                $this->load->view('templates/common-footer', $data);
-                $this->load->view('templates/footer', $data);
+                $this->view_veiculos_display($data);
             }
         }
 
@@ -143,5 +160,44 @@
                 $this->veiculos_model->reset_node();
                 echo 'Node reset complete';
             }
+        }
+
+        /* FUNCOES DE GENERALIZAÇÃO */
+
+        function view_veiculos_display($data){            
+            $data['bootstrap'] = true;
+            $data['semantic'] = [
+                    'css' => [
+                        'site.min.css', 
+                        'reset.min.css', 
+                        'container.min.css', 
+                        'dimmer.min.css', 
+                        'card.min.css',
+                        'image.min.css',
+                        'reveal.min.css',
+                        'grid.min.css',
+                        'icon.min.css',
+                        'label.min.css',
+                        'message.min.css'
+                    ],
+                    'js' => [
+                        'site.min.js', 
+                        'dimmer.min.js',
+                    ]
+                ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+            $data['assets'] = [
+                'css' => [
+                    'font-awesome.min.css', 'search.css'
+                ],
+                'js' => [
+                    'tether.min.js',
+                    'search.js'
+                ]];
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/common-header', $data);
+            $this->load->view('veiculos/search', $data);
+            $this->load->view('templates/common-footer', $data);
+            $this->load->view('templates/footer', $data);
         }
     }

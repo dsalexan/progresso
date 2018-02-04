@@ -23,9 +23,9 @@
                                 </nav>
                                 <div class="search-box">
                                     <i class="fa fa-search"></i>
-                                    <form>
-                                        <input type="text" name="search-txt" placeholder="Procurar" class="search-txt form-item">
-                                        <button type="submit" name="submit" class="search-btn btn-1"><i class="fa fa-search"></i></button>
+                                    <form action="<?= base_url('veiculos/search'); ?>" method="get">
+                                        <input type="text" name="q" placeholder="Procurar" class="search-txt form-item">
+                                        <button type="submit" class="search-btn btn-1"><i class="fa fa-search"></i></button>
                                     </form>
                                 </div>
                             </div>

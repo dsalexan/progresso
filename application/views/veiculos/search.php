@@ -7,6 +7,11 @@
                         <div class="centralize"><?= $query ?></div>
                     </h3>
                 </div>
+                <?php if($this->session->flashdata('no_results')): ?>
+                <div class="ui floating large message">
+                    <p><?= $this->session->flashdata('no_results'); ?></p>
+                </div>
+                <?php endif; ?>
                     <div class="ui four doubling cards">
                     <?php foreach($results as $veiculo){ ?>
                         <div class="ui card">

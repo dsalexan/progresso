@@ -40,17 +40,54 @@
                                         OFFSET '. $offset);
             return $query->result_array();
         }
+        
+        public function get_ids_veiculo_por_marca($id_tipo, $id_marca){
+            return $this->db
+                ->select('id_veiculo')
+                ->where('id_tipo', $id_tipo)
+                ->where('id_marca', $id_marca)
+                ->get('veiculos')->result_array();
+        }
 
         public function get_tipo($id_tipo){
-            return $this->db->where('id_tipo', $id_tipo)->get('veiculos_tipos')->result_array();
+            $result = $this->db->where('id_tipo', $id_tipo)->get('veiculos_tipos')->result_array();
+            if($result == []) return null;
+            return $result[0];
+        }
+
+        public function get_tipo_por_nome($tipo){
+            $result = $this->db
+                ->group_start()
+                    ->where('nome', $tipo)
+                    ->or_where('nome_plural', $tipo)
+                ->group_end()
+                ->get('veiculos_tipos')->result_array();
+            if($result == []) return null;
+            return $result[0];
         }
 
         public function get_marca($id_marca){
-            return $this->db->where('id_marca', $id_marca)->get('veiculos_marcas')->result_array();
+            $result = $this->db->where('id_marca', $id_marca)->get('veiculos_marcas')->result_array();
+            if($result == []) return null;
+            return $result[0];
+        }
+
+        public function get_marca_por_nome($marca){
+            $result = $this->db->where('nome', $marca)->get('veiculos_marcas')->result_array();
+            if($result == []) return null;
+            return $result[0];
         }
 
         public function get_modelo($id_modelo){
-            return $this->db->where('id_modelo', $id_modelo)->get('veiculos_modelos')->result_array();
+            $result = $this->db->where('id_modelo', $id_modelo)->get('veiculos_modelos')->result_array();
+            if($result == []) return null;
+            return $result[0];
+        }
+
+        public function get_modelo_por_nome($modelo){
+            $result = $this->db->where('nome', $modelo)->get('veiculos_modelos')->result_array();
+            if($result == []) return null;
+            return $result[0];
         }
 
         public function get_opcionais($id_veiculo){
@@ -81,9 +118,10 @@
             $this->db->where('id_veiculo', $id_veiculo);
             $result = $this->db->get('veiculos')->result_array();
 
-            $result[0]['tipo'] = $this->get_tipo($result[0]['id_tipo'])[0];
-            $result[0]['marca'] = $this->get_marca($result[0]['id_marca'])[0];
-            $result[0]['modelo'] = $this->get_modelo($result[0]['id_modelo'])[0];
+
+            $result[0]['tipo'] = $this->get_tipo($result[0]['id_tipo']);
+            $result[0]['marca'] = $this->get_marca($result[0]['id_marca']);
+            $result[0]['modelo'] = $this->get_modelo($result[0]['id_modelo']);
             $result[0]['opcionais'] = $this->get_opcionais($id_veiculo);
             $result[0]['combustiveis'] = $this->get_combustiveis($id_veiculo);
             $result[0]['imagens'] = $this->get_imagens($id_veiculo);
@@ -95,9 +133,9 @@
             $this->db->where('id_veiculo', $id_veiculo);
             $result = $this->db->get('veiculos')->result_array();
 
-            $result[0]['tipo'] = $this->get_tipo($result[0]['id_tipo'])[0];
-            $result[0]['marca'] = $this->get_marca($result[0]['id_marca'])[0];
-            $result[0]['modelo'] = $this->get_modelo($result[0]['id_modelo'])[0];
+            $result[0]['tipo'] = $this->get_tipo($result[0]['id_tipo']);
+            $result[0]['marca'] = $this->get_marca($result[0]['id_marca']);
+            $result[0]['modelo'] = $this->get_modelo($result[0]['id_modelo']);
             $result[0]['imagens'] = $this->get_imagens($id_veiculo);
 
             return $result[0];
@@ -112,6 +150,33 @@
             return sizeof($result)>0;
         }
 
+        public function crosscheck_veiculo_filtro($id_veiculo, $filtro){
+            if($filtro == false) return true;
+
+            $this->db->select('id_veiculo');
+            $this->db->where('id_veiculo', $id_veiculo);
+
+            foreach($filtro as $field_name => $value){
+                if($field_name != 'valor'){
+                    $this->db->where($field_name, $value);
+                }else{
+                    if($value[0] == null or $value[1] == null){
+                        $final_value = ($value[0] == null) ? $value[1] : $value[0];
+                        $this->db->where($field_name, $final_value);  
+                    }else{
+                        $this->db->where('$field_name >=', $value[0]);
+                        $this->db->where('$field_name <=', $value[1]);
+                    }
+                }
+            }
+
+            $result = $this->db->get('veiculos')->result_array();
+            // echo '<pre>'; print_r($result); echo '</pre>';
+
+            // return $result[0];
+            return sizeof($result)>0;
+        }
+
         /* ELASTIC SEARCH*/
 
         public function reset_node(){
@@ -122,25 +187,27 @@
         public function pesquisar_termo($search){
             if(!$this->node->online) return array();
 
+
             $query = ['multi_match' => [
-                        'query' => $search,
-                        'type' => 'best_fields',
-                        'fields' => [
-                            'nome_tipo',
-                            'nome_marca^3', 
-                            'nome_modelo^3',
-                            'opcionais^2',
-                            'combustivel^3',
-                            'estado^3',
-                            'cor^2',
-                            'ano^3',
-                            'observacoes',
-                        ],
+                'query' => $search,
+                'type' => 'best_fields',
+                'fields' => [
+                    'nome_tipo',
+                    'nome_marca^3', 
+                    'nome_modelo^3',
+                    'opcionais^2',
+                    'combustivel^3',
+                    'estado^3',
+                    'cor^2',
+                    'ano^3',
+                    'observacoes',
+                ],
             ]];
 
             
             $result = $this->node->search($query);
 
+            // echo '<pre>'; echo $jsoni = json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
             return $result;
         }
 
