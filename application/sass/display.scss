@@ -13,9 +13,11 @@
                 border-top-right-radius: 0;
                 border-bottom-right-radius: 0;
                 border-bottom-left-radius: .285714rem;
+                
+                background: #2b2b2b08;;
             }
 
-            &>:nth-child(2) {
+            &>:nth-child(2), &.expanded>:first-child {
                 border-radius: .28571429rem 0 0 0!important;
                 border-top: none!important;
             }
@@ -29,7 +31,6 @@
             }
             
             & + .content{
-                display: flex;
                 margin: .875em .5em;
                 margin-top: 0.875em;
                 margin-right: 0em;
@@ -45,7 +46,12 @@
                 border-bottom-right-radius: 0.285714rem !important;
                 border-bottom-left-radius: 0px !important;
 
-                width: 66.666666%
+                width: 66.666666%;
+
+                &.segment{
+                    padding-right: calc((7.5% - .25em) * 0.6666666 + 1em);
+                    background: #2b2b2b08;
+                }
             }
 
             &.expanded .content{

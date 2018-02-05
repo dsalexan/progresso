@@ -48,7 +48,10 @@
                     'label.min.css',
                     'message.min.css',
                     'button.min.css',
-                    'segment.min.css'
+                    'segment.min.css',
+                    'divider.min.css',
+                    'grid.min.css',
+                    'statistic.min.css'
                 ],
                 'js' => [
                     'site.min.js', 
@@ -208,7 +211,7 @@
                         'reveal.min.css',
                         'icon.min.css',
                         'label.min.css',
-                        'message.min.css'
+                        'message.min.css',
                     ],
                     'js' => [
                         'site.min.js', 

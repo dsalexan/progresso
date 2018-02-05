@@ -20,7 +20,7 @@
                                 <img src="<?= base_url('assets/img/veiculos/'.$veiculo['id_veiculo'].'/'.$veiculo['imagens'][1]['url_imagem']) ?>" class="hidden content">
                             </div>
                             <div class="content">
-                                <a class="ui grey right ribbon label" href="<?= base_url($veiculo['tipo']['url']); ?>"><?= $veiculo['tipo']['nome']; ?></a>
+                                <a class="ui grey right ribbon label hoverable" href="<?= base_url($veiculo['tipo']['url']); ?>"><?= $veiculo['tipo']['nome']; ?></a>
                                 <a class="header" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>"><?= $veiculo['modelo']['nome']; ?></a>
                                 <div class="description">
                                 <span class="date"><?= $veiculo['ano'] ?> - <?= $veiculo['cor']; ?></span>

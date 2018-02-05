@@ -2,3 +2,7 @@
     height: 0;
     width: 0;
 }
+
+.ui.divider{
+    margin: 1.75rem 0;
+}

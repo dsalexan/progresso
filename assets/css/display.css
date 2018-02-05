@@ -7,8 +7,9 @@
     border-top-left-radius: .285714rem;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom-left-radius: .285714rem; }
-  .ui.card.displayed > :nth-child(2) {
+    border-bottom-left-radius: .285714rem;
+    background: #2b2b2b08; }
+  .ui.card.displayed > :nth-child(2), .ui.card.displayed.expanded > :first-child {
     border-radius: 0.28571429rem 0 0 0 !important;
     border-top: none !important; }
   .ui.card.displayed > .ui.display:first-child {
@@ -17,7 +18,6 @@
     border-bottom-right-radius: 0.285714rem !important;
     border-bottom-left-radius: 0px !important; }
   .ui.card.displayed + .content {
-    display: flex;
     margin: .875em .5em;
     margin-top: 0.875em;
     margin-right: 0em;
@@ -32,6 +32,9 @@
     border-bottom-right-radius: 0.285714rem !important;
     border-bottom-left-radius: 0px !important;
     width: 66.666666%; }
+    .ui.card.displayed + .content.segment {
+      padding-right: calc((7.5% - .25em) * 0.6666666 + 1em);
+      background: #2b2b2b08; }
   .ui.card.displayed.expanded .content a, .ui.card.displayed.expanded .content div {
     float: right; }
   .ui.card.displayed .colapsed-hidden {
