@@ -39,7 +39,15 @@
                         'button.min.css',
                         'modal.min.css', // admin header
                         'grid.min.css',
-                        'search.min.css' // admin header
+                        'search.min.css', // admin header,
+                        'tab.min.css',
+                        'menu.min.css',
+                        'item.min.css',
+                        'form.min.css',
+                        'button.min.css',
+                        'label.min.css',
+                        'divider.min.css',
+                        'checkbox.min.css'
                     ],'js' => [
                         'site.min.js',  
                         'dimmer.min.js',
@@ -48,14 +56,18 @@
                         'calendar.min.js',
                         'modal.min.js', // admin header
                         'search.min.js', // admin header
-                        'api.min.js', // admin header
+                        'api.min.js', // admin header,
+                        'tab.min.js',
+                        'form.min.js',
+                        'checkbox.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
-            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css'],
+            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
                                     'Chart.min.js',
                                     'admin.js',
-                                    'range.js']];
+                                    'range.js',
+                                    $page.'.js']];
             $data['title'] = $pageNames[$page];
     
             $this->load->view('templates/header', $data);

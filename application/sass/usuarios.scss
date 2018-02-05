@@ -1,0 +1,12 @@
+.disabled{
+    
+    color: rgba(40,40,40,.3) !important;
+}
+
+.ui{
+    .label{
+        &>.icon{
+            margin: 0 0.25em;
+        }
+    }
+}

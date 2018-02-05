@@ -7,7 +7,16 @@ var chart_data;
 get_chart_data();
 get_traffic_data();
 
+function disable_tab(data_tab){
+    $('.menu .item[data-tab='+ data_tab + ']').off('click').addClass('disabled');
+}
+
+function enable_tab(data_tab){
+    $('.menu .item[data-tab='+ data_tab + ']').removeClass('disabled').tab();
+}
+
 $(document).ready(function(){
+    $('.menu .item').tab();
     
     $("#logout").click(function(event){
         //return confirm("Tem certeza que deseja sair?");
