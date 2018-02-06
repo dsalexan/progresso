@@ -22,6 +22,10 @@
             }
             
             $data['bootstrap'] = true;
+            $data['kingtable'] = ['css' => ['kingtable.core.css'],
+                                'js' => [
+                                    'kingtable.js'     
+                                    ]];
             $data['semantic'] = [
                     'css' => [
                         'site.min.css', 
@@ -47,7 +51,8 @@
                         'button.min.css',
                         'label.min.css',
                         'divider.min.css',
-                        'checkbox.min.css'
+                        'checkbox.min.css',
+                        'popup.min.css'
                     ],'js' => [
                         'site.min.js',  
                         'dimmer.min.js',
@@ -59,15 +64,19 @@
                         'api.min.js', // admin header,
                         'tab.min.js',
                         'form.min.js',
-                        'checkbox.min.js'
+                        'checkbox.min.js',
+                        'popup.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
-            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css'],
+            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
                                     'Chart.min.js',
                                     'admin.js',
                                     'range.js',
-                                    $page.'.js']];
+                                    $page.'.js',
+                                    'bootstrap-table.js',
+                                    'popper.min.js',
+                                    'bootstrap-table-toolbar.js',]];
             $data['title'] = $pageNames[$page];
     
             $this->load->view('templates/header', $data);
@@ -138,13 +147,40 @@
                  
                 $result[$table] = $this->analytics_model->get_acesso_semanal($period[0], $period[1]);
             }elseif($table == "fontes_trafego"){
-                //$result[$table] = $this->analytics_model->get_fontes_trafego();
-                $cached_result = '{"fontes_trafego":{"attempts":1,"sessions":["42","3","1","72","2"],"dimensions":["(direct)","bing","br.yhs4.search.yahoo.com","google","lm.facebook.com"]}}';
-                $result = json_decode($cached_result);
+                $result[$table] = $this->analytics_model->get_fontes_trafego();
+                // $cached_result = '{"fontes_trafego":{"attempts":1,"sessions":["42","3","1","72","2"],"dimensions":["(direct)","bing","br.yhs4.search.yahoo.com","google","lm.facebook.com"]}}';
+                // $result = json_decode($cached_result);
             }
 
             echo $out_json = json_encode($result);
-            
+        }
 
+        public function user($action='list',$id_usuario=false){
+
+            $result = [];
+
+            if($action == 'list' or $action == 'list-all'){
+                $status = ($action == 'list-all') ? false    : 1 ;
+
+                $result = $this->usuarios_model->get_usuarios_lista($status);
+            }elseif($action == 'select'){
+                $result = $this->usuarios_model->get_usuario($id_usuario);
+            }elseif ($action == 'insert'){
+                $this->usuarios_model->insert_usuario($usuario);
+            }elseif($action == 'update'){
+                $this->usuarios_model->update_usuario($usuario);
+            }elseif($action == 'remove'){
+                if($id_usuario != false)
+                    $this->usuarios_model->remove_usuario($id_usuario);
+                else{
+                    $usuarios = $this->input->post('ids');
+                    foreach($usuarios as $id_usuario){
+                        $this->usuarios_model->remove_usuario($id_usuario);
+                    }
+                }
+            }
+
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
     }

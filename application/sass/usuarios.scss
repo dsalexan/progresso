@@ -10,3 +10,21 @@
         }
     }
 }
+
+.btn{
+    &.selective{
+        &.primary{
+            .secondary{
+                display: none;
+                visibility: hidden;
+            }
+        }
+
+        &.secondary{
+            .primary{
+                display: none;
+                visibility: hidden;
+            }
+        }
+    }
+}

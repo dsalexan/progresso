@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/dsalexan/progresso#readme",
   "dependencies": {
+    "kingtable": "^2.0.0",
+    "popper.js": "^1.12.9",
     "semantic-ui": "^2.2.14",
     "semantic-ui-calendar": "0.0.8"
   }

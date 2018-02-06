@@ -17,6 +17,7 @@ function enable_tab(data_tab){
 
 $(document).ready(function(){
     $('.menu .item').tab();
+    $('.has-popup').popup();
     
     $("#logout").click(function(event){
         //return confirm("Tem certeza que deseja sair?");

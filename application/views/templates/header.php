@@ -14,7 +14,8 @@
         <!-- LOADING SPECIFIC ASSETS -->
 
         <?php if(isset($bootstrap)): ?>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/bootstrap.min.css'); ?>">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css'); ?>">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/css/bootstrap-dashboard.css'); ?>">
         <?php endif ?>
         
         <?php if(isset($semantic)): ?>
@@ -24,6 +25,19 @@
                 if($folder == 'css'){
                     foreach($files as $file){
                         ?><link href="<?php echo base_url('assets/semantic/dist/components/'.$file); ?>" rel="stylesheet" type="text/css" /><?php
+                    }
+                }
+            }   
+        ?>
+        <?php endif ?>
+        
+        <?php if(isset($kingtable)): ?>
+        <!-- para melhorar o tempo de carregamento da página os modulos do kingtable são carregados a medida que são utilizados -->
+        <?php
+            foreach ($kingtable as $folder => $files){
+                if($folder == 'css'){
+                    foreach($files as $file){
+                        ?><link href="<?php echo base_url('assets/kingtable/styles/'.$file); ?>" rel="stylesheet" type="text/css" /><?php
                     }
                 }
             }   

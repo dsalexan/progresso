@@ -5,7 +5,7 @@
 <!-- LOADING SPECIFIC ASSETS -->
 
 <?php if(isset($bootstrap)): ?>
-<script src="<?php echo base_url('assets/bootstrap/bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/bootstrap/js/bootstrap.min.js'); ?>"></script>
 <?php endif ?>
 
 <?php if(isset($semantic)): ?>
@@ -17,6 +17,19 @@
             }
         }
     } 
+?>
+<?php endif ?>
+        
+<?php if(isset($kingtable)): ?>
+<!-- para melhorar o tempo de carregamento da página os modulos do kingtable são carregados a medida que são utilizados -->
+<?php
+    foreach ($kingtable as $folder => $files){
+        if($folder == 'js'){
+            foreach($files as $file){
+                ?><script src="<?php echo base_url('assets/kingtable/'.$file); ?>" type="text/javascript"></script><?php
+            }
+        }
+    }   
 ?>
 <?php endif ?>
 

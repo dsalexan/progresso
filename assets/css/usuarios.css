@@ -3,3 +3,10 @@
 
 .ui .label > .icon {
   margin: 0 0.25em; }
+
+.btn.selective.primary .secondary {
+  display: none;
+  visibility: hidden; }
+.btn.selective.secondary .primary {
+  display: none;
+  visibility: hidden; }
