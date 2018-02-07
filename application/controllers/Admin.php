@@ -28,7 +28,7 @@
             $data['options'] = $options;
 
 
-            $data['bootstrap'] = true;
+            $data['bootstrap_dashboard'] = true;
             $data['kingtable'] = ['css' => ['kingtable.core.css'],
                                 'js' => [
                                     'kingtable.js'     
