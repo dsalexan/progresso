@@ -69,6 +69,14 @@
                                         OFFSET '. $offset);
             return $query->result_array();
         }
+        public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina){
+            $offset = (($numero_pagina-1) * $qtd_por_pagina);
+            $query = $this->db->query('SELECT id_veiculo
+                                        FROM veiculos 
+                                        LIMIT '. $qtd_por_pagina .'
+                                        OFFSET '. $offset);
+            return $query->result_array();
+        }
         
         public function get_ids_veiculo_por_marca($id_tipo, $id_marca){
             return $this->db

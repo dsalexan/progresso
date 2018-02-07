@@ -27,7 +27,7 @@
                                             <?php for($i=1; $i < 5; $i++){
                                                 $url_image = '';
                                                 if(count($veiculo['imagens'])-1 > $i){ //ainda tem imagens pra colocar
-                                                    $url_image = $veiculo['id_veiculo'].'/'.$veiculo['imagens'][$i]['url_imagem'];
+                                                    $url_image = $veiculo['imagens'][$i]['url_imagem'];
                                                 }else{ // n tem mais imagens,coloca o frame
                                                     $url_image = 'image_frame.png';
                                                 }
@@ -62,8 +62,20 @@
                                     </div>
                                 </div>
                                 <div class="ui slide masked reveal image">
-                                    <img src="<?= base_url('assets/img/veiculos/'.$veiculo['id_veiculo'].'/'.$veiculo['imagens'][0]['url_imagem']) ?>" class="visible content">
-                                    <img src="<?= base_url('assets/img/veiculos/'.$veiculo['id_veiculo'].'/'.$veiculo['imagens'][1]['url_imagem']) ?>" class="hidden content">
+                                    <?php 
+                                    if(count($veiculo['imagens']) == 0){
+                                        $img1 = 'image_frame.png';
+                                        $img2 = 'image_frame.png';
+                                    }elseif(count($veiculo['imagens']) == 1){
+                                        $img2 = 'image_frame.png';
+                                    }else{
+                                        $img1 = $veiculo['imagens'][0]['url_imagem'];
+                                        $img2 = $veiculo['imagens'][0]['url_imagem'];
+                                    }
+
+                                    ?>
+                                    <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
+                                    <img src="<?= base_url('assets/img/veiculos/'.$img2) ?>" class="hidden content">
                                 </div>
                                 <div class="content">
                                     <?php if($veiculo['estado'] == 'Novo'): ?>
