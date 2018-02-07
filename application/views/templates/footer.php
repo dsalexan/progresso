@@ -4,7 +4,7 @@
 
 <!-- LOADING SPECIFIC ASSETS -->
 
-<?php if(isset($bootstrap)): ?>
+<?php if(isset($bootstrap) or isset($bootstrap_dashboard)): ?>
 <script src="<?php echo base_url('assets/bootstrap/js/bootstrap.min.js'); ?>"></script>
 <?php endif ?>
 
@@ -18,6 +18,36 @@
         }
     } 
 ?>
+<?php endif ?>
+
+
+<?php if(isset($fileupload)): ?>
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="<?=base_url('assets/fileupload/vendor/jquery.ui.widget.js') ?>"></script>
+    <!-- The Templates plugin is included to render the upload/download listings -->
+    <!-- <script src="https://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script> -->
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <!-- <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script> -->
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <!-- <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script> -->
+    <!-- blueimp Gallery script -->
+    <!-- <script src="https://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script> -->
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <!-- <script src="<?=base_url('assets/fileupload/jquery.iframe-transport.js') ?>"></script> -->
+    <!-- The basic File Upload plugin -->
+    <script src="<?=base_url('assets/fileupload/jquery.fileupload.js') ?>"></script>
+    <!-- The File Upload processing plugin -->
+    <!-- <script src="<?=base_url('assets/fileupload/jquery.fileupload-process.js') ?>"></script> -->
+    <!-- The File Upload image preview & resize plugin -->
+    <!-- <script src="<?=base_url('assets/fileupload/jquery.fileupload-image.js') ?>"></script> -->
+    <!-- The File Upload audio preview plugin -->
+    <!-- <script src="<?=base_url('assets/fileupload/jquery.fileupload-audio.js') ?>"></script> -->
+    <!-- The File Upload video preview plugin -->
+    <!-- <script src="<?=base_url('assets/fileupload/jquery.fileupload-video.js') ?>"></script> -->
+    <!-- The File Upload validation plugin -->
+    <!-- <script src="<?=base_url('assets/fileupload/jquery.fileupload-validate.js') ?>"></script> -->
+    <!-- The File Upload user interface plugin -->
+    <!-- <script src="<?=base_url('assets/fileupload/jquery.fileupload-ui.js') ?>"></script> -->
 <?php endif ?>
         
 <?php if(isset($kingtable)): ?>

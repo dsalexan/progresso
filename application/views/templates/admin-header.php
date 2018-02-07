@@ -51,7 +51,7 @@
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" data-page="veiculos" href="<?= base_url('admin/') ?>">
+            <a class="nav-link" data-page="veiculos" href="<?= base_url('admin/veiculos') ?>">
                 <i class="car icon"></i>
                 Veículos
             </a>

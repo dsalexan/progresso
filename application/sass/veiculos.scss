@@ -1,0 +1,40 @@
+.disabled{
+    
+    color: rgba(40,40,40,.3) !important;
+}
+
+.ui{
+    .label{
+        &>.icon{
+            margin: 0 0.25em;
+        }
+    }
+
+    &[type=file]{
+            
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+}
+
+.btn{
+    &.selective{
+        &.primary{
+            .secondary{
+                display: none;
+                visibility: hidden;
+            }
+        }
+
+        &.secondary{
+            .primary{
+                display: none;
+                visibility: hidden;
+            }
+        }
+    }
+}

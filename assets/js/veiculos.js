@@ -1,21 +1,20 @@
+$('#header-navbar').find('a.active').removeClass('active');
+$('#header-navbar').find('a[data-page=veiculos]').addClass('active');
 
+if(options['action'] !== undefined){
+    change_tab(options['action']);
 
-$(document).ready(function(){
-
-    $('#header-navbar').find('a.active').removeClass('active');
-    $('#header-navbar').find('a[data-page=usuarios]').addClass('active');
-
-    if(options['action'] !== undefined){
-        change_tab(options['action']);
-
-        if(options['action'] == 'update'){
-            set_update_tab(options['id_usuario']);
-        }else{
-            disable_tab('update');
-        }
+    if(options['action'] == 'update'){
+        set_update_tab(options['id_veiculo']);
     }else{
         disable_tab('update');
     }
+}else{
+    disable_tab('update');
+}
+
+$(document).ready(function(){
+    
 
     $('.ui.checkbox.fixed').checkbox({
         uncheckable: false
@@ -42,7 +41,7 @@ $(document).ready(function(){
     $('#remove').click(function () {
         var ids = getIdSelections();
         $.ajax({
-            url: base_url('admin/user/remove'),
+            url: base_url('admin/vehicle/remove'),
             type: 'POST',
             dataType : "json",
             data: {
@@ -51,29 +50,26 @@ $(document).ready(function(){
             success: function(data) {
 
                 $('#table').bootstrapTable('remove', {
-                    field: 'id_usuario',
+                    field: 'id_veiculo',
                     values: ids
                 });
 
             }
         });
     });
+
+    $("input[type=file]").change(function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = (function (i) {
+                return function(e){
+                    $('#' + $(i).attr('to')).attr('src', e.target.result);
+                }
+            })($(this));
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
 });
-
-function verifyCheckboxState(){
-    var checked = $('.access-level .ui.checkbox.checked');
-
-    if(checked.find('input[type=radio]').attr('value') == 1){
-        $('.permissions .ui.checkbox').checkbox('check');
-        $('.permissions .ui.checkbox').checkbox('disable');
-    }else{
-        $('.permissions .ui.checkbox').not('.fixed').checkbox('uncheck');
-        $('.permissions .ui.checkbox').checkbox('enable');
-    }
-
-    $('.access-level .ui.checkbox').checkbox('uncheck');
-    checked.checkbox('set checked');
-}
 
 function updateFormatter(){
     return '<button type="button" class="btn btn-default edit">' +
@@ -81,14 +77,13 @@ function updateFormatter(){
     '</button>';
 }
 
+
 window.updateEvents = {
     'click .edit': function (e, value, row, index) {
         // alert('You click like action, row: ' + JSON.stringify(row));
 
         change_tab('update');
-        set_update_tab(row['id_usuario']);
-
-        
+        set_update_tab(row['id_veiculo']); 
     }
 };
 
@@ -102,44 +97,18 @@ function change_tab(data_tab){
     enable_tab(data_tab);
 }
 
-function set_update_tab(id_usuario){
-    var permissions = ['principal', 'usuarios', 'textos', 'veiculos', 'configuracoes', 'estatisticas'];
-
-    $('.ui.menu .item[data-tab=update]').text('Modificar ('+id_usuario+')');
-
-    $.ajax({
-        url: base_url('admin/user/select/' + id_usuario),
-        type: 'GET',
-        dataType : "json",
-        success: function(data) {
-
-            $('#update_form.ui.form').form('set values', {
-                id : id_usuario,
-                name     : data.nome,
-                email   : data.email,
-                username   : data.username,
-                nivel    : data.nivel
-            });
-
-            if(data.permissoes == 'all')
-                $('#update_form.ui.form').form('set value', 'permissions', permissions);
-            else
-                $('#update_form.ui.form').form('set value', 'permissions', data.permissoes);
-
-            if(data.nivel == 1)
-                verifyCheckboxState();
-        }
-    });
-}
-
 function getIdSelections() {
     return $.map($('#table').bootstrapTable('getSelections'), function (row) {
-        return row.id_usuario
+        return row.id_veiculo
     });
 }
+
+
+
 
 var request;
 $('.ui.form').submit(function(event){
+
     if( $(this).form('is valid') ){
 
         // Prevent default posting of form - put here to work in case of errors
@@ -150,7 +119,10 @@ $('.ui.form').submit(function(event){
             request.abort();
         }
 
-        var form_data = $(this).serialize();
+
+        var form_data = new FormData($(this).get(0)); //$(this).serialize();
+
+        //form_data.append('files[]', $(this).find('input[type=file]').get(0).files[0]);
         
         $(this).find("input, select, button, textarea").attr("disabled", 'disabled');
 
@@ -159,6 +131,9 @@ $('.ui.form').submit(function(event){
             url: $(this).attr('url'),
             type: "post",
             data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
             form: $(this)
         });
 
@@ -172,7 +147,7 @@ $('.ui.form').submit(function(event){
             $form.find('.message_spot .column').empty();
             $form.find('.message_spot .column').append(
                 '<div class="ui positive message small">'+
-                    '<div class="header">Usuário criado com sucesso</div>'+
+                    '<div class="header">Veículo criado com sucesso</div>'+
                 '</div>'
             );
         });
@@ -194,58 +169,135 @@ $('.ui.form').submit(function(event){
         });
 
         $(this).form('reset');
+        $(this).find('.field img.ui.image').attr('src', base_url('assets/img/image_frame.png'));
     }
+
+    $("html, body").animate({ scrollTop: 0 }, "fast");
     
 
 });
+
+
+
+
+function set_update_tab(id_veiculo){
+    $('.ui.menu .item[data-tab=update]').text('Modificar ('+id_veiculo+')');
+
+    $.ajax({
+        url: base_url('admin/vehicle/select/' + id_veiculo),
+        type: 'GET',
+        dataType : "json",
+        success: function(data) {
+
+            var ops = [];
+            $.each(data.opcionais, function( index, value ){
+                ops.push(value.id_opcional);
+            });
+
+            var cmb = [];
+            $.each(data.combustiveis, function( index, value ){
+                cmb.push(value.id_combustivel);
+            });
+
+            $('#update_form.ui.form').form('set values', {
+                id : id_veiculo,
+                tipo     : data.tipo.nome,
+                marca   : data.marca.nome,
+                modelo   : data.modelo.nome,
+                estado    : data.estado,
+                cor   : data.cor,
+                ano   : data.ano,
+                observacoes   : data.observacoes,
+                valor   : data.venda_valor,
+                opcionais: ops,
+                combustivel: cmb
+            });
+            
+            var imgs = [];
+            $.each(data.imagens, function( index, value ){
+                $('#update_form').find('.field #update_img'+index).attr('src', base_url('assets/img/veiculos/'+value.url_imagem));
+            });
+
+        }
+    });
+}
+
     
 $('.ui.form')
   .form({
     fields: {
-      name: {
-        identifier: 'name',
+      tipo: {
+        identifier: 'tipo',
         rules: [
           {
             type   : 'empty',
-            prompt : 'Por favor informe um nome/razão social'
+            prompt : 'Selecione um tipo de veículo'
           }
         ]
       },
-      email: {
-        identifier: 'email',
-        rules: [
-          {
-            type   : 'email',
-            prompt : 'Por favor informe um e-mail válido'
-          }
-        ]
-      },
-      username: {
-        identifier: 'username',
+      marca: {
+        identifier: 'marca',
         rules: [
           {
             type   : 'empty',
-            prompt : 'Por favor informe um usuário'
+            prompt : 'Por favor selecione uma marca'
           }
         ]
       },
-      password: {
-        identifier: 'password',
+      modelo: {
+        identifier: 'modelo',
         rules: [
           {
             type   : 'empty',
-            prompt : 'Por favor informe uma senha'
+            prompt : 'Por favor selecione um modelo'
           }
         ]
       },
-      nivel: {
-        identifier: 'nivel',
+      estado: {
+        identifier: 'estado',
         rules: [
           {
-            type   : 'checked',
-            prompt : 'Por favor escolha um nível de acesso'
+            type   : 'empty',
+            prompt : 'Por favor selecione um estado'
+          }
+        ]
+      },
+      cor: {
+        identifier: 'cor',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe uma cor'
+          }
+        ]
+      },
+      ano: {
+        identifier: 'ano',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe um ano/modelo'
+          }
+        ]
+      },
+      valor: {
+        identifier: 'valor',
+        rules: [
+          {
+            type   : 'decimal',
+            prompt : 'Por favor informe um valor de venda válido (use <b>ponto</b> para separar a casa decimal)'
+          }
+        ]
+      },
+      combustivel: {
+        identifier: 'combustivel',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor selecione ao menos um tipo de combustível'
           }
         ]
       }
     }
   });
+

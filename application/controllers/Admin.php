@@ -24,10 +24,12 @@
             $options = [];
             if (null !== $this->input->get('a')) $options['action'] = $this->input->get('a');
             if (null !== $this->input->get('id_usuario')) $options['id_usuario'] = $this->input->get('id_usuario');
+            if (null !== $this->input->get('id_veiculo')) $options['id_veiculo'] = $this->input->get('id_veiculo');
 
             $data['options'] = $options;
 
 
+            $data['fileupload'] = true;
             $data['bootstrap_dashboard'] = true;
             $data['kingtable'] = ['css' => ['kingtable.core.css'],
                                 'js' => [
@@ -60,7 +62,9 @@
                         'divider.min.css',
                         'checkbox.min.css',
                         'popup.min.css',
-                        'message.min.css'
+                        'message.min.css',
+                        'dropdown.min.css',
+                        'image.min.css'
                     ],'js' => [
                         'site.min.js',  
                         'dimmer.min.js',
@@ -73,7 +77,8 @@
                         'tab.min.js',
                         'form.min.js',
                         'checkbox.min.js',
-                        'popup.min.js'
+                        'popup.min.js',
+                        'dropdown.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css'],
                                 'js' => [     
@@ -187,6 +192,7 @@
                 $this->usuarios_model->insert_usuario($usuario);
             }elseif($action == 'update'){
                 $usuario = [
+                    'id_usuario' => $this->input->post('id'),
                     'nome' => $this->input->post('name'),
                     'email' => $this->input->post('email'),
                     'username' => $this->input->post('username'),
@@ -210,5 +216,219 @@
 
             // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+        
+        public function vehicle($action='list',$id_veiculo=false){
+
+            $result = ['ok'];
+
+            if($action == 'list' or $action == 'list-all'){
+                $status = ($action == 'list-all') ? false    : 1 ;
+
+                $result = $this->veiculos_model->get_veiculos_lista($status);
+            }elseif($action == 'select'){
+                $result = $this->veiculos_model->get_veiculo($id_veiculo);
+            }elseif ($action == 'insert'){
+                $agora = new DateTime();
+                $veiculo = [
+                    'id_tipo' => $this->input->post('tipo'),
+                    'id_marca' => $this->input->post('marca'),
+                    'id_modelo' => $this->input->post('modelo'),
+                    'estado' => $this->input->post('estado'),
+                    'cor' => $this->input->post('cor'),
+                    'ano' => $this->input->post('ano'),
+                    'observacoes' => $this->input->post('observacoes'),
+                    'venda_valor' => $this->input->post('valor'),
+                    'destaque' => (null == $this->input->post('destaque')) ? 0 : $this->input->post('destaque'),
+                    'data_registro' => $agora->format('Y-m-d H:i:s'),
+                    'visitas' => 0,
+                    'status' => 1,
+                ];
+                
+                $id_veiculo = $this->veiculos_model->insert_veiculo($veiculo);
+                $veiculo['id_veiculo'] = $id_veiculo;
+
+                $opcionais = $this->input->post('opcionais');
+                if($opcionais == '') $opcionais = [];
+                if(!is_array($opcionais)) $opcionais = [$opcionais];
+                foreach($opcionais as $id_opcional){
+                    $this->veiculos_model->insert_opcional_veiculo($id_veiculo, $id_opcional);
+                }
+
+                $combustiveis = $this->input->post('combustivel');
+                if($combustiveis == '') $combustiveis = [];
+                if(!is_array($combustiveis)) $combustiveis = [$combustiveis];
+                foreach($combustiveis as $id_combustivel){
+                    $this->veiculos_model->insert_combustivel_veiculo($id_veiculo, $id_combustivel);
+                }
+
+                $imagens = [];
+                for($i=0; $i < 7; $i++){
+                    $files = $_FILES['image'.$i];
+                    if($files['error'] == "0"){
+
+                        $now = new DateTime();
+                        $ext_file = '.'.explode('/',$files['type'])[1];
+                        $nome_imagem =  $now->format('Ymd_His').'_'.microtime(true).$ext_file;
+                        
+
+                        $path = FCPATH . '/assets/img/veiculos/';
+                        $configuracao = array(
+                            'upload_path'   => $path,
+                            'allowed_types' => 'gif|jpg|png',
+                            'file_name' => $nome_imagem
+                        );      
+                        $this->upload->initialize($configuracao);
+                        
+                        if ($this->upload->do_upload('image'.$i))
+                            $imagens[] = ['url' => $nome_imagem, 'nome' => null];
+                        else{
+                            $imagens[] = $this->upload->display_errors(). '    ('.$path.')';
+                        }
+                    }
+                }
+                foreach($imagens as $data_imagem){
+                    $imagem = [
+                        'url_imagem' => $data_imagem['url'],
+                        'nome' => $data_imagem['nome']
+                    ];
+
+                    $imagem['id_imagem'] = $this->veiculos_model->insert_imagem($imagem);
+                    $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem']);
+                }
+
+                $result = $veiculo;
+                $result['opcionais'] = $opcionais;
+                $result['combustiveis'] = $combustiveis;
+                $result['imagens'] = $imagens;
+                
+
+            }elseif($action == 'update'){
+                $veiculo = [
+                    'id_veiculo' => $this->input->post('id'),
+                    'id_tipo' => $this->input->post('tipo'),
+                    'id_marca' => $this->input->post('marca'),
+                    'id_modelo' => $this->input->post('modelo'),
+                    'estado' => $this->input->post('estado'),
+                    'cor' => $this->input->post('cor'),
+                    'ano' => $this->input->post('ano'),
+                    'observacoes' => $this->input->post('observacoes'),
+                    'venda_valor' => $this->input->post('valor'),
+                    'destaque' => (null == $this->input->post('destaque')) ? 0 : $this->input->post('destaque'),
+                    'status' => 1,
+                ];
+
+                $this->veiculos_model->update_veiculo($veiculo);
+                $id_veiculo = $veiculo['id_veiculo'];
+
+                $opcionais = $this->input->post('opcionais');
+                if($opcionais == '') $opcionais = [];
+                if(!is_array($opcionais)) $opcionais = [$opcionais];
+                $opcionais_banco = $this->veiculos_model->get_opcionais($id_veiculo, true);
+                foreach($opcionais as $id_opcional){ // INSERIR NOVOS
+                    if(!in_array($id_opcional, $opcionais_banco)){
+                        // $this->veiculos_model->insert_opcional_veiculo($id_veiculo, $id_opcional);
+                    }
+                }
+                foreach($opcionais_banco as $id_opcional){ // REMOVER VELHOS
+                    if(!in_array($id_opcional, $opcionais)){
+                        // $this->veiculos_model->remove_opcional_veiculo($id_veiculo, $id_opcional);
+                    }
+                }
+
+                $combustiveis = $this->input->post('combustivel');
+                if($combustiveis == '') $combustiveis = [];
+                if(!is_array($combustiveis)) $combustiveis = [$combustiveis];
+                $combustiveis_banco = $this->veiculos_model->get_combustiveis($id_veiculo, true);
+                foreach($combustiveis as $id_combustivel){ // INSERINDO NOVOS
+                    if(!in_array($id_combustivel, $combustiveis_banco)){
+                       // $this->veiculos_model->insert_combustivel_veiculo($id_veiculo, $id_combustivel);
+                    }
+                }
+                foreach($combustiveis_banco as $id_combustivel){ // REMOVER VELHOS
+                    if(!in_array($id_combustivel, $combustiveis)){
+                        // $this->veiculos_model->remove_combustivel_veiculo($id_veiculo, $id_combustivel);
+                    }
+                }
+
+                $imagens = [];
+                for($i=0; $i < 7; $i++){
+                    $files = $_FILES['image'.$i];
+                    if($files['error'] == "0"){
+
+                        $now = new DateTime();
+                        $ext_file = '.'.explode('/',$files['type'])[1];
+                        $nome_imagem =  $now->format('Ymd_His').'_'.microtime(true).$ext_file;
+                        
+
+                        $path = FCPATH . '/assets/img/veiculos/';
+                        $configuracao = array(
+                            'upload_path'   => $path,
+                            'allowed_types' => 'gif|jpg|png',
+                            'file_name' => $nome_imagem
+                        );      
+                        $this->upload->initialize($configuracao);
+                        
+                        if ($this->upload->do_upload('image'.$i))
+                            $imagens[] = ['id' => -1, 'url' => $nome_imagem, 'nome' => null];
+                        else{
+                            $imagens[] = $this->upload->display_errors(). '    ('.$path.')';
+                        }
+                    }
+                }
+                $imagens_banco = $this->input->get_imagens($id_veiculo, true);
+                $ids = [];
+                foreach($imagens as $data_imagem){ // INSERINDO NOVAS
+                    
+                    $id_imagem = $data_imagem['id']; // -1 se a img n estier no banco ainda
+                    $imagem = [
+                        'url_imagem' => $data_imagem['url'],
+                        'nome' => $data_imagem['nome']
+                    ];
+
+                    if($id_imagem == -1){
+                        // $imagem['id_imagem'] = $this->veiculos_model->insert_imagem($imagem);
+                        // $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem']);
+                    }else{
+                        $ids[] = $id_imagem;
+                    }
+                }
+                foreach($imagens_banco as $id_imagem){ // REMOVER VELHOS
+                    if(!in_array($id_imagem, $ids)){
+                        // $this->veiculos_model->remove_imagem_veiculo($id_veiculo, $id_imagem);
+                    }
+                }
+
+                $result = $veiculo;
+                $result['opcionais'] = $opcionais;
+                $result['combustiveis'] = $combustiveis;
+                $result['imagens'] = $imagens;
+
+            }elseif($action == 'remove'){
+                if($id_veiculo != false){
+                    $this->veiculos_model->remove_veiculo($id_veiculo);
+                }else{
+                    $veiculos = $this->input->post('ids');
+                    foreach($veiculos as $id_veiculo){
+                        $this->veiculos_model->remove_veiculo($id_veiculo);
+                    }
+
+                    $result = $veiculos;
+                }
+            }elseif($action == 'image'){
+                $images = $_FILES;
+                $result = $images;
+            }
+
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
+        
+
+        public function test(){
+            echo FCPATH;
+            
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
         }
     }

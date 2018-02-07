@@ -21,6 +21,16 @@
         <?php if(isset($bootstrap)): ?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css'); ?>">
         <?php endif ?>
+
+        
+        <?php if(isset($fileupload)): ?>
+        <!-- blueimp Gallery styles -->
+        <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+        <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+        <link rel="stylesheet" href="<?=base_url('assets/fileupload/bootstrap.min.css'); ?>">
+        <link rel="stylesheet" href="<?=base_url('assets/fileupload/jquery.fileupload.css'); ?>">
+        <link rel="stylesheet" href="<?=base_url('assets/fileupload/jquery.fileupload-ui.css'); ?>">
+        <?php endif ?>
         
         <?php if(isset($semantic)): ?>
         <!-- para melhorar o tempo de carregamento da página os modulos do semantic são carregados a medida que são utilizados -->

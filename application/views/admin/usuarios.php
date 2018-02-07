@@ -196,9 +196,14 @@
     <form id="update_form" class="ui form" url="<?php echo base_url('admin/user/update');?>" enctype="multipart/form-data">
 
     <div class="ui centered grid">
+        <div class="message_spot row hide">
+            <div class="sixteen wide column">
+            </div>    
+        </div>
 
         <div class="eight wide column">
             
+            <input type="hidden" name="id">
 
             <div class="field">
             <label>Nome/Razão Social</label>

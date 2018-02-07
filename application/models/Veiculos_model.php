@@ -23,6 +23,35 @@
             return $query->result_array();
         }
 
+
+        public function get_marcas(){
+            $query = $this->db->get('veiculos_marcas');
+            return $query->result_array();
+        }
+
+        public function get_modelos(){
+            $query = $this->db->get('veiculos_modelos');
+            return $query->result_array();
+        }
+        
+
+        public function get_veiculos_lista($status=false){
+            $this->db->select('id_veiculo');
+            $this->db->select('nome_tipo');
+            $this->db->select('nome_marca');
+            $this->db->select('nome_modelo');
+            $this->db->select('estado');
+            $this->db->select('ano');
+            $this->db->select('venda_valor');
+            $this->db->select('status');
+
+            if($status !== false) {
+                $this->db->where('status', $status);
+            }
+
+            return $this->db->get('visao_veiculos')->result_array();
+        }
+
         public function get_veiculos_destaque($id_tipo, $status_destaque){
             $this->db->where('id_tipo', $id_tipo);
             $this->db->where('destaque', $status_destaque);
@@ -90,28 +119,67 @@
             return $result[0];
         }
 
-        public function get_opcionais($id_veiculo){
-            return $this->db->query("SELECT O.id_opcional, O.nome
+        public function get_opcionais($id_veiculo, $id_only=false){
+            $select = "SELECT O.id_opcional, O.nome";
+            if($id_only) $select = "SELECT O.id_opcional";
+
+            $result = $this->db->query($select."
                                     FROM veiculos_opcionais AS O RIGHT JOIN
                                         relacao_veiculo_opcional AS VO ON (O.id_opcional = VO.id_opcional) JOIN
                                         veiculos AS V ON (VO.id_veiculo = V.id_veiculo)
                                     WHERE V.id_veiculo = $id_veiculo")->result_array();
+
+            if($id_only){
+                $ids = [];
+                foreach($result as $row){
+                    $ids[] = $row['id_opcional'];
+                }
+                $result = $ids;
+            }
+
+            return $result;
         }
 
-        public function get_combustiveis($id_veiculo){
-            return $this->db->query("SELECT C.*
+        public function get_combustiveis($id_veiculo, $id_only=false){
+            $select = "SELECT C.*";
+            if($id_only) $select = "SELECT C.id_combustivel";
+            
+            $result = $this->db->query($select."
                                     FROM veiculos_combustiveis AS C RIGHT JOIN
                                         relacao_veiculo_combustivel AS VC ON (C.id_combustivel = VC.id_combustivel) JOIN
                                         veiculos AS V ON (VC.id_veiculo = V.id_veiculo)
                                     WHERE V.id_veiculo = $id_veiculo")->result_array();
+
+            if($id_only){
+                $ids = [];
+                foreach($result as $row){
+                    $ids[] = $row['id_combustivel'];
+                }
+                $result = $ids;
+            }
+
+            return $result;
         }
 
-        public function get_imagens($id_veiculo){
-            return $this->db->query("SELECT I.*
+        public function get_imagens($id_veiculo, $id_only=false){
+            $select = "SELECT I.*";
+            if($id_only) $select = "SELECT I.id_imagem";
+            
+            $result = $this->db->query($select."
                                     FROM veiculos_imagens AS I RIGHT JOIN
                                         relacao_veiculo_imagem AS VI ON (I.id_imagem = VI.id_imagem) JOIN
                                         veiculos AS V ON (VI.id_veiculo = V.id_veiculo)
                                     WHERE V.id_veiculo = $id_veiculo")->result_array();
+
+            if($id_only){
+                $ids = [];
+                foreach($result as $row){
+                    $ids[] = $row['id_imagem'];
+                }
+                $result = $ids;
+            }
+
+            return $result;
         }
         
         public function get_veiculo($id_veiculo){
@@ -175,6 +243,77 @@
 
             // return $result[0];
             return sizeof($result)>0;
+        }
+
+        public function remove_veiculo($id_veiculo){
+            $this->db->where('id_veiculo', $id_veiculo);
+            $this->db->update('veiculos', ['status' => 0]);
+        }
+
+        public function insert_veiculo($veiculo){        
+            $this->db->insert('veiculos', $veiculo);
+            return $this->db->insert_id();
+        }
+
+        public function update_veiculo($veiculo){
+            $this->db->where('id_veiculo', $veiculo['id_veiculo']);
+            $this->db->update('veiculos', $veiculo);        
+        }
+
+        /* opcionais */
+
+        public function get_opcionais_lista(){
+            $query = $this->db->get('veiculos_opcionais');
+            return $query->result_array();
+        }        
+
+        public function insert_opcional_veiculo($id_veiculo, $id_opcional){
+            $this->db->insert('relacao_veiculo_opcional', ['id_veiculo' => $id_veiculo, 'id_opcional' => $id_opcional]);
+        }
+
+        public function remove_opcional_veiculo($id_veiculo, $id_opcional){
+            $this->db->where('id_veiculo', $id_veiculo);
+            $this->db->where('id_opcional', $id_opcional);
+            $this->db->delete('relacao_veiculo_opcional');
+        }
+        
+        /* combustiveis */
+
+        public function get_combustiveis_lista(){
+            $query = $this->db->get('veiculos_combustiveis');
+            return $query->result_array();
+        }
+        
+        public function insert_combustivel_veiculo($id_veiculo, $id_combustivel){
+            $this->db->insert('relacao_veiculo_combustivel', ['id_veiculo' => $id_veiculo, 'id_combustivel' => $id_combustivel]);
+        }
+        
+        public function remove_combustivel_veiculo($id_veiculo, $id_combustivel){
+            $this->db->where('id_veiculo', $id_veiculo);
+            $this->db->where('id_combustivel', $id_combustivel);
+            $this->db->delete('relacao_veiculo_combustivel');
+        }
+
+        /* imagens */
+
+        public function get_imagens_lista(){
+            $query = $this->db->get('veiculos_imagens');
+            return $query->result_array();
+        }
+        
+        public function insert_imagem($imagem){   
+            $this->db->insert('veiculos_imagens', $imagem);
+            return $this->db->insert_id();
+        }
+
+        public function insert_imagem_veiculo($id_veiculo, $id_imagem){
+            $this->db->insert('relacao_veiculo_imagem', ['id_veiculo' => $id_veiculo, 'id_imagem' => $id_imagem]);
+        }
+
+        public function remove_imagem_veiculo($id_veiculo, $id_imagem){
+            $this->db->where('id_veiculo', $id_veiculo);
+            $this->db->where('id_imagem', $id_imagem);
+            $this->db->delete('relacao_veiculo_imagem');
         }
 
         /* ELASTIC SEARCH*/

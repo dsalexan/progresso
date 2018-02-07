@@ -79,6 +79,7 @@ $route['veiculos/auto_complete'] = 'veiculos/auto_complete';
 
 
 $route['admin'] = 'admin/view';
+$route['admin/test'] = 'admin/test';
 $route['admin/login'] = 'admin/login';
 $route['admin/logout'] = 'admin/logout';
 $route['admin/validate'] = 'admin/validate';
