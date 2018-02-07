@@ -4,7 +4,7 @@ $('.ui.form')
   .form({
     fields: {
       username: {
-        identifier: 'username',
+        identifier: 'username_login',
         rules: [
           {
             type   : 'empty',
@@ -13,7 +13,7 @@ $('.ui.form')
         ]
       },
       password: {
-        identifier: 'password',
+        identifier: 'password_login',
         rules: [
           {
             type   : 'empty',

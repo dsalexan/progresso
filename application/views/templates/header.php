@@ -13,6 +13,11 @@
 
         <!-- LOADING SPECIFIC ASSETS -->
 
+        <?php if(isset($bootstrap_dashboard)): ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css'); ?>">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/css/bootstrap-dashboard.css'); ?>">
+        <?php endif ?>
+
         <?php if(isset($bootstrap)): ?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css'); ?>">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/css/bootstrap-dashboard.css'); ?>">

@@ -21,6 +21,13 @@
                 show_404();
             }
             
+            $options = [];
+            if (null !== $this->input->get('a')) $options['action'] = $this->input->get('a');
+            if (null !== $this->input->get('id_usuario')) $options['id_usuario'] = $this->input->get('id_usuario');
+
+            $data['options'] = $options;
+
+
             $data['bootstrap'] = true;
             $data['kingtable'] = ['css' => ['kingtable.core.css'],
                                 'js' => [
@@ -52,7 +59,8 @@
                         'label.min.css',
                         'divider.min.css',
                         'checkbox.min.css',
-                        'popup.min.css'
+                        'popup.min.css',
+                        'message.min.css'
                     ],'js' => [
                         'site.min.js',  
                         'dimmer.min.js',
@@ -106,8 +114,8 @@
         }
 
         public function validate(){
-            $username = $this->security->xss_clean($this->input->post('username'));
-            $password = $this->security->xss_clean($this->input->post('password'));
+            $username = $this->security->xss_clean($this->input->post('username_login'));
+            $password = $this->security->xss_clean($this->input->post('password_login'));
             $passwordMD5 = md5($password);
 
             $result = $this->usuarios_model->validate($username, $passwordMD5);
@@ -157,7 +165,7 @@
 
         public function user($action='list',$id_usuario=false){
 
-            $result = [];
+            $result = ['ok'];
 
             if($action == 'list' or $action == 'list-all'){
                 $status = ($action == 'list-all') ? false    : 1 ;
@@ -166,8 +174,28 @@
             }elseif($action == 'select'){
                 $result = $this->usuarios_model->get_usuario($id_usuario);
             }elseif ($action == 'insert'){
+                $usuario = [
+                    'nome' => $this->input->post('name'),
+                    'email' => $this->input->post('email'),
+                    'username' => $this->input->post('username'),
+                    'senha' => $this->input->post('password'),
+                    'nivel' => $this->input->post('nivel'),
+                    'permissoes' => implode(",", $this->input->post('permissions')),
+                    'status' => 1,
+                ];
+                
                 $this->usuarios_model->insert_usuario($usuario);
             }elseif($action == 'update'){
+                $usuario = [
+                    'nome' => $this->input->post('name'),
+                    'email' => $this->input->post('email'),
+                    'username' => $this->input->post('username'),
+                    'senha' => $this->input->post('password'),
+                    'nivel' => $this->input->post('nivel'),
+                    'permissoes' => implode(",", $this->input->post('permissions')),
+                    'status' => 1,
+                ];
+
                 $this->usuarios_model->update_usuario($usuario);
             }elseif($action == 'remove'){
                 if($id_usuario != false)

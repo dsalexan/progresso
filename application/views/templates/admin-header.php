@@ -31,77 +31,45 @@
     <div class="row">
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
-        <ul class="nav flex-column">
+        <ul class="nav flex-column" id="header-navbar">
             <li class="nav-item">
-            <a class="nav-link active" href="#">
-                <span data-feather="home"></span>
+            <a class="nav-link active" data-page="home" href="<?= base_url('admin/') ?>">
+                <i class="home icon"></i>
                 Dashboard <span class="sr-only">(current)</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="file"></span>
-                Orders
+            <a class="nav-link" data-page="usuarios" href="<?= base_url('admin/usuarios') ?>">
+                <i class="user icon"></i>
+                Usuários
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="shopping-cart"></span>
-                Products
+            <a class="nav-link" data-page="textos" href="<?= base_url('admin/') ?>">
+                <i class="align left icon"></i>
+                Textos
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="users"></span>
-                Customers
+            <a class="nav-link" data-page="veiculos" href="<?= base_url('admin/') ?>">
+                <i class="car icon"></i>
+                Veículos
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="bar-chart-2"></span>
-                Reports
+            <a class="nav-link" data-page="configuracoes" href="<?= base_url('admin/') ?>">
+                <i class="settings icon"></i>
+                Configurações
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="layers"></span>
-                Integrations
+            <a class="nav-link" data-page="estatisticas" href="<?= base_url('admin/') ?>">
+                <i class="line chart icon"></i>
+                Estatísticas
             </a>
             </li>
         </ul>
 
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Saved reports</span>
-            <a class="d-flex align-items-center text-muted" href="#">
-            <span data-feather="plus-circle"></span>
-            </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                Current month
-            </a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                Last quarter
-            </a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                Social engagement
-            </a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                Year-end sale
-            </a>
-            </li>
-        </ul>
         </div>
     </nav>
 

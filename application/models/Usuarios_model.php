@@ -31,9 +31,9 @@
             $this->db->select('nome');
             $this->db->select('username');
             $this->db->select('nivel');
+            $this->db->select('status');
 
             if($status !== false) {
-                $this->db->select('status');
                 $this->db->where('status', $status);
             }
 
@@ -49,7 +49,11 @@
             $this->db->select('permissoes');
             
             $this->db->where('id_usuario', $id_usuario);
-            return $this->db->get('usuarios')->result_array()[0];
+            $result = $this->db->get('usuarios')->result_array()[0];
+
+            $result['permissoes'] = explode(',', $result['permissoes']);
+
+            return $result;
         }
 
         public function insert_usuario($usuario){        

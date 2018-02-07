@@ -1,7 +1,19 @@
 
 
 $(document).ready(function(){
-    disable_tab('update');
+
+    $('#header-navbar').find('a.active').removeClass('active');
+    $('#header-navbar').find('a[data-page=usuarios]').addClass('active');
+
+    if(options['action'] !== undefined){
+        change_tab(options['action']);
+
+        if(options['action'] == 'update'){
+            set_update_tab(options['id_usuario']);
+        }else{
+            disable_tab('update');
+        }
+    }
 
     $('.ui.checkbox.fixed').checkbox({
         uncheckable: false
@@ -9,33 +21,23 @@ $(document).ready(function(){
 
     $('.access-level .ui.checkbox').checkbox({
         onChecked: function(){
-            if($(this).attr('value') == 'adm'){
-                $('.permissions .ui.checkbox').checkbox('check');
-                $('.permissions .ui.checkbox').checkbox('disable');
-            }else{
-                $('.permissions .ui.checkbox').not('.fixed').checkbox('uncheck');
-                $('.permissions .ui.checkbox').checkbox('enable');
-            }
-
-            $('.access-level .ui.checkbox').checkbox('uncheck');
-            $(this).parent().checkbox('set checked');
+            verifyCheckboxState(this);
         }
     });
 
     $('.btn.selective').click(function(){
         $(this).toggleClass('primary').toggleClass('secondary');
 
-        var selective = 'secondary';
         if($(this).hasClass('primary')){
-            selective = 'primary';
+            $('#table').bootstrapTable('refresh', {url: $('#table').data('url-primary')});
+        }else{
+            $('#table').bootstrapTable('refresh', {url: $('#table').data('url-secondary')});
         }
 
     });
 
     
     $('#remove').click(function () {
-            
-
         var ids = getIdSelections();
         $.ajax({
             url: base_url('admin/user/remove'),
@@ -53,9 +55,23 @@ $(document).ready(function(){
 
             }
         });
-
     });
 });
+
+function verifyCheckboxState(){
+    var checked = $('.access-level .ui.checkbox.checked');
+
+    if(checked.find('input[type=radio]').attr('value') == 1){
+        $('.permissions .ui.checkbox').checkbox('check');
+        $('.permissions .ui.checkbox').checkbox('disable');
+    }else{
+        $('.permissions .ui.checkbox').not('.fixed').checkbox('uncheck');
+        $('.permissions .ui.checkbox').checkbox('enable');
+    }
+
+    $('.access-level .ui.checkbox').checkbox('uncheck');
+    checked.checkbox('set checked');
+}
 
 function updateFormatter(){
     return '<button type="button" class="btn btn-default edit">' +
@@ -66,13 +82,167 @@ function updateFormatter(){
 window.updateEvents = {
     'click .edit': function (e, value, row, index) {
         // alert('You click like action, row: ' + JSON.stringify(row));
-        $('#table').bootstrapTable('uncheck', index);
+
+        change_tab('update');
+        set_update_tab(row['id_usuario']);
+
+        
     }
 };
 
+function change_tab(data_tab){
+    $('.ui.tab.active').removeClass('active');
+    $('.ui.tab[data-tab=' + data_tab).addClass('active');
+
+    $('.ui.menu .item.active').removeClass('active');
+    $('.ui.menu .item[data-tab=' + data_tab+']').addClass('active');
+
+    enable_tab(data_tab);
+}
+
+function set_update_tab(id_usuario){
+    var permissions = ['principal', 'usuarios', 'textos', 'veiculos', 'configuracoes', 'estatisticas'];
+
+    $('.ui.menu .item[data-tab=update]').text('Modificar ('+id_usuario+')');
+
+    $.ajax({
+        url: base_url('admin/user/select/' + id_usuario),
+        type: 'GET',
+        dataType : "json",
+        success: function(data) {
+
+            $('#update_form.ui.form').form('set values', {
+                name     : data.nome,
+                email   : data.email,
+                username   : data.username,
+                nivel    : data.nivel
+            });
+
+            if(data.permissoes == 'all')
+                $('#update_form.ui.form').form('set value', 'permissions', permissions);
+            else
+                $('#update_form.ui.form').form('set value', 'permissions', data.permissoes);
+
+            if(data.nivel == 1)
+                verifyCheckboxState();
+        }
+    });
+}
 
 function getIdSelections() {
     return $.map($('#table').bootstrapTable('getSelections'), function (row) {
         return row.id_usuario
     });
 }
+
+var request;
+$('.ui.form').submit(function(event){
+    if( $(this).form('is valid') ){
+
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+    
+        // Abort any pending request
+        if (request) {
+            request.abort();
+        }
+
+        var form_data = $(this).serialize();
+        
+        $(this).find("input, select, button, textarea").attr("disabled", 'disabled');
+
+        // Fire off the request to /form.php
+        request = $.ajax({
+            url: $(this).attr('url'),
+            type: "post",
+            data: form_data,
+            form: $(this)
+        });
+
+        // Callback handler that will be called on success
+        request.done(function (response, textStatus, jqXHR){
+            // Log a message to the console
+            $form = this.form;
+            $form.find("input, select, button, textarea").removeAttr('disabled');;
+
+            $form.find('.message_spot').removeClass('hide');
+            $form.find('.message_spot .column').empty();
+            $form.find('.message_spot .column').append(
+                '<div class="ui positive message small">'+
+                    '<div class="header">Usuário criado com sucesso</div>'+
+                '</div>'
+            );
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            // Log the error to the console
+            console.error(
+                "The following error occurred: "+
+                textStatus, errorThrown
+            );
+        });
+
+        // Callback handler that will be called regardless
+        // if the request failed or succeeded
+        request.always(function () {
+            // Reenable the inputs
+            $(this).find("input, select, button, textarea").prop("disabled", false);
+        });
+
+        $(this).form('reset');
+    }
+    
+
+});
+    
+$('.ui.form')
+  .form({
+    fields: {
+      name: {
+        identifier: 'name',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe um nome/razão social'
+          }
+        ]
+      },
+      email: {
+        identifier: 'email',
+        rules: [
+          {
+            type   : 'email',
+            prompt : 'Por favor informe um e-mail válido'
+          }
+        ]
+      },
+      username: {
+        identifier: 'username',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe um usuário'
+          }
+        ]
+      },
+      password: {
+        identifier: 'password',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe uma senha'
+          }
+        ]
+      },
+      nivel: {
+        identifier: 'nivel',
+        rules: [
+          {
+            type   : 'checked',
+            prompt : 'Por favor escolha um nível de acesso'
+          }
+        ]
+      }
+    }
+  });

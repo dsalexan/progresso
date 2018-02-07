@@ -22,7 +22,7 @@
         <label>Usuário</label>
         <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="username" placeholder="Usuário">
+            <input type="text" name="username_login" placeholder="Usuário">
           </div>
     </div>
 
@@ -30,7 +30,7 @@
         <label>Senha</label>
         <div class="ui left icon input">
             <i class="lock icon"></i>
-            <input type="password" name="password" placeholder="Senha">
+            <input type="password" name="password_login" placeholder="Senha">
         </div>
     </div>
     <div class="fluid ui submit button"  tabindex="0">Entrar</div>
