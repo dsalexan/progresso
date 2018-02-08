@@ -60,20 +60,22 @@
             return $query->result_array();
         }
 
-        public function get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina){
+        public function get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina, $order='venda_valor DESC'){
             $offset = (($numero_pagina-1) * $qtd_por_pagina);
             $query = $this->db->query('SELECT id_veiculo
                                         FROM veiculos 
-                                        WHERE id_tipo = '. $id_tipo . '
-                                        LIMIT '. $qtd_por_pagina .'
+                                        WHERE id_tipo = '. $id_tipo . ' 
+                                        ORDER BY '.$order.' 
+                                        LIMIT '. $qtd_por_pagina .' 
                                         OFFSET '. $offset);
             return $query->result_array();
         }
-        public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina){
+        public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina, $order='venda_valor DESC'){
             $offset = (($numero_pagina-1) * $qtd_por_pagina);
             $query = $this->db->query('SELECT id_veiculo
                                         FROM veiculos 
-                                        LIMIT '. $qtd_por_pagina .'
+                                        ORDER BY '.$order.' 
+                                        LIMIT '. $qtd_por_pagina .' 
                                         OFFSET '. $offset);
             return $query->result_array();
         }

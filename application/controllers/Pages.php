@@ -49,18 +49,28 @@
                         'segment.min.css',
                         'divider.min.css',
                         'grid.min.css',
-                        'statistic.min.css'
+                        'statistic.min.css',
+                        'transition.min.css',
+                        'dropdown.min.css',
+                        'input.min.css',
+                        'menu.min.css',
+                        'item.min.css',
+                        'search.min.css',
+                        'loader.min.css'
                     ],
                     'js' => [
                         'site.min.js', 
                         'dimmer.min.js',
+                        'transition.min.js',
+                        'dropdown.min.js'
                     ]
                     ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
                 $data['assets'] = [
                     'css' => [
                         'font-awesome.min.css', 
                         'search.css',
-                        'display.css'
+                        'display.css',
+                        'home-templace.css'
                     ],
                     'js' => [
                         'tether.min.js',
@@ -70,7 +80,7 @@
 
                 $this->load->view('templates/header', $data);
                 $this->load->view('templates/common-header', $data);
-                $this->load->view('veiculos/show', $data);
+                $this->load->view('pages/home', $data);
                 $this->load->view('templates/common-footer', $data);
                 $this->load->view('templates/footer', $data);
             }else{
