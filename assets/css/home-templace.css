@@ -211,6 +211,10 @@
     display: inline-block;
     background: #fff;
     color: #d11717; }
+  #template-wise .heading h3::before {
+    content: '';
+    width: 0;
+    display: none; }
   #template-wise .heading h3::after {
     position: absolute;
     top: 0px;

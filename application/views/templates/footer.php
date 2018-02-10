@@ -1,6 +1,6 @@
 
 <!-- LOADING JQUERY -->
-<script src="<?php echo base_url('assets/js/jquery-3.1.1.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo base_url('assets/js/jquery-3.2.1.min.js');?>" type="text/javascript"></script>
 
 <!-- LOADING SPECIFIC ASSETS -->
 

@@ -75,7 +75,7 @@ function colapse_display(display){
     $(display).removeClass('expanded');
 }
 
-$(document).ready(function(){
+function set_click_function(){
     $('.ui.display').click(function(){
 
         if(!$(this).hasClass('expanded')){   
@@ -85,4 +85,8 @@ $(document).ready(function(){
         }
     
     });
+}
+
+$(document).ready(function(){
+    set_click_function();
 });

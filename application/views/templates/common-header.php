@@ -3,8 +3,10 @@
         <div class="menu-bg">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 col-lg-3">
-                        Logo
+                    <div class="col-md-3 col-lg-3" style="padding-left: 0">
+                        <div class="wrapper" style="width: 225px">
+                            <img class="ui small image" style="width: 225px;; display: inline-block; float: left;" src="<?=base_url('assets/img/logo.jpg');?>"></img>
+                        </div>  
                     </div>
                     <div class="col-md-9 col-lg-9">
                         <div class="main-menu">
@@ -16,7 +18,7 @@
                                                 <li><a href="<?= base_url(); ?>">Home</a></li>
                                                 <li><a href="<?= base_url('carros'); ?>">Carros</a></li>
                                                 <li><a href="<?= base_url('motos'); ?>">Motos</a></li>
-                                                <li><a href="">Contato</a></li>
+                                                <li><a href="<?= base_url('contato'); ?>">Contato</a></li>
                                             </ul>
                                         </div>
                                     </div>

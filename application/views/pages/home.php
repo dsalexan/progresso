@@ -104,7 +104,7 @@
 
                 <div id="vehicle-display" class="ui blurring attached segment">
                     <div class="ui inverted dimmer">
-                        <div class="ui massive text loader">Acessando Google Analytics</div>
+                        <div class="ui massive text loader">Acessando Banco de Dados</div>
                     </div>
 
                     <div class="ui three stackable cards">
@@ -204,6 +204,67 @@
                 </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div id="sample-card" hidden>
+    <div class="ui displayed card">
+        <div class="ui display" tabindex="0">
+            <p><i class="chevron right icon"></i> </p>
+            <div class="ui content segment">
+                <div class="ui horizontal divider">
+                    <i class="image icon"></i>
+                    Fotos
+                </div>
+                <div class="ui centered small images" style="text-align: center">
+                    <img field="imagem2" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>">
+                    <img field="imagem3" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>">
+                    <img field="imagem4" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>">
+                    <img field="imagem5" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>">
+                </div>
+                
+                <div class="ui horizontal divider">
+                    <i class="info icon"></i>
+                    Informações
+                </div>
+
+                <div class="ui grid">
+                
+                    <div class="eleven wide left floated right aligned column">
+                        <span field="observacoes"></span>
+                    </div>      
+                    
+                    <div class="five wide column">
+                    
+                        <div class="ui horizontal small statistic">
+                            <div class="label">
+                            R$
+                            </div>
+                            <div class="value">
+                                <span field="venda_valor"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui slide masked reveal image">
+            <img field="imagem1" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>" class="visible content">
+            <img field="imagem2" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>" class="hidden content">
+        </div>
+        <div class="content">
+            <div class="ui red ribbon label colapsed-hidden" value="Novo" hidden><span field="estado"></span></div>
+            <div class="ui grey ribbon label colapsed-hidden" value="Usado" hidden><span field="estado"></span></div>
+
+            <a class="header" href=""><span field="modelo"></span></a>
+            <div class="description">
+            <span class="date"><span field="ano"></span> - <span field="cor"></span></span>
+            </div>
+        </div>
+        <div class="extra content">
+            <a style="" href="">
+                <i class="tag icon"></i><span field="marca"><span>
+            </a>
         </div>
     </div>
 </div>

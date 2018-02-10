@@ -89,6 +89,36 @@
 
         }
 
+        public function filtro(){
+            $order_by = 'venda_valor DESC';
+            if(null !== ($this->input->get('filtro'))){
+                $order_by = $this->input->get('filtro');
+            }
+
+            $id_tipo = ($this->input->get('t')==null) ? false : $this->input->get('t');
+            $marcas = ($this->input->get('m')==null) ? false : (!is_array($this->input->get('m')) ? [$this->input->get('m')] : $this->input->get('m'));
+            $numero_pagina = intval($this->input->get('page'));
+
+            $qtd_por_pagina = 50; //a quantidade de veiculos por pagina é alterada por meio de um get para [url_tipo]/page/[num_page/]
+            if($this->input->get('qtd_por_pagina')) $qtd_por_pagina = $this->input->get('qtd_por_pagina');
+
+            if($id_tipo == false){
+                $ids = $this->veiculos_model->get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina, $order_by, $marcas);
+            }else{
+                $ids = $this->veiculos_model->get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, 1, $order_by, $marcas);                
+            }
+
+            if($ids == []) $this->session->set_flashdata('no_results', 'Não possuímos veículos registrados com essas especificações.');
+
+            $veiculos = array();
+            foreach($ids as $id_veiculo){
+                $veiculos[] = $this->veiculos_model->get_veiculo_display($id_veiculo['id_veiculo']);
+            }
+
+            echo $result = json_encode($veiculos, JSON_UNESCAPED_UNICODE);
+            // echo '<pre>'; echo $result = json_encode($veiculos, JSON_PRETTY_PRINT); echo '</pre>';
+        }
+
         public function marca($id_tipo, $id_marca){
             $marca = $this->veiculos_model->get_marca($id_marca);
 

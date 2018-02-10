@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $route['default_controller'] = 'pages/view';
+$route['mail'] = 'pages/mail';
 
 /* Como a ideia é fazer os tipos funcionarem dinamicamente, é necessaria uma query que busque as urls no banco e marque as rotas
 $route['carros'] = 'veiculos/show/carros';

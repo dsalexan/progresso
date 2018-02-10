@@ -302,6 +302,12 @@
             color: #d11717;
         }
 
+            .heading h3::before{
+                content: '';
+                width: 0;
+                display: none;
+            }
+
             .heading h3::after {
                 position: absolute;
                 top: 0px;

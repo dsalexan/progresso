@@ -60,22 +60,27 @@
             return $query->result_array();
         }
 
-        public function get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina, $order='venda_valor DESC'){
+        public function get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina, $order='venda_valor DESC', $marcas=false){
             $offset = (($numero_pagina-1) * $qtd_por_pagina);
+            $query_marca = '';
+            if($marcas !== false) $query_marca = 'AND id_marca IN (' .implode(',', $marcas). ')';
             $query = $this->db->query('SELECT id_veiculo
                                         FROM veiculos 
-                                        WHERE id_tipo = '. $id_tipo . ' 
+                                        WHERE id_tipo = '. $id_tipo . ' ' . $query_marca . ' 
                                         ORDER BY '.$order.' 
                                         LIMIT '. $qtd_por_pagina .' 
                                         OFFSET '. $offset);
             return $query->result_array();
         }
-        public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina, $order='venda_valor DESC'){
+        public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina, $order='venda_valor DESC', $marcas=false){
             $offset = (($numero_pagina-1) * $qtd_por_pagina);
+            $query_marca = '';
+            if($marcas !== false) $query_marca = 'WHERE id_marca IN (' .implode(',', $marcas). ')';
             $query = $this->db->query('SELECT id_veiculo
-                                        FROM veiculos 
+                                        FROM veiculos '.
+                                        $query_marca . ' 
                                         ORDER BY '.$order.' 
-                                        LIMIT '. $qtd_por_pagina .' 
+                                        LIMIT '. $qtd_por_pagina . ' 
                                         OFFSET '. $offset);
             return $query->result_array();
         }
@@ -233,6 +238,7 @@
 
             $this->db->select('id_veiculo');
             $this->db->where('id_veiculo', $id_veiculo);
+
 
             foreach($filtro as $field_name => $value){
                 if($field_name != 'valor'){
