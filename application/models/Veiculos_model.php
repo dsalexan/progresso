@@ -4,7 +4,7 @@
         public function __construct(){
             $this->load->database();
             
-            $this->load->model('nodes/veiculos_node', 'node');
+            // $this->load->model('nodes/veiculos_node', 'node');
         }
 
         public function get_tipos(){
@@ -330,6 +330,43 @@
             $this->db->where('id_veiculo', $id_veiculo);
             $this->db->where('id_imagem', $id_imagem);
             $this->db->delete('relacao_veiculo_imagem');
+        }
+
+        /* SUBSTITUICAO DO ELASTICSEARCH COM MYSQL */
+
+        public function sql_pesquisar_termo($search){
+            $this->db->select('id_veiculo');
+            $this->db->like('nome_marca', $search);
+            $this->db->or_like('nome_modelo', $search);
+            $this->db->or_like('combustivel', $search);
+            $this->db->or_like('estado', $search);
+            $this->db->or_like('ano', $search);
+            $lvl3 = $this->db->get('visao_veiculos')->result_array();
+
+            $this->db->select('id_veiculo');
+            $this->db->like('opcionais', $search);
+            $this->db->or_like('opcionais', $search);
+            $lvl2 = $this->db->get('visao_veiculos')->result_array();
+
+            $this->db->select('id_veiculo');
+            $this->db->like('nome_tipo', $search);
+            $this->db->or_like('observacoes', $search);
+            $lvl1 = $this->db->get('visao_veiculos')->result_array();
+
+            $lvl = array_merge($lvl3, $lvl2, $lvl1);
+            $result = array();
+            $result['searchfound'] = 0;
+            $result['ids'] = [];
+            $ids = [];
+            foreach($lvl as $veiculo){
+                if(!in_array($veiculo['id_veiculo'], $ids)){
+                    $result['ids'][] = ['_id' => $veiculo['id_veiculo']];
+                    $result['searchfound']++;
+                    $ids[] = $veiculo['id_veiculo'];
+                }
+            }
+
+            return $result;
         }
 
         /* ELASTIC SEARCH*/

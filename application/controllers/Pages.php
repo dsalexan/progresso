@@ -197,7 +197,8 @@
             }
         }
 
-        public function test(){
-            print_r($this->config_model->get_config());
+        public function test($search="carro"){
+            $result = $this->veiculos_model->sql_pesquisar_termo($search);
+            echo '<pre>'; echo $result = json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
         }
     }

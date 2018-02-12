@@ -10,14 +10,36 @@
                 <?php if($this->session->flashdata('no_results')): ?>
                 <div class="ui floating large message">
                     <p><?= $this->session->flashdata('no_results'); ?></p>
+                    <?php
+                        unset($_SESSION['no_results'])
+                    ?>
                 </div>
                 <?php endif; ?>
                     <div class="ui four doubling cards">
                     <?php foreach($results as $veiculo){ ?>
                         <div class="ui card">
                             <div class="ui slide masked reveal image">
-                                <img src="<?= base_url('assets/img/veiculos/'.$veiculo['id_veiculo'].'/'.$veiculo['imagens'][0]['url_imagem']) ?>" class="visible content">
-                                <img src="<?= base_url('assets/img/veiculos/'.$veiculo['id_veiculo'].'/'.$veiculo['imagens'][1]['url_imagem']) ?>" class="hidden content">
+                                <?php 
+                                if(count($veiculo['imagens']) == 0){
+                                    $img1 = 'image_frame.png';
+                                    $img2 = 'image_frame.png';
+                                }elseif(count($veiculo['imagens']) == 1){
+                                    $img2 = 'image_frame.png';
+                                }else{
+                                    $img1 = $veiculo['imagens'][0]['url_imagem'];
+                                    $img2 = $veiculo['imagens'][1]['url_imagem'];
+                                }
+                                
+                                if (!@getimagesize(base_url('assets/img/veiculos/'.$img1))) {
+                                    $img1 = 'image_frame.png';
+                                }
+                                if (!@getimagesize(base_url('assets/img/veiculos/'.$img2))) {
+                                    $img2 = 'image_frame.png';
+                                }
+
+                                ?>
+                                <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
+                                <img src="<?= base_url('assets/img/veiculos/'.$img2) ?>" class="hidden content">
                             </div>
                             <div class="content">
                                 <a class="ui grey right ribbon label hoverable" href="<?= base_url($veiculo['tipo']['url']); ?>"><?= $veiculo['tipo']['nome']; ?></a>

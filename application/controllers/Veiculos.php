@@ -172,7 +172,7 @@
                     $result = json_encode($this->veiculos_model->auto_complete($search), JSON_UNESCAPED_UNICODE);
                     // $result = json_encode($this->veiculos_model->$function($search), JSON_PRETTY_PRINT);
                 }else{
-                    $documents = $this->veiculos_model->pesquisar_termo($search);
+                    $documents = $this->veiculos_model->sql_pesquisar_termo($search);
 
                     $veiculos = [];
                     if($documents['searchfound'] > 0){
@@ -190,7 +190,7 @@
                 echo '<pre>'; echo $result; echo '</pre>';
             }else{
                 
-                $documents = $this->veiculos_model->pesquisar_termo($search);
+                $documents = $this->veiculos_model->sql_pesquisar_termo($search);
                 $veiculos = [];
                 if($documents['searchfound'] > 0){
                     foreach($documents['ids'] as $id_veiculo){
