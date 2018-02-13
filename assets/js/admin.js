@@ -79,7 +79,7 @@ $(document).ready(function(){
                     response.results[result._source.nome_tipo].results.push({
                         title: result._source.nome_marca,
                         description: result._source.nome_modelo,
-                        url: base_url('veiculos/info/' + result._id)
+                        url: base_url('admin/veiculos?a=update&id_veiculo=' + result._id)
                     });
                 });
                 return response;

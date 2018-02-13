@@ -60,6 +60,14 @@
             return $query->result_array();
         }
 
+        public function get_destaques(){
+            $this->db->select('id_veiculo');
+            $this->db->where('destaque', 1);
+            $query = $this->db->get('veiculos');
+
+            return $query->result_array();
+        }
+
         public function get_id_veiculo_por_pagina($id_tipo, $qtd_por_pagina, $numero_pagina, $order='venda_valor DESC', $marcas=false){
             $offset = (($numero_pagina-1) * $qtd_por_pagina);
             $query_marca = '';
@@ -368,6 +376,53 @@
 
             return $result;
         }
+
+        public function sql_auto_complete($search){
+            $this->db->select('id_veiculo');
+            $this->db->select('nome_tipo');
+            $this->db->select('nome_marca');
+            $this->db->select('nome_modelo');
+            $this->db->like('nome_tipo', $search);
+            $lvl3 = $this->db->get('visao_veiculos')->result_array();
+
+            $this->db->select('id_veiculo');
+            $this->db->select('nome_tipo');
+            $this->db->select('nome_marca');
+            $this->db->select('nome_modelo');
+            $this->db->like('nome_marca', $search);
+            $this->db->or_like('nome_modelo', $search);
+            $lvl2 = $this->db->get('visao_veiculos')->result_array();
+
+            $this->db->select('id_veiculo');
+            $this->db->select('nome_tipo');
+            $this->db->select('nome_marca');
+            $this->db->select('nome_modelo');
+            $this->db->like('observacoes', $search);
+            $lvl1 = $this->db->get('visao_veiculos')->result_array();
+
+            $lvl = array_merge($lvl3, $lvl2, $lvl1);
+            $result = array();
+            $result['searchfound'] = 0;
+            $result['results'] = [];
+            $ids = [];
+            foreach($lvl as $veiculo){
+                if(!in_array($veiculo['id_veiculo'], $ids)){
+                    $result['results'][] = [
+                        '_id' => $veiculo['id_veiculo'],
+                        '_source' => [
+                            'nome_tipo' => $veiculo['nome_tipo'],
+                            'nome_marca' => $veiculo['nome_marca'],
+                            'nome_modelo' => $veiculo['nome_modelo'],
+                        ]
+                    ];
+                    $result['searchfound']++;
+                    $ids[] = $veiculo['id_veiculo'];
+                }
+            }
+
+            return $result;
+        }
+
 
         /* ELASTIC SEARCH*/
 

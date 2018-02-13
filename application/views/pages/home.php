@@ -9,22 +9,70 @@
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img class="d-block w-100" src="<?=base_url('assets/img/1.jpg')?>" alt="First slide">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="<?=base_url('assets/img/1.jpg')?>" alt="Second slide">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-100" src="<?=base_url('assets/img/1.jpg')?>" alt="Third slide">
-                    </div>
+                    <?php
+                    $i = 0;
+                    foreach($destaques as $veiculo){                        
+                        $url_image = $veiculo['imagens'][0]['url_imagem'];
+
+                        if (!@getimagesize(base_url('assets/img/veiculos/'.$url_image))) {
+                            $url_image = 'image_frame.png';
+                        }
+
+                        $url_image = 'veiculos/'.$url_image;
+                        // $url_image = '1.jpg'
+
+                        ?>
+                        <div class="carousel-item <?php if($i==0) echo 'active'; ?>" data-slide="<?=$i?>">
+                                    
+                            <div class="ui container" style="height: 400px; background-color: #111111 ">
+
+                            <div class="ui middle aligned centered grid"  style="height: 400px;">
+                                <div class="five wide column mask" style="overflow-x: hidden; height: 110%;">
+                                    <!-- <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>"> -->
+                                    <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>">
+
+                                </div>
+                                <div class="one wide computer only column"></div>
+                                <div class="seven wide column mask" style="background-color: black">
+                                    <div class="content">
+                                        <h2 class="ui header"  style="color: #ddd;">
+                                            <?= $veiculo['modelo']['nome']?>
+                                            <div class="sub header"  style="color: #d11717;">
+                                                <span><?= $veiculo['marca']['nome']?></span>
+                                            </div>                                    
+                                        </h2>
+                                        <div class="description"  style="color: #bbb;">
+                                            <p><?= $veiculo['observacoes']=='' ? '-' : $veiculo['observacoes']?></p>
+                                        </div>
+                                        </br>
+                                        <div class="extra">
+                                            <div class="ui label"><?= $veiculo['ano']?></div>
+                                            <div class="ui label"><?= $veiculo['cor']?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+
+                            <!-- <img class="d-block w-100" style="width: 100%;" src="<?=base_url('assets/img/'.$url_image)?>" alt="<?= $veiculo['marca']['nome']?>"> -->
+                        </div>
+                        <?php
+                        $i++;
+                    }
+
+                    ?>
                 </div>
                 <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="carousel-control-prev-icon" aria-hidden="true">
+                        <i class="ui icon chevron left"></i>
+                    </span>
                     <span class="sr-only">Previous</span>
                 </a>
                 <a class="carousel-control-next" href="#" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="carousel-control-next-icon" aria-hidden="true">
+                        <i class="ui icon chevron right"></i>
+                    </span>
                     <span class="sr-only">Next</span>
                 </a>
             </div>
@@ -108,8 +156,10 @@
                     </div>
 
                     <div class="ui three stackable cards">
-                        <?php foreach($results as $veiculo){ ?>
-                            <div class="ui displayed card">
+                        <?php 
+                        $idx=0;
+                        foreach($results as $veiculo){ ?>
+                            <div class="ui displayed card" data-index="<?=$idx?>">
                                 <div class="ui display" tabindex="0">
                                     <p><i class="chevron right icon"></i> </p>
                                     <div class="ui content segment">
@@ -199,7 +249,9 @@
                                     </a>
                                 </div>
                             </div>
-                        <?php } ?>
+                        <?php 
+                        $idx++;
+                        } ?>
                     </div>
                 </div>
                 </div>

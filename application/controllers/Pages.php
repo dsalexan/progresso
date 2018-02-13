@@ -19,6 +19,13 @@
             if($page == 'home'){
                 $qtd_por_pagina = 50; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
                 if($this->input->post('qtd_por_pagina')) $qtd_por_pagina = $this->input->post('qtd_por_pagina');
+
+                $ids = $this->veiculos_model->get_destaques();
+                $destaques = array();
+                foreach($ids as $id_veiculo){
+                    $destaques[] = $this->veiculos_model->get_veiculo_display($id_veiculo['id_veiculo']);
+                }
+
     
                 $ids = $this->veiculos_model->get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, 1);
                 if($ids == []) $this->session->set_flashdata('no_results', 'Não possuímos veículos desse tipo registrados.');
@@ -29,6 +36,7 @@
                 }
 
                 $data['query'] = "Destaques";
+                $data['destaques'] = $destaques;
                 $data['results'] = $veiculos;
                     
                 $data['bootstrap'] = true;
@@ -55,7 +63,9 @@
                         'menu.min.css',
                         'item.min.css',
                         'search.min.css',
-                        'loader.min.css'
+                        'loader.min.css',
+                        'header.min.css',
+                        'label.min.css'
                     ],
                     'js' => [
                         'site.min.js', 

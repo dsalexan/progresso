@@ -169,7 +169,7 @@
             if($mode == 'json'){
                 if($type == 'c') {
 
-                    $result = json_encode($this->veiculos_model->auto_complete($search), JSON_UNESCAPED_UNICODE);
+                    $result = json_encode($this->veiculos_model->sql_auto_complete($search), JSON_UNESCAPED_UNICODE); //JSON_UNESCAPED_UNICODE
                     // $result = json_encode($this->veiculos_model->$function($search), JSON_PRETTY_PRINT);
                 }else{
                     $documents = $this->veiculos_model->sql_pesquisar_termo($search);
@@ -186,8 +186,8 @@
                     // $result = json_encode($this->veiculos_model->pesquisar_termo($search), JSON_PRETTY_PRINT);
                 }
 
-                // echo $result;
-                echo '<pre>'; echo $result; echo '</pre>';
+                echo $result;
+                // echo '<pre>'; echo $result; echo '</pre>';
             }else{
                 
                 $documents = $this->veiculos_model->sql_pesquisar_termo($search);

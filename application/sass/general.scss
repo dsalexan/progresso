@@ -1,0 +1,101 @@
+@mixin rotate($degrees) {
+    -webkit-transform: rotate($degrees);
+    -moz-transform: rotate($degrees);
+    -ms-transform: rotate($degrees);
+    -o-transform: rotate($degrees);
+    transform: rotate($degrees);
+    // -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=#{cos($degrees)}, M12=#{-1*sin($degrees)}, M21=#{sin($degrees)}, M22=#{cos($degrees)})";
+    // filter:  progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=#{cos($degrees)}, M12=#{-1*sin($degrees)}, M21=#{sin($degrees)}, M22=#{cos($degrees)});
+}
+
+// generic transform
+@mixin transform($transforms) {
+    -moz-transform: $transforms;
+      -o-transform: $transforms;
+     -ms-transform: $transforms;
+ -webkit-transform: $transforms;
+       transform: $transforms;
+}
+// rotate
+@mixin rotate ($deg) {
+    @include transform(rotate(#{$deg}deg));
+}
+
+// scale
+@mixin scale($scale) {
+  @include transform(scale($scale));
+} 
+// translate
+@mixin translate ($x, $y) {
+    @include transform(translate($x, $y));
+}
+// skew
+@mixin skew ($x, $y) {
+    @include transform(skew(#{$x}deg, #{$y}deg));
+}
+//transform origin
+@mixin transform-origin ($origin) {
+ moz-transform-origin: $origin;
+      -o-transform-origin: $origin;
+     -ms-transform-origin: $origin;
+ -webkit-transform-origin: $origin;
+       transform-origin: $origin;
+}
+
+@mixin box-shadow($value) {
+    -webkit-box-shadow: $value;
+    -moz-box-shadow: $value;
+    box-shadow: $value;
+}
+
+
+.ui{
+    &.divider{
+        margin: 1.75rem 0;
+    }
+
+    &.range .inner .thumb{
+        height: 0;
+        width: 0;
+    }
+
+    &.mask, & .mask{
+        $skew-degree: 6;
+
+        @include skew($skew-degree * -1, 0);
+
+        & img{
+            @include transform(translate(-50%, -50%) skew(#{$skew-degree}deg, 0));
+            top: 50%;
+            left: 50%;
+            height: 75%;
+            width: auto;
+            max-width: none;
+        }
+
+        & .content{
+            @include skew($skew-degree, 0);
+            padding: 2em;
+        }
+            
+            
+            
+    }
+}
+
+
+.carousel{
+    width: 100%;
+
+    &-control-next, &-control-prev{
+        width: 10%;
+
+        span{
+            background-image: none !important;
+        }
+
+        i{
+            font-size: 2em;
+        }
+    }
+}

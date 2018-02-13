@@ -1,8 +1,38 @@
-.ui.range .inner .thumb{
-    height: 0;
-    width: 0;
-}
+.ui.divider {
+  margin: 1.75rem 0; }
+.ui.range .inner .thumb {
+  height: 0;
+  width: 0; }
+.ui.mask, .ui .mask {
+  -moz-transform: skew(-6deg, 0deg);
+  -o-transform: skew(-6deg, 0deg);
+  -ms-transform: skew(-6deg, 0deg);
+  -webkit-transform: skew(-6deg, 0deg);
+  transform: skew(-6deg, 0deg); }
+  .ui.mask img, .ui .mask img {
+    -moz-transform: translate(-50%, -50%) skew(6deg, 0);
+    -o-transform: translate(-50%, -50%) skew(6deg, 0);
+    -ms-transform: translate(-50%, -50%) skew(6deg, 0);
+    -webkit-transform: translate(-50%, -50%) skew(6deg, 0);
+    transform: translate(-50%, -50%) skew(6deg, 0);
+    top: 50%;
+    left: 50%;
+    height: 75%;
+    width: auto;
+    max-width: none; }
+  .ui.mask .content, .ui .mask .content {
+    -moz-transform: skew(6deg, 0deg);
+    -o-transform: skew(6deg, 0deg);
+    -ms-transform: skew(6deg, 0deg);
+    -webkit-transform: skew(6deg, 0deg);
+    transform: skew(6deg, 0deg);
+    padding: 2em; }
 
-.ui.divider{
-    margin: 1.75rem 0;
-}
+.carousel {
+  width: 100%; }
+  .carousel-control-next, .carousel-control-prev {
+    width: 10%; }
+    .carousel-control-next span, .carousel-control-prev span {
+      background-image: none !important; }
+    .carousel-control-next i, .carousel-control-prev i {
+      font-size: 2em; }
