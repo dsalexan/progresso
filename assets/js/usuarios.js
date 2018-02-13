@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
 
     $('#header-navbar').find('a.active').removeClass('active');

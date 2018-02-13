@@ -7,6 +7,11 @@ function expand_display(display){
     card = $(display).closest('.card');
     cards = $(display).closest('.card').closest('.cards');
 
+    
+    var index = card.data('index');
+    var coluna = (index % 3);
+    card.data('coluna', coluna);
+
     middle_cards = $('<div></div>').attr('class', cards.attr('class')).addClass('mid-display');
     end_cards = $('<div></div>').attr('class', cards.attr('class')).addClass('bot-display'); 
     cards.addClass('top-display');
@@ -20,10 +25,28 @@ function expand_display(display){
     if(i == 0){
         cards.children().not(card).appendTo(middle_cards);
     }else if(i == cards.children().length-1){
-        card.appendTo(middle_cards)
+        card.appendTo(middle_cards);
     }else{
         cards.children().slice(i+1).appendTo(end_cards);
         card.appendTo(middle_cards);
+
+        // reorganiza pra nao ficar buracos
+        var max = 1;
+        if(coluna == 1){
+            max = 2;
+            end_cards.children().each(function(index){
+                if(index < max){
+                    $(this).appendTo(cards);
+                }   
+            });
+        }else if(coluna == 2){  
+            max = 1
+            end_cards.children().each(function(index){
+                if(index < max){
+                    $(this).appendTo(cards);
+                }   
+            });
+        }
     }
 
     card.addClass('expanded');
@@ -48,6 +71,9 @@ function colapse_display(display){
     cards = $(display).closest('.cards');
     card = cards.find('.ui.card.expanded');
 
+    var coluna = card.data('coluna');
+    var index = card.data('index');
+
     middle_cards = cards.parent().find('.mid-display');
     end_cards = cards.parent().find('.bot-display');
     cards = cards.parent().find('.top-display');
@@ -55,6 +81,13 @@ function colapse_display(display){
     var content = $(display).parent();
     $(display).prependTo(card);
     content.appendTo($(display));
+
+    //redistribuir corretamente os indicies
+    cards.children().each(function(){
+        if($(this).data('index') - index > 0){
+            $(this).appendTo(middle_cards);
+        }
+    });
 
     end_cards.find('.ui.card').appendTo(middle_cards);
     middle_cards.find('.ui.card').appendTo(cards);

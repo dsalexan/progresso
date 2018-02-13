@@ -14,7 +14,6 @@ if(options['action'] !== undefined){
 }
 
 $(document).ready(function(){
-    
 
     $('.ui.checkbox.fixed').checkbox({
         uncheckable: false
