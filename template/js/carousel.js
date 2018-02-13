@@ -86,7 +86,7 @@ var Carousel = function ($) {
   };
 
   var Carousel =
-  /*#__PURE__*/
+  
   function () {
     function Carousel(element, config) {
       this._items = null;
