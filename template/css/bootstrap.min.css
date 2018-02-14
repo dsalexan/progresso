@@ -2827,17 +2827,17 @@ a.btn.disabled, fieldset:disabled a.btn {
         }
 
 .btn-outline-secondary {
-    color: #6c757d;
-    background-color: transparent;
-    background-image: none;
-    border-color: #6c757d
+	color: #fff;
+	background-color: #0c0c0c;
+	background-image: none;
+	border-color: #0c0c0c
 }
 
-    .btn-outline-secondary:hover {
-        color: #fff;
-        background-color: #6c757d;
-        border-color: #6c757d
-    }
+	.btn-outline-secondary:hover {
+		color: #0c0c0c;
+		background-color: #d11717;
+		border-color: #d11717;
+	}
 
     .btn-outline-secondary.focus, .btn-outline-secondary:focus {
         box-shadow: 0 0 0 .2rem rgba(108,117,125,.5)
@@ -9078,5 +9078,5 @@ a.text-dark:focus, a.text-dark:hover {
         border: 1px solid #ddd !important
     }
 }
-/*# sourceMappingURL=bootstrap.min.css.map */
+
 
