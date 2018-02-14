@@ -23,15 +23,31 @@
             return $query->result_array();
         }
 
+        public function insert_tipo($tipo){
+            $this->db->insert('veiculos_tipos', $tipo);
+            return $this->db->insert_id();
+        }
+
 
         public function get_marcas(){
             $query = $this->db->get('veiculos_marcas');
             return $query->result_array();
         }
 
+        public function insert_marca($marca){
+            $this->db->insert('veiculos_marcas', $marca);
+            return $this->db->insert_id();
+        }
+
+
         public function get_modelos(){
             $query = $this->db->get('veiculos_modelos');
             return $query->result_array();
+        }
+
+        public function insert_modelo($modelo){
+            $this->db->insert('veiculos_modelos', $modelo);
+            return $this->db->insert_id();
         }
         
 
@@ -291,6 +307,11 @@
             return $query->result_array();
         }        
 
+        public function insert_opcional($opcional){
+            $this->db->insert('veiculos_opcionais', $opcional);
+            return $this->db->insert_id();
+        }
+
         public function insert_opcional_veiculo($id_veiculo, $id_opcional){
             $this->db->insert('relacao_veiculo_opcional', ['id_veiculo' => $id_veiculo, 'id_opcional' => $id_opcional]);
         }
@@ -306,6 +327,11 @@
         public function get_combustiveis_lista(){
             $query = $this->db->get('veiculos_combustiveis');
             return $query->result_array();
+        }
+
+        public function insert_combustivel($combustivel){
+            $this->db->insert('veiculos_combustiveis', $combustivel);
+            return $this->db->insert_id();
         }
         
         public function insert_combustivel_veiculo($id_veiculo, $id_combustivel){

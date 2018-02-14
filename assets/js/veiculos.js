@@ -68,7 +68,125 @@ $(document).ready(function(){
             reader.readAsDataURL(this.files[0]);
         }
     });
+
+
+    $('.insert-secondary').click(function(){
+        // alert($(this).closest('.ui.dropdown').attr('class'));
+        $(this).addClass('active-secondary');
+        $dropdown = $(this).closest('.ui.dropdown');
+
+        if($(this).hasAttr('clear'))$dropdown.dropdown('clear');
+
+        $modal = $('#insert-' + $(this).data('insert'));
+        if($modal.inlineStyle('margin-top') && !$modal.data('fix')){
+            $modal.data('fix', $modal.inlineStyle('margin-top'));
+        }
+
+        $modal.modal({
+            blurring: true,
+            onHide: function(){
+                $form  = $(this).find('.ui.form');
+                $form.form('reset');
+            },
+            onDeny: function(){
+                $form  = $(this).find('.ui.form');
+                $form.form('reset');
+            },
+            onApprove: function(){
+                $main = $('.active-secondary');
+                $main = $main.closest('.dropdown');
+                $dropdown = $('[dropdown-id=' + $(this).data('dropdown-id') + ']');
+                $form  = $(this).find('.ui.form');
+
+                $form.form('validate form');
+
+                // inserir no banco
+                if( $form.form('is valid') ){
+                    if (request) {
+                        request.abort();
+                    }
+
+                    var form_data = new FormData($form.get(0)); //$form.serialize();
+                    
+                    $form.find("input, select, button, textarea").attr("disabled", 'disabled');
+
+                    request = $.ajax({
+                        url: $form.attr('action'),
+                        type: "post",
+                        data: form_data,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        form: $form,
+                        dropdown: $dropdown,
+                        main: $main
+                    });
+
+                    request.done(function (response, textStatus, jqXHR){
+                            // Log a message to the console
+                            $form = this.form;
+                            $form.find("input, select, button, textarea").removeAttr('disabled');;
+                                        
+                            var data = JSON.parse(response);
+                            console.log(data);
+
+                            //inserir tipo na dropdown
+                            
+                            //optional, set new value as selected option
+                            var id = -1;
+                            if('id_modelo' in data)
+                                id = data.id_modelo;
+                            else if('id_marca' in data)
+                                id = data.id_marca;
+                            else if('id_tipo' in data)
+                                id = data.id_tipo;  
+                            else if('id_opcional' in data)
+                                id = data.id_opcional;  
+                            else if('id_combustivel' in data)
+                                id = data.id_combustivel;  
+
+                            //get menu
+                            var $menu =  $dropdown.find('.menu');
+                            //append new option to menu
+                            $menu.append('<div class="item" data-value="' + id + '">' + data.nome + '</div>');
+                            //reinitialize drop down
+                            $dropdown.dropdown();
+
+                            $main.dropdown('set selected',[id]);  
+                    });
+
+                    request.fail(function (jqXHR, textStatus, errorThrown){
+                        console.error(
+                            "The following error occurred: "+
+                            textStatus, errorThrown
+                        );
+                    });
+
+                    request.always(function () {
+                        $form.find("input, select, button, textarea").prop("disabled", false);
+                    });
+
+                    $form.form('reset');
+                }else{
+                    return false;
+                }
+
+                
+                $('.active-secondary').removeClass('active-secondary');
+            }
+          })
+          .modal('show')
+        ;
+
+        $modal.css('margin-top', $modal.data('fix'));
+    });
 });
+
+function resetDropdown($dropdown){
+    $dropdown.find('input[type=hidden]').removeAttr('value');
+    $dropdown.find('div.text').val('DEFAULT').addClass('default');
+    $dropdown.find('.menu .item.active.selected').removeClass('active').removeClass('selected');
+}
 
 function updateFormatter(){
     return '<button type="button" class="btn btn-default edit">' +
@@ -106,7 +224,7 @@ function getIdSelections() {
 
 
 var request;
-$('.ui.form').submit(function(event){
+$('.ui.form.vechicle').submit(function(event){
 
     if( $(this).form('is valid') ){
 
@@ -200,9 +318,9 @@ function set_update_tab(id_veiculo){
 
             $('#update_form.ui.form').form('set values', {
                 id : id_veiculo,
-                tipo     : data.tipo.nome,
-                marca   : data.marca.nome,
-                modelo   : data.modelo.nome,
+                tipo     : data.tipo.id_tipo,
+                marca   : data.marca.id_marca,
+                modelo   : data.modelo.id_modelo,
                 estado    : data.estado,
                 cor   : data.cor,
                 ano   : data.ano,
@@ -222,7 +340,9 @@ function set_update_tab(id_veiculo){
 }
 
     
-$('.ui.form')
+
+
+$('.ui.form.vehicle')
   .form({
     fields: {
       tipo: {
@@ -294,6 +414,132 @@ $('.ui.form')
           {
             type   : 'empty',
             prompt : 'Por favor selecione ao menos um tipo de combustível'
+          }
+        ]
+      }
+    }
+  });
+
+/*TIPO*/
+
+$('#tipo_nome_plural').keyup(function(){
+    $('#tipo_url').val(removeAcento($(this).val()).toLowerCase());
+});
+
+  $('.ui.form.type')
+  .form({
+    fields: {
+      nome: {
+        identifier: 'nome',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe o nome'
+          }
+        ]
+      },
+      nome_plural: {
+        identifier: 'plural',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe o nome (plural)'
+          }
+        ]
+      },
+      url: {
+        identifier: 'url',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe um link'
+          }
+        ]
+      }
+    }
+  });
+
+  $('.ui.form.brand')
+  .form({
+    fields: {
+        tipo: {
+            identifier: 'tipo',
+            rules: [
+            {
+                type   : 'empty',
+                prompt : 'Por favor selecione um tipo de veículo'
+            }
+            ]
+        },
+        nome: {
+        identifier: 'nome',
+        rules: [
+            {
+            type   : 'empty',
+            prompt : 'Por favor informe o nome'
+            }
+        ]
+        }
+    }
+  });
+
+  $('.ui.form.model')
+  .form({
+    fields: {
+      tipo: {
+        identifier: 'tipo',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor selecione um tipo de veículo'
+          }
+        ]
+      },
+      marca: {
+        identifier: 'marca',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor selecione uma marca'
+          }
+        ]
+      },
+      nome: {
+        identifier: 'nome',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe um nome'
+          }
+        ]
+      }
+    }
+  });
+
+  $('.ui.form.optional')
+  .form({
+    fields: {
+      nome: {
+        identifier: 'nome',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe o nome'
+          }
+        ]
+      }
+    }
+  });
+
+  $('.ui.form.fuel')
+  .form({
+    fields: {
+      nome: {
+        identifier: 'nome',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe o nome'
           }
         ]
       }

@@ -424,6 +424,106 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
+        public function type($action='insert'){
+            $result = ['ok'];
+
+            if($action == 'insert'){
+                $tipo = [
+                    'nome' => $this->input->post('nome'),
+                    'nome_plural' => $this->input->post('plural'),
+                    'url' => $this->input->post('url')
+                ];
+
+                $id_tipo = $this->veiculos_model->insert_tipo($tipo);
+                $tipo['id_tipo'] = $id_tipo;
+
+                $result = $tipo;
+            }
+
+            
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function brand($action='insert'){
+            $result = ['ok'];
+
+            if($action == 'insert'){
+                $marca = [
+                    'id_tipo' => $this->input->post('tipo'),
+                    'nome' => $this->input->post('nome')
+                ];
+
+                $id_marca = $this->veiculos_model->insert_marca($marca);
+                $marca['id_marca'] = $id_marca;
+
+                $result = $marca;
+            }
+
+            
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function model($action='insert'){
+            $result = ['ok'];
+
+            if($action == 'insert'){
+                $modelo = [
+                    'id_tipo' => $this->input->post('tipo'),
+                    'id_marca' => $this->input->post('marca'),
+                    'nome' => $this->input->post('nome'),
+                ];
+
+                $id_modelo = $this->veiculos_model->insert_modelo($modelo);
+                $modelo['id_modelo'] = $id_modelo;
+
+                $result = $modelo;
+            }
+
+            
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function optional($action='insert'){
+            $result = ['ok'];
+
+            if($action == 'insert'){
+                $opcional = [
+                    'nome' => $this->input->post('nome')
+                ];
+
+                $id_opcional = $this->veiculos_model->insert_opcional($opcional);
+                $opcional['id_opcional'] = $id_opcional;
+
+                $result = $opcional;
+            }
+
+            
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function fuel($action='insert'){
+            $result = ['ok'];
+
+            if($action == 'insert'){
+                $combustivel = [
+                    'nome' => $this->input->post('nome')
+                ];
+
+                $id_combustivel = $this->veiculos_model->insert_combustivel($combustivel);
+                $combustivel['id_combustivel'] = $id_combustivel;
+
+                $result = $combustivel;
+            }
+
+            
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
         
 
         public function test(){

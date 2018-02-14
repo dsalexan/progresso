@@ -85,6 +85,12 @@ $route['admin/login'] = 'admin/login';
 $route['admin/logout'] = 'admin/logout';
 $route['admin/validate'] = 'admin/validate';
 $route['admin/user'] = 'admin/user';
+$route['admin/vehicle'] = 'admin/vehicle';
+$route['admin/vehicle/type/(:any)'] = 'admin/type/$1';
+$route['admin/vehicle/brand/(:any)'] = 'admin/brand/$1';
+$route['admin/vehicle/model/(:any)'] = 'admin/model/$1';
+$route['admin/vehicle/optional/(:any)'] = 'admin/optional/$1';
+$route['admin/vehicle/fuel/(:any)'] = 'admin/fuel/$1';
 $route['admin/analytics/(:any)'] = 'admin/analytics/$1';
 $route['admin/(:any)'] = 'admin/view/$1';
 
