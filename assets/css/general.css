@@ -36,3 +36,9 @@
       background-image: none !important; }
     .carousel-control-next i, .carousel-control-prev i {
       font-size: 2em; }
+
+      
+a, a:hover {
+	text-decoration: none;
+	color: inherit;
+}

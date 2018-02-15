@@ -14,8 +14,10 @@
                     <?php endif; ?>
 
                     <div class="ui three stackable cards">
-                        <?php foreach($results as $veiculo){ ?>
-                            <div class="ui displayed card">
+                        <?php
+                        $idx=0;
+                        foreach($results as $veiculo){ ?>
+                            <div class="ui displayed card" data-index="<?=$idx?>">
                                 <div class="ui display" tabindex="0">
                                     <p><i class="chevron right icon"></i> </p>
                                     <div class="ui content segment">
@@ -105,7 +107,9 @@
                                     </a>
                                 </div>
                             </div>
-                        <?php } ?>
+                        <?php 
+                        $idx++;
+                        } ?>
                     </div>
                     
                 </div>

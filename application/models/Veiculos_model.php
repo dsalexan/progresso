@@ -29,7 +29,12 @@
         }
 
 
-        public function get_marcas(){
+        public function get_marcas($idle=true){
+            if(!$idle){
+                $this->db->select('veiculos_marcas.*');
+                $this->db->join('veiculos', 'veiculos_marcas.id_marca = veiculos.id_marca');
+                $this->db->group_by('veiculos_marcas.id_marca');
+            }
             $query = $this->db->get('veiculos_marcas');
             return $query->result_array();
         }
@@ -71,6 +76,7 @@
         public function get_veiculos_destaque($id_tipo, $status_destaque){
             $this->db->where('id_tipo', $id_tipo);
             $this->db->where('destaque', $status_destaque);
+            $this->db->where('status', 1);
             $query = $this->db->get('veiculos');
 
             return $query->result_array();
@@ -79,6 +85,7 @@
         public function get_destaques(){
             $this->db->select('id_veiculo');
             $this->db->where('destaque', 1);
+            $this->db->where('status', 1);
             $query = $this->db->get('veiculos');
 
             return $query->result_array();

@@ -4,9 +4,11 @@
         <div class="row">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    <?php
+                    for($i=0; $i < count($destaques); $i++){ ?>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" <?php if($i==0) echo 'class="active"'; ?>></li><?php
+                    }
+                    ?>
                 </ol>
                 <div class="carousel-inner">
                     <?php
@@ -36,9 +38,9 @@
                                 <div class="seven wide column mask" style="background-color: black">
                                     <div class="content">
                                         <h2 class="ui header"  style="color: #ddd;">
-                                            <?= $veiculo['modelo']['nome']?>
+                                            <a href="<?=base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo'])?>"><?= $veiculo['modelo']['nome']?></a>
                                             <div class="sub header"  style="color: #d11717;">
-                                                <span><?= $veiculo['marca']['nome']?></span>
+                                                <span><a href="<?=base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']);?>"><?= $veiculo['marca']['nome']?></a></span>
                                             </div>                                    
                                         </h2>
                                         <div class="description"  style="color: #bbb;">
@@ -95,14 +97,14 @@
 
 
                     
-                    <div id="filtro-marca" class="ui dropdown labeled multiple icon button">
+                    <div id="filtro-marca" class="ui dropdown labeled multiple icon button" style="line-height: 2.065em;">
                     <!-- <div class="ui fluid multiple search selection dropdown labeled button"> -->
                         <input type="hidden" name="marcas">
                         <i class="cubes icon"></i>
                         <div class="default text">Filtrar por Marcas</div>
                         <div class="menu">
                             <?php
-                            $marcas = $this->veiculos_model->get_marcas();
+                            $marcas = $this->veiculos_model->get_marcas(false);
                             foreach($marcas as $marca){
                                 ?><div class="item" data-value="<?=$marca['id_marca']?>"><?=$marca['nome']?></div><?php
                             }

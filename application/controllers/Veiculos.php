@@ -211,9 +211,57 @@
 
         public function info($id_veiculo){
             if($this->veiculos_model->checar_status($id_veiculo)){
-                $data = $this->veiculos_model->get_veiculo($id_veiculo);
+                $veiculo = $this->veiculos_model->get_veiculo($id_veiculo);
                 
-                echo '<pre>'; echo print_r($data); echo '</pre>';
+                $data['title'] = $veiculo['modelo'];
+                $data['veiculo'] = $veiculo;
+                $data['bootstrap'] = true;
+                $data['semantic'] = [
+                    'css' => [
+                        'site.min.css', 
+                        'reset.min.css', 
+                        'container.min.css', 
+                        'dimmer.min.css', 
+                        'card.min.css',
+                        'image.min.css',
+                        'reveal.min.css',
+                        'icon.min.css',
+                        'label.min.css',
+                        'message.min.css',
+                        'button.min.css',
+                        'segment.min.css',
+                        'divider.min.css',
+                        'grid.min.css',
+                        'statistic.min.css'
+                    ],
+                    'js' => [
+                        'site.min.js', 
+                        'dimmer.min.js',
+                    ]
+                    ]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
+                $data['assets'] = [
+                    'css' => [
+                        'font-awesome.min.css', 
+                        'search.css',
+                        'info.css',
+                        'style.css'
+                    ],
+                    'js' => [
+                        'tether.min.js',
+                        'search.js',
+                        'info.js'
+                    ]];
+    
+    
+                //echo '<pre>'; print_r($data['veiculos']); echo '</pre>';
+        
+                $this->load->view('templates/header', $data);
+                $this->load->view('templates/common-header', $data);
+                $this->load->view('veiculos/info', $data);
+                $this->load->view('templates/common-footer', $data);
+                $this->load->view('templates/footer', $data);
+
+                
             }else{
                 show_404();
             }

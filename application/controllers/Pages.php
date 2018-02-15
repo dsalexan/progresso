@@ -207,8 +207,8 @@
             }
         }
 
-        public function test($search="carro"){
-            $result = $this->veiculos_model->sql_pesquisar_termo($search);
+        public function test(){
+            $result = $this->veiculos_model->get_marcas(false);
             echo '<pre>'; echo $result = json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
         }
     }
