@@ -524,6 +524,35 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
+        public function config($action='list'){
+            $result = ['ok'];
+
+            if($action == 'list'){
+
+                $result = $this->config_model->get_config();
+            }elseif($action == 'update'){
+                $config = [
+                    'id_config' => $this->input->post('id'),
+                    'titulo_site' => $this->input->post('titulo'),
+                    'url_site' => $this->input->post('url'),
+                    'logradouro' => $this->input->post('logradouro'),
+                    'cidade' => $this->input->post('cidade'),
+                    'uf' => $this->input->post('uf'),
+                    'telefone' => $this->input->post('telefone'),
+                    'telefone2' => $this->input->post('telefone2'),
+                    'email' => $this->input->post('email')
+                ];
+
+                $this->config_model->update_config($config);
+
+                $result = $config;
+            }
+
+            
+            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
         
 
         public function test(){

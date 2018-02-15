@@ -24,4 +24,9 @@
             return $this->db->query('SELECT id_config FROM config ORDER BY id_config DESC')->result_array()[0]['id_config'];
         }
 
+        public function update_config($config){
+            $this->db->where('id_config', $config['id_config']);
+            $this->db->update('config', $config);        
+        }
+
     }

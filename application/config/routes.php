@@ -84,6 +84,7 @@ $route['admin/test'] = 'admin/test';
 $route['admin/login'] = 'admin/login';
 $route['admin/logout'] = 'admin/logout';
 $route['admin/validate'] = 'admin/validate';
+$route['admin/config'] = 'admin/config';
 $route['admin/user'] = 'admin/user';
 $route['admin/vehicle'] = 'admin/vehicle';
 $route['admin/vehicle/type/(:any)'] = 'admin/type/$1';

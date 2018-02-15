@@ -44,12 +44,12 @@
                 Usuários
             </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
             <a class="nav-link" data-page="textos" href="<?= base_url('admin/') ?>">
                 <i class="align left icon"></i>
                 Textos
             </a>
-            </li>
+            </li> -->
             <li class="nav-item">
             <a class="nav-link" data-page="veiculos" href="<?= base_url('admin/veiculos') ?>">
                 <i class="car icon"></i>
@@ -57,7 +57,7 @@
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" data-page="configuracoes" href="<?= base_url('admin/') ?>">
+            <a class="nav-link" data-page="configuracoes" href="<?= base_url('admin/configuracoes') ?>">
                 <i class="settings icon"></i>
                 Configurações
             </a>
