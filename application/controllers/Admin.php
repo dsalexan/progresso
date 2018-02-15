@@ -179,28 +179,39 @@
             }elseif($action == 'select'){
                 $result = $this->usuarios_model->get_usuario($id_usuario);
             }elseif ($action == 'insert'){
+                $permissoes = 'all';
+                if($this->input->post('nivel') !== '1') $permissoes = implode(",", $this->input->post('permissions'));
+                $passwordMD5 = md5($this->input->post('password'));
+
                 $usuario = [
                     'nome' => $this->input->post('name'),
                     'email' => $this->input->post('email'),
                     'username' => $this->input->post('username'),
-                    'senha' => $this->input->post('password'),
+                    'senha' => $passwordMD5,
                     'nivel' => $this->input->post('nivel'),
-                    'permissoes' => implode(",", $this->input->post('permissions')),
+                    'permissoes' => $permissoes,
                     'status' => 1,
                 ];
                 
                 $this->usuarios_model->insert_usuario($usuario);
             }elseif($action == 'update'){
+                $permissoes = 'all';
+                if($this->input->post('nivel') !== '1') $permissoes = implode(",", $this->input->post('permissions'));
+                
                 $usuario = [
                     'id_usuario' => $this->input->post('id'),
                     'nome' => $this->input->post('name'),
                     'email' => $this->input->post('email'),
                     'username' => $this->input->post('username'),
-                    'senha' => $this->input->post('password'),
                     'nivel' => $this->input->post('nivel'),
-                    'permissoes' => implode(",", $this->input->post('permissions')),
+                    'permissoes' => $permissoes,
                     'status' => 1,
                 ];
+
+                if($this->input->post('password') !== null){
+                    $passwordMD5 = md5($this->input->post('password'));
+                    $usuario['senha'] = $passwordMD5;
+                }
 
                 $this->usuarios_model->update_usuario($usuario);
             }elseif($action == 'remove'){
@@ -429,6 +440,7 @@
 
             if($action == 'insert'){
                 $tipo = [
+                    'id_tipo' => '',
                     'nome' => $this->input->post('nome'),
                     'nome_plural' => $this->input->post('plural'),
                     'url' => $this->input->post('url')

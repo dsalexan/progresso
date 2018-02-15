@@ -1,4 +1,5 @@
 <?php
-    $output = shell_exec('ls -lart');
+    $this->load->database();
+    $output = $this->db->query('SELECT GLOBAL sql_mode');
     echo "<pre>$output</pre>";
 ?>

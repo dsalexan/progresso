@@ -75,7 +75,7 @@ $(document).ready(function(){
         $(this).addClass('active-secondary');
         $dropdown = $(this).closest('.ui.dropdown');
 
-        if($(this).hasAttr('clear'))$dropdown.dropdown('clear');
+        if($(this)[0].hasAttribute('clear')) $dropdown.dropdown('clear');
 
         $modal = $('#insert-' + $(this).data('insert'));
         if($modal.inlineStyle('margin-top') && !$modal.data('fix')){

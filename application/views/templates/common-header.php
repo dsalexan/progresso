@@ -19,6 +19,7 @@
                                                 <li><a href="<?= base_url('carros'); ?>">Carros</a></li>
                                                 <li><a href="<?= base_url('motos'); ?>">Motos</a></li>
                                                 <li><a href="<?= base_url('contato'); ?>">Contato</a></li>
+                                                <li><a href="<?= base_url('admin'); ?>">Admin</a></li>
                                             </ul>
                                         </div>
                                     </div>
