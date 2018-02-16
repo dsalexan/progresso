@@ -39,22 +39,37 @@ $(document).ready(function(){
     
     $('#remove').click(function () {
         var ids = getIdSelections();
-        $.ajax({
-            url: base_url('admin/user/remove'),
-            type: 'POST',
-            dataType : "json",
-            data: {
-                'ids': ids
+        console.log(ids);
+
+        $("#remove-confirmation").find('.items').text(ids.join(', '));
+        $("#remove-confirmation")
+            .modal({
+            closable  : false,
+            onDeny    : function(){
+                $('#table').bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
             },
-            success: function(data) {
-
-                $('#table').bootstrapTable('remove', {
-                    field: 'id_usuario',
-                    values: ids
+            onApprove : function() {
+                $.ajax({
+                    url: base_url('admin/user/remove'),
+                    type: 'POST',
+                    dataType : "json",
+                    data: {
+                        'ids': ids
+                    },
+                    success: function(data) {
+    
+                        $('#table').bootstrapTable('remove', {
+                            field: 'id_usuario',
+                            values: ids
+                        });
+    
+                        $('#table').bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
+    
+                    }
                 });
-
             }
-        });
+            }).modal('show');
+
     });
 });
 
@@ -73,10 +88,19 @@ function verifyCheckboxState(){
     checked.checkbox('set checked');
 }
 
-function updateFormatter(){
-    return '<button type="button" class="btn btn-default edit">' +
+function updateFormatter(value, row){
+    console.log(row);
+
+    $edit = '<button type="button" class="btn btn-default edit">' +
         '<i class="ui write icon" style="margin: 0;"></i>' +
     '</button>';
+
+    $revive = '<button type="button" class="btn btn-default revive">' +
+        '<i class="ui leaf icon" style="margin: 0;"></i>' +
+    '</button>';
+
+    if(row.status == 0) return $revive;
+    else return $edit;
 }
 
 window.updateEvents = {
@@ -84,9 +108,21 @@ window.updateEvents = {
         // alert('You click like action, row: ' + JSON.stringify(row));
 
         change_tab('update');
-        set_update_tab(row['id_usuario']);
+        set_update_tab(row['id_usuario']);        
+    },
+    'click .revive': function (e, value, row, index) {
+        // alert('You click like action, row: ' + JSON.stringify(row));
 
         
+        $.ajax({
+            url: base_url('admin/user/revive/' + row.id_usuario),
+            type: 'GET',
+            dataType : "json",
+            success: function(data) {
+
+                $('button[name=refresh]').click();
+            }
+        });
     }
 };
 
@@ -245,5 +281,9 @@ $('.ui.form')
           }
         ]
       }
+    },
+    onValid: function(){
+        var name = $(this).attr('name');
+        var value = $(this).val();
     }
   });

@@ -41,6 +41,7 @@
                 <th data-field="estado" data-sortable="true">Estado</th>
                 <th data-field="ano" data-sortable="true">Ano</th>
                 <th data-field="venda_valor" data-sortable="true">Valor</th>
+                <th data-field="destaque" data-visible="false" data-sortable="true">Destaque</th>
                 <th data-field="status" data-sortable="true">Status</th>
                 <th data-field="operate" data-formatter="updateFormatter" data-events="updateEvents">Ação</th>
             </tr>
@@ -759,6 +760,17 @@
     </div>
 </div>
 
+<div id="remove-confirmation" class="ui modal mini" style="bottom: auto">
+  <div class="header">Confirmação</div>
+  <div class="content">
+    <p>Tem certeza que deseja excluir esses itens?</p>
+    <p class="items"></p>
+  </div>
+  <div class="actions">
+    <div class="ui negative button">Não</div>
+    <div class="ui positive button">Sim</div>
+  </div>
+</div>
 
 <script>
     var options = {

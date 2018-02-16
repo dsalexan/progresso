@@ -64,6 +64,7 @@
             $this->db->select('estado');
             $this->db->select('ano');
             $this->db->select('venda_valor');
+            $this->db->select('destaque');
             $this->db->select('status');
 
             if($status !== false) {

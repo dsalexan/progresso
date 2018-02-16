@@ -334,6 +334,19 @@
     </form>
 
 </div>
+
+<div id="remove-confirmation" class="ui modal mini" style="bottom: auto">
+  <div class="header">Confirmação</div>
+  <div class="content">
+    <p>Tem certeza que deseja excluir esses itens?</p>
+    <p class="items"></p>
+  </div>
+  <div class="actions">
+    <div class="ui negative button">Não</div>
+    <div class="ui positive button">Sim</div>
+  </div>
+</div>
+
 <script>
     var options = {
         <?php foreach($options as $key => $value){ ?>

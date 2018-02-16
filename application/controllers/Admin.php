@@ -223,6 +223,14 @@
                         $this->usuarios_model->remove_usuario($id_usuario);
                     }
                 }
+            }if($action == 'revive'){
+                
+                $usuario = [
+                    'id_usuario' => $id_usuario,
+                    'status' => 1
+                ];
+
+                $this->usuarios_model->update_usuario($usuario);
             }
 
             // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
@@ -429,6 +437,30 @@
             }elseif($action == 'image'){
                 $images = $_FILES;
                 $result = $images;
+            }elseif($action == 'revive'){
+                
+                $veiculo = [
+                    'id_veiculo' => $id_veiculo,
+                    'status' => 1
+                ];
+
+                $this->veiculos_model->update_veiculo($veiculo);
+            }elseif($action == 'pin'){
+                
+                $veiculo = [
+                    'id_veiculo' => $id_veiculo,
+                    'destaque' => 1
+                ];
+
+                $this->veiculos_model->update_veiculo($veiculo);
+            }elseif($action == 'remove_pin'){
+                
+                $veiculo = [
+                    'id_veiculo' => $id_veiculo,
+                    'destaque' => 0
+                ];
+
+                $this->veiculos_model->update_veiculo($veiculo);
             }
 
             // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
