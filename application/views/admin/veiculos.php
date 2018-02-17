@@ -65,19 +65,23 @@
             
             <div class="field">
                 <label>Tipo</label>
-                <div dropdown-id="veiculo-tipo" class="ui fluid dropdown labeled search icon button">
+                <div dropdown-id="veiculo-tipo" class="ui fluid dropdown labeled search icon button editable">
                     <input type="hidden" name="tipo">
                     <i class="car icon"></i>
                     <div class="default text">Tipo</div>
                     <div class="menu">
-                        <div class="ui top attached secondary button fluid  insert-secondary" clear data-insert="tipo">
+                        <div class="ui top attached button fluid  insert-secondary" clear data-insert="tipo">
                             <i class="plus icon"></i>
                             Cadastrar Novo Tipo
                         </div>
                         <?php
                         $tipos = $this->veiculos_model->get_tipos();
                         foreach($tipos as $tipo){
-                            ?><div class="item" data-value="<?=$tipo['id_tipo']?>"><?=$tipo['nome']?></div><?php
+                            ?><div class="item" data-value="<?=$tipo['id_tipo']?>">
+                            <div><?=$tipo['nome']?></div>
+                            <div class="ui icon button edit" data-value="<?=$tipo['id_tipo']?>"><i class="ui write icon"></i></div>
+                            </div>
+                            <?php
                         }
                         ?>
                     </div>
@@ -92,7 +96,7 @@
                     <i class="cubes icon"></i>
                     <div class="default text">Marca</div>
                     <div class="menu">
-                        <div class="ui top attached secondary button fluid  insert-secondary" clear data-insert="marca">
+                        <div class="ui top attached button fluid  insert-secondary" clear data-insert="marca">
                             <i class="plus icon"></i>
                             Cadastrar Nova Marca
                         </div>
@@ -114,7 +118,7 @@
                     <i class="cube icon"></i>
                     <div class="default text">Modelo</div>
                     <div class="menu">
-                        <div class="ui top attached secondary button fluid  insert-secondary" clear data-insert="modelo">
+                        <div class="ui top attached button fluid  insert-secondary" clear data-insert="modelo">
                             <i class="plus icon"></i>
                             Cadastrar Novo Modelo
                         </div>
@@ -187,7 +191,7 @@
                     <i class="check square icon"></i>
                     <div class="default text">Opcionais</div>
                     <div class="menu">
-                        <div class="ui top attached secondary button fluid  insert-secondary" data-insert="opcional">
+                        <div class="ui top attached button fluid  insert-secondary" data-insert="opcional">
                             <i class="plus icon"></i>
                             Cadastrar Novo Opcional
                         </div>
@@ -209,7 +213,7 @@
                     <i class="battery full icon"></i>
                     <div class="default text">Tipos de Combustível</div>
                     <div class="menu">
-                        <div class="ui top attached secondary button fluid  insert-secondary" data-insert="combustivel">
+                        <div class="ui top attached button fluid  insert-secondary" data-insert="combustivel">
                             <i class="plus icon"></i>
                             Cadastrar Novo Tipo de Combustível
                         </div>
@@ -512,6 +516,7 @@
         </div>
     </div>
     <div class="actions">
+        <div class="ui button red remove-register">Remover</div>
         <div class="ui button cancel">Cancel</div>
         <div class="ui button positive">OK</div>
     </div>
@@ -577,6 +582,7 @@
         </div>
     </div>
     <div class="actions">
+        <div class="ui button red remove-register">Remover</div>
         <div class="ui button cancel">Cancel</div>
         <div class="ui button positive">OK</div>
     </div>
@@ -659,6 +665,7 @@
         </div>
     </div>
     <div class="actions">
+        <div class="ui button red remove-register">Remover</div>
         <div class="ui button cancel">Cancel</div>
         <div class="ui button positive">OK</div>
     </div>
@@ -707,6 +714,7 @@
         </div>
     </div>
     <div class="actions">
+        <div class="ui button red remove-register">Remover</div>
         <div class="ui button cancel">Cancel</div>
         <div class="ui button positive">OK</div>
     </div>
@@ -755,6 +763,7 @@
         </div>
     </div>
     <div class="actions">
+        <div class="ui button red remove-register">Remover</div>
         <div class="ui button cancel">Cancel</div>
         <div class="ui button positive">OK</div>
     </div>

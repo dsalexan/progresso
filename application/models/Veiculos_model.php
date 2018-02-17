@@ -28,6 +28,26 @@
             return $this->db->insert_id();
         }
 
+        public function update_tipo($tipo){
+            $this->db->where('id_tipo', $tipo['id_tipo']);
+            $this->db->update('veiculos_tipos', $tipo);        
+        }
+
+        public function remove_tipo($id_tipo){
+            $this->db->where('id_tipo', $id_tipo);
+            $this->db->update('veiculos_marcas', ['status' => 0]);
+
+            $this->db->where('id_tipo', $id_tipo);
+            $this->db->update('veiculos_modelos', ['status' => 0]);
+            
+            $this->db->where('id_tipo', $id_tipo);
+            $this->db->update('veiculos', ['status' => 0]);
+
+            $this->db->where('id_tipo', $id_tipo);
+            $this->db->update('veiculos_tipos', ['status' => 0]);
+        }
+
+
 
         public function get_marcas($idle=true){
             if(!$idle){
@@ -44,6 +64,23 @@
             return $this->db->insert_id();
         }
 
+        public function update_marca($marca){
+            $this->db->where('id_marca', $marca['id_marca']);
+            $this->db->update('veiculos_marcas', $marca);        
+        }
+
+        public function remove_marca($id_marca){
+            $this->db->where('id_marca', $id_marca);
+            $this->db->update('veiculos_modelos', ['status' => 0]);
+
+            $this->db->where('id_marca', $id_marca);
+            $this->db->update('veiculos', ['status' => 0]);
+
+            $this->db->where('id_marca', $id_marca);
+            $this->db->delete('veiculos_marcas');
+        }
+
+
 
         public function get_modelos(){
             $query = $this->db->get('veiculos_modelos');
@@ -54,6 +91,21 @@
             $this->db->insert('veiculos_modelos', $modelo);
             return $this->db->insert_id();
         }
+
+        public function update_modelo($modelo){
+            $this->db->where('id_modelo', $modelo['id_modelo']);
+            $this->db->update('veiculos_modelos', $modelo);        
+        }
+
+        public function remove_modelos($id_modelos){
+            $this->db->where('id_modelo', $id_modelo);
+            $this->db->update('veiculos', ['status' => 0]);
+
+            $this->db->where('id_modelos', $id_modelos);
+            $this->db->delete('veiculos_modeloss');
+        }
+
+        
         
 
         public function get_veiculos_lista($status=false){
@@ -125,6 +177,7 @@
                 ->get('veiculos')->result_array();
         }
 
+
         public function get_tipo($id_tipo){
             $result = $this->db->where('id_tipo', $id_tipo)->get('veiculos_tipos')->result_array();
             if($result == []) return null;
@@ -142,6 +195,7 @@
             return $result[0];
         }
 
+
         public function get_marca($id_marca){
             $result = $this->db->where('id_marca', $id_marca)->get('veiculos_marcas')->result_array();
             if($result == []) return null;
@@ -154,6 +208,7 @@
             return $result[0];
         }
 
+
         public function get_modelo($id_modelo){
             $result = $this->db->where('id_modelo', $id_modelo)->get('veiculos_modelos')->result_array();
             if($result == []) return null;
@@ -165,6 +220,7 @@
             if($result == []) return null;
             return $result[0];
         }
+
 
         public function get_opcionais($id_veiculo, $id_only=false){
             $select = "SELECT O.id_opcional, O.nome";
@@ -187,6 +243,13 @@
             return $result;
         }
 
+        public function get_opcional($id_opcional){
+            $result = $this->db->where('id_opcional', $id_opcional)->get('veiculos_opcionais')->result_array();
+            if($result == []) return null;
+            return $result[0];
+        }
+        
+
         public function get_combustiveis($id_veiculo, $id_only=false){
             $select = "SELECT C.*";
             if($id_only) $select = "SELECT C.id_combustivel";
@@ -208,6 +271,13 @@
             return $result;
         }
 
+        public function get_combustivel($id_combustivel){
+            $result = $this->db->where('id_combustivel', $id_combustivel)->get('veiculos_combustiveis')->result_array();
+            if($result == []) return null;
+            return $result[0];
+        }
+
+
         public function get_imagens($id_veiculo, $id_only=false){
             $select = "SELECT I.*";
             if($id_only) $select = "SELECT I.id_imagem";
@@ -228,6 +298,7 @@
 
             return $result;
         }
+
         
         public function get_veiculo($id_veiculo){
             $this->db->where('id_veiculo', $id_veiculo);
@@ -320,6 +391,19 @@
             return $this->db->insert_id();
         }
 
+        public function update_opcional($opcional){
+            $this->db->where('id_opcional', $opcional['id_opcional']);
+            $this->db->update('veiculos_opcionais', $opcional);        
+        }
+
+        public function remove_opcional($id_opcional){
+            $this->db->where('id_opcional', $id_opcional);
+            $this->db->delete('relacao_veiculo_opcional');
+
+            $this->db->where('id_opcional', $id_opcional);
+            $this->db->delete('veiculos_opcionais');
+        }
+
         public function insert_opcional_veiculo($id_veiculo, $id_opcional){
             $this->db->insert('relacao_veiculo_opcional', ['id_veiculo' => $id_veiculo, 'id_opcional' => $id_opcional]);
         }
@@ -340,6 +424,19 @@
         public function insert_combustivel($combustivel){
             $this->db->insert('veiculos_combustiveis', $combustivel);
             return $this->db->insert_id();
+        }
+
+        public function update_combustivel($combustivel){
+            $this->db->where('id_combustivel', $combustivel['id_combustivel']);
+            $this->db->update('veiculos_combustiveis', $combustivel);        
+        }
+
+        public function remove_combustivel($id_combustivel){
+            $this->db->where('id_combustivel', $id_combustivel);
+            $this->db->delete('relacao_veiculo_combustivel');
+
+            $this->db->where('id_combustivel', $id_combustivel);
+            $this->db->delete('veiculos_combustiveis');
         }
         
         public function insert_combustivel_veiculo($id_veiculo, $id_combustivel){

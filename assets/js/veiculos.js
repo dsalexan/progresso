@@ -195,7 +195,206 @@ $(document).ready(function(){
 
         $modal.css('margin-top', $modal.data('fix'));
     });
+
+    $('.ui.dropdown.editable').find('div.button.edit').click(function(){
+        // console.log('edit: ' + $(this).data('value'));
+
+        $secondary = $(this).closest('.menu').find('.insert-secondary')
+        
+        //load data for update
+        set_update_modal($(this).data('value'), $secondary.data('insert'));
+
+        $modal = $('#insert-' + $secondary.data('insert'));
+        if($modal.inlineStyle('margin-top') && !$modal.data('fix')){
+            $modal.data('fix', $modal.inlineStyle('margin-top'));
+        }
+
+        $modal.modal({
+            blurring: true,
+            onHide: function(){
+                $form  = $(this).find('.ui.form');
+                $form.form('reset');
+                $('#tmp-id-field').remove();
+            },
+            onDeny: function(){
+                $form  = $(this).find('.ui.form');
+                $form.form('reset');
+            },
+            onApprove: function(){
+                $main = $('.active-secondary');
+                $main = $main.closest('.dropdown');
+                $dropdown = $('[dropdown-id=' + $(this).data('dropdown-id') + ']');
+                $form  = $(this).find('.ui.form');
+
+                $form.form('validate form');
+
+                // inserir no banco
+                if( $form.form('is valid') ){
+                    if (request) {
+                        request.abort();
+                    }
+
+                    var form_data = new FormData($form.get(0)); //$form.serialize();
+                    var url = $form.attr('action');
+                    url = url.replace('insert', 'update');
+
+                    $form.find("input, select, button, textarea").attr("disabled", 'disabled');
+
+
+                    request = $.ajax({
+                        url: url,
+                        type: "post",
+                        data: form_data,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        form: $form,
+                        dropdown: $dropdown,
+                        main: $main
+                    });
+
+                    request.done(function (response, textStatus, jqXHR){
+                            // Log a message to the console
+                            $form = this.form;
+                            $form.find("input, select, button, textarea").removeAttr('disabled');;
+                                        
+                            var data = JSON.parse(response);
+                            console.log(data);
+
+                            // //inserir tipo na dropdown
+                            
+                            // //optional, set new value as selected option
+                            // var id = -1;
+                            // if('id_modelo' in data)
+                            //     id = data.id_modelo;
+                            // else if('id_marca' in data)
+                            //     id = data.id_marca;
+                            // else if('id_tipo' in data)
+                            //     id = data.id_tipo;  
+                            // else if('id_opcional' in data)
+                            //     id = data.id_opcional;  
+                            // else if('id_combustivel' in data)
+                            //     id = data.id_combustivel;  
+
+                            // //get menu
+                            // var $menu =  $dropdown.find('.menu');
+                            // //append new option to menu
+                            // $menu.append('<div class="item" data-value="' + id + '">' + data.nome + '</div>');
+                            // //reinitialize drop down
+                            // $dropdown.dropdown();
+
+                            // $main.dropdown('set selected',[id]);  
+                    });
+
+                    request.fail(function (jqXHR, textStatus, errorThrown){
+                        console.error(
+                            "The following error occurred: "+
+                            textStatus, errorThrown
+                        );
+                    });
+
+                    request.always(function () {
+                        $form.find("input, select, button, textarea").prop("disabled", false);
+                    });
+
+                    $form.form('reset');
+                }else{
+                    return false;
+                }
+
+                
+            }
+          })
+          .modal('show')
+        ;
+
+        $modal.css('margin-top', $modal.data('fix'));
+    });
+
+    $('.remove-register').click(function(){
+        var id = $('#tmp-id-field').val();
+
+        $modal = $(this).closest('.ui.modal');
+        var table = $modal.attr('id').replace('insert-', '');
+
+        var func = 'type';
+        if(table == 'marca') func = 'brand';
+        else if(table == 'modelo') func = 'model';
+        else if(table == 'opcional') func = 'optional';
+        else if(table == 'combustivel') func = 'fuel';
+
+        $.ajax({
+            url: base_url('admin/vehicle/' + func + '/remove/' + id),
+            type: 'GET',
+            dataType : "json",
+            success: function(data) {
+
+                console.log(data);
+                
+            }
+        });
+    });
 });
+
+function set_update_modal(id, table){
+
+    $modal = $('#insert-' + table);
+    $modal.find('form').append('<input id="tmp-id-field" value="' + id + '" type="hidden" name="id">');
+
+    var func = 'type';
+    if(table == 'marca') func = 'brand';
+    else if(table == 'modelo') func = 'model';
+    else if(table == 'opcional') func = 'optional';
+    else if(table == 'combustivel') func = 'fuel';
+
+    $.ajax({
+        url: base_url('admin/vehicle/' + func + '/select/' + id),
+        type: 'GET',
+        dataType : "json",
+        modal: $modal,
+        tabela: table,
+        success: function(data) {
+
+            console.log(data);
+            var corr = {};
+            
+            if(this.tabela == 'tipo'){
+                corr = {
+                    id : data.id_tipo,
+                    nome     : data.nome,
+                    plural   : data.nome_plural,
+                    url   : data.url
+                };
+            }else if(this.tabela == 'marca'){
+                corr = {
+                    id : data.id_marca,
+                    tipo     : data.id_tipo,
+                    nome   : data.nome
+                };
+            }else if(this.tabela == 'modelo'){
+                corr = {
+                    id : data.id_modelo,
+                    tipo     : data.id_tipo,
+                    marca   : data.id_marca,
+                    nome   : data.nome
+                };
+            }else if(this.tabela == 'opcional'){
+                corr = {
+                    id : data.id_opcional,
+                    nome     : data.nome
+                };
+            }else if(this.tabela == 'combustivel'){
+                corr = {
+                    id : data.id_combustivel,
+                    nome     : data.nome
+                };
+            }
+
+            this.modal.find('form').form('set values', corr);
+            
+        }
+    });
+}
 
 function resetDropdown($dropdown){
     $dropdown.find('input[type=hidden]').removeAttr('value');

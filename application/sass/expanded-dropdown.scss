@@ -1,0 +1,28 @@
+.ui{
+    &.dropdown.editable {
+        .menu > .item{
+            padding: 0 0 0 1.14286rem !important;
+            display: flex;
+            justify-content: space-between;
+
+            div{
+                display: inline-block;
+                padding: .78571429em .78571429em .78571429em;
+            }
+
+            div.button{
+                margin-right: 0 !important;
+                border-radius: 0;
+                opacity: 0.5;
+
+                &:hover{
+                    opacity: 1;
+                }
+            }
+        }
+        
+        div.text div.button{
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+.ui.dropdown.editable .menu > .item {
+  padding: 0 0 0 1.14286rem !important;
+  display: flex;
+  justify-content: space-between; }
+  .ui.dropdown.editable .menu > .item div {
+    display: inline-block;
+    padding: .78571429em .78571429em .78571429em; }
+  .ui.dropdown.editable .menu > .item div.button {
+    margin-right: 0 !important;
+    border-radius: 0;
+    opacity: 0.5; }
+    .ui.dropdown.editable .menu > .item div.button:hover {
+      opacity: 1; }
+.ui.dropdown.editable div.text div.button {
+  display: none; }

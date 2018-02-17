@@ -80,7 +80,7 @@
                         'popup.min.js',
                         'dropdown.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
-            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css'],
+            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css', 'expanded-dropdown.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
                                     'Chart.min.js',
@@ -467,12 +467,13 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function type($action='insert'){
-            $result = ['ok'];
+        public function type($action='select', $id_tipo=false){
+            $result = [$action => $id_tipo];    
 
-            if($action == 'insert'){
+            if($action == 'select'){
+                $result = $this->veiculos_model->get_tipo($id_tipo);
+            }elseif($action == 'insert'){
                 $tipo = [
-                    'id_tipo' => '',
                     'nome' => $this->input->post('nome'),
                     'nome_plural' => $this->input->post('plural'),
                     'url' => $this->input->post('url')
@@ -482,6 +483,19 @@
                 $tipo['id_tipo'] = $id_tipo;
 
                 $result = $tipo;
+            }elseif($action == 'update'){
+                $tipo = [
+                    'id_tipo' => $this->input->post('id'),
+                    'nome' => $this->input->post('nome'),
+                    'nome_plural' => $this->input->post('plural'),
+                    'url' => $this->input->post('url')
+                ];
+
+                $this->veiculos_model->update_tipo($tipo);
+                $result = $tipo;
+            }elseif($action == 'remove'){
+                $this->veiculos_model->remove_tipo($id_tipo);
+                $result = $tipo;
             }
 
             
@@ -489,10 +503,12 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function brand($action='insert'){
+        public function brand($action='select', $id_marca=false){
             $result = ['ok'];
 
-            if($action == 'insert'){
+            if($action == 'select'){
+                $result = $this->veiculos_model->get_marca($id_marca);
+            }elseif($action == 'insert'){
                 $marca = [
                     'id_tipo' => $this->input->post('tipo'),
                     'nome' => $this->input->post('nome')
@@ -502,6 +518,18 @@
                 $marca['id_marca'] = $id_marca;
 
                 $result = $marca;
+            }elseif($action == 'update'){
+                $marca = [
+                    'id_marca' => $this->input->post('id'),
+                    'id_tipo' => $this->input->post('tipo'),
+                    'nome' => $this->input->post('nome')
+                ];
+
+                $this->veiculos_model->update_marca($marca);
+                $result = $marca;
+            }elseif($action == 'remove'){
+                $this->veiculos_model->remove_marca($id_marca);
+                $result = $marca;
             }
 
             
@@ -509,10 +537,12 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function model($action='insert'){
+        public function model($action='select', $id_modelo=false){
             $result = ['ok'];
 
-            if($action == 'insert'){
+            if($action == 'select'){
+                $result = $this->veiculos_model->get_modelo($id_modelo);
+            }elseif($action == 'insert'){
                 $modelo = [
                     'id_tipo' => $this->input->post('tipo'),
                     'id_marca' => $this->input->post('marca'),
@@ -523,6 +553,19 @@
                 $modelo['id_modelo'] = $id_modelo;
 
                 $result = $modelo;
+            }elseif($action == 'update'){
+                $modelo = [
+                    'id_modelo' => $this->input->post('id'),
+                    'id_tipo' => $this->input->post('tipo'),
+                    'id_marca' => $this->input->post('marca'),
+                    'nome' => $this->input->post('nome'),
+                ];
+
+                $this->veiculos_model->update_modelo($modelo);
+                $result = $modelo;
+            }elseif($action == 'remove'){
+                $this->veiculos_model->remove_modelo($id_modelo);
+                $result = $modelo;
             }
 
             
@@ -530,10 +573,12 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function optional($action='insert'){
+        public function optional($action='select', $id_opcional=false){
             $result = ['ok'];
 
-            if($action == 'insert'){
+            if($action == 'select'){
+                $result = $this->veiculos_model->get_opcional($id_opcional);
+            }elseif($action == 'insert'){
                 $opcional = [
                     'nome' => $this->input->post('nome')
                 ];
@@ -542,6 +587,17 @@
                 $opcional['id_opcional'] = $id_opcional;
 
                 $result = $opcional;
+            }elseif($action == 'update'){
+                $opcional = [
+                    'id_opcional' => $this->input->post('id'),
+                    'nome' => $this->input->post('nome')
+                ];
+
+                $this->veiculos_model->update_opcional($opcional);
+                $result = $opcional;
+            }elseif($action == 'remove'){
+                $this->veiculos_model->remove_opcional($id_opcional);
+                $result = $opcional;
             }
 
             
@@ -549,10 +605,12 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function fuel($action='insert'){
+        public function fuel($action='select', $id_combustivel=false){
             $result = ['ok'];
 
-            if($action == 'insert'){
+            if($action == 'select'){
+                $result = $this->veiculos_model->get_combustivel($id_combustivel);
+            }elseif($action == 'insert'){
                 $combustivel = [
                     'nome' => $this->input->post('nome')
                 ];
@@ -560,6 +618,17 @@
                 $id_combustivel = $this->veiculos_model->insert_combustivel($combustivel);
                 $combustivel['id_combustivel'] = $id_combustivel;
 
+                $result = $combustivel;
+            }elseif($action == 'update'){
+                $combustivel = [
+                    'id_combustivel' => $this->input->post('id'),
+                    'nome' => $this->input->post('nome')
+                ];
+
+                $this->veiculos_model->update_combustivel($combustivel);
+                $result = $combustivel;
+            }elseif($action == 'remove'){
+                $this->veiculos_model->remove_combustivel($id_combustivel);
                 $result = $combustivel;
             }
 
