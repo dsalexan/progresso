@@ -28,7 +28,6 @@
 
             $data['options'] = $options;
 
-
             $data['fileupload'] = true;
             $data['bootstrap_dashboard'] = true;
             $data['kingtable'] = ['css' => ['kingtable.core.css'],
@@ -89,7 +88,8 @@
                                     $page.'.js',
                                     'bootstrap-table.js',
                                     'popper.min.js',
-                                    'bootstrap-table-toolbar.js',]];
+                                    'bootstrap-table-toolbar.js',
+                                    'expanded-tab.js']];
             $data['title'] = $pageNames[$page];
     
             $this->load->view('templates/header', $data);
@@ -127,7 +127,9 @@
 
             if($result != false){
                 $this->session->set_userdata('logged_user', $result);
-                redirect('admin');
+                
+                if($this->session->userdata('last_page')) redirect($this->session->userdata('last_page'));
+                else redirect('admin');
             }else{
                 $this->session->set_flashdata('invalid_credentials', 'O nome de usuário e/ou senha informados são inválidos.');
                 redirect('admin/login');
@@ -467,10 +469,14 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function type($action='select', $id_tipo=false){
+        public function type($action='list', $id_tipo=false){
             $result = [$action => $id_tipo];    
 
-            if($action == 'select'){
+            if($action == 'list' or $action == 'list-all'){
+                $status = ($action == 'list-all') ? false    : 1 ;
+
+                $result = $this->veiculos_model->get_tipos($status);
+            }elseif($action == 'select'){
                 $result = $this->veiculos_model->get_tipo($id_tipo);
             }elseif($action == 'insert'){
                 $tipo = [
@@ -494,8 +500,18 @@
                 $this->veiculos_model->update_tipo($tipo);
                 $result = $tipo;
             }elseif($action == 'remove'){
-                $this->veiculos_model->remove_tipo($id_tipo);
-                $result = $tipo;
+                if($id_tipo != false){
+                    $this->veiculos_model->remove_tipo($id_tipo);
+                }else{
+                    $tipos = $this->input->post('ids');
+                    foreach($tipos as $id_tipo){
+                        $this->veiculos_model->remove_tipo($id_tipo);
+                    }
+
+                    $result = $tipos;
+                }
+            }elseif($action == 'revive'){
+                $this->veiculos_model->remove_tipo($id_tipo, true);
             }
 
             
@@ -503,10 +519,14 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function brand($action='select', $id_marca=false){
+        public function brand($action='list', $id_marca=false){
             $result = ['ok'];
 
-            if($action == 'select'){
+            if($action == 'list' or $action == 'list-all'){
+                $status = ($action == 'list-all') ? false    : 1 ;
+
+                $result = $this->veiculos_model->get_marcas_lista($status);
+            }elseif($action == 'select'){
                 $result = $this->veiculos_model->get_marca($id_marca);
             }elseif($action == 'insert'){
                 $marca = [
@@ -528,8 +548,18 @@
                 $this->veiculos_model->update_marca($marca);
                 $result = $marca;
             }elseif($action == 'remove'){
-                $this->veiculos_model->remove_marca($id_marca);
-                $result = $marca;
+                if($id_marca != false){
+                    $this->veiculos_model->remove_marca($id_marca);
+                }else{
+                    $marcas = $this->input->post('ids');
+                    foreach($marcas as $id_marca){
+                        $this->veiculos_model->remove_marca($id_marca);
+                    }
+
+                    $result = $marcas;
+                }
+            }elseif($action == 'revive'){
+                $this->veiculos_model->remove_marca($id_marca, true);
             }
 
             
@@ -537,10 +567,14 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function model($action='select', $id_modelo=false){
+        public function model($action='list', $id_modelo=false){
             $result = ['ok'];
 
-            if($action == 'select'){
+            if($action == 'list' or $action == 'list-all'){
+                $status = ($action == 'list-all') ? false    : 1 ;
+
+                $result = $this->veiculos_model->get_modelos_lista($status);
+            }elseif($action == 'select'){
                 $result = $this->veiculos_model->get_modelo($id_modelo);
             }elseif($action == 'insert'){
                 $modelo = [
@@ -564,8 +598,18 @@
                 $this->veiculos_model->update_modelo($modelo);
                 $result = $modelo;
             }elseif($action == 'remove'){
-                $this->veiculos_model->remove_modelo($id_modelo);
-                $result = $modelo;
+                if($id_modelo != false){
+                    $this->veiculos_model->remove_modelo($id_modelo);
+                }else{
+                    $modelos = $this->input->post('ids');
+                    foreach($modelos as $id_modelo){
+                        $this->veiculos_model->remove_modelo($id_modelo);
+                    }
+
+                    $result = $modelos;
+                }
+            }elseif($action == 'revive'){
+                $this->veiculos_model->remove_modelo($id_modelo, true);
             }
 
             
@@ -573,10 +617,12 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function optional($action='select', $id_opcional=false){
+        public function optional($action='list', $id_opcional=false){
             $result = ['ok'];
 
-            if($action == 'select'){
+            if($action == 'list' or $action == 'list-all'){
+                $result = $this->veiculos_model->get_opcionais_lista();
+            }elseif($action == 'select'){
                 $result = $this->veiculos_model->get_opcional($id_opcional);
             }elseif($action == 'insert'){
                 $opcional = [
@@ -596,8 +642,16 @@
                 $this->veiculos_model->update_opcional($opcional);
                 $result = $opcional;
             }elseif($action == 'remove'){
-                $this->veiculos_model->remove_opcional($id_opcional);
-                $result = $opcional;
+                if($id_opcional != false){
+                    $this->veiculos_model->remove_opcional($id_opcional);
+                }else{
+                    $opcionais = $this->input->post('ids');
+                    foreach($opcionais as $id_opcional){
+                        $this->veiculos_model->remove_opcional($id_opcional);
+                    }
+
+                    $result = $opcionais;
+                }
             }
 
             
@@ -605,10 +659,12 @@
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
 
-        public function fuel($action='select', $id_combustivel=false){
+        public function fuel($action='list', $id_combustivel=false){
             $result = ['ok'];
 
-            if($action == 'select'){
+            if($action == 'list' or $action == 'list-all'){
+                $result = $this->veiculos_model->get_combustiveis_lista();
+            }elseif($action == 'select'){
                 $result = $this->veiculos_model->get_combustivel($id_combustivel);
             }elseif($action == 'insert'){
                 $combustivel = [
@@ -628,8 +684,16 @@
                 $this->veiculos_model->update_combustivel($combustivel);
                 $result = $combustivel;
             }elseif($action == 'remove'){
-                $this->veiculos_model->remove_combustivel($id_combustivel);
-                $result = $combustivel;
+                if($id_tipo != false){
+                    $this->veiculos_model->remove_combustivel($id_combustivel);
+                }else{
+                    $combustiveis = $this->input->post('ids');
+                    foreach($combustiveis as $id_combustivel){
+                        $this->veiculos_model->remove_combustivel($id_combustivel);
+                    }
+
+                    $result = $combustiveis;
+                }
             }
 
             

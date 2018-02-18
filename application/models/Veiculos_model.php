@@ -7,7 +7,11 @@
             // $this->load->model('nodes/veiculos_node', 'node');
         }
 
-        public function get_tipos(){
+        public function get_tipos($status=false){
+            if($status !== false) {
+                $this->db->where('status', $status);
+            }
+
             $query = $this->db->get('veiculos_tipos');
             return $query->result_array();
         }
@@ -33,18 +37,21 @@
             $this->db->update('veiculos_tipos', $tipo);        
         }
 
-        public function remove_tipo($id_tipo){
-            $this->db->where('id_tipo', $id_tipo);
-            $this->db->update('veiculos_marcas', ['status' => 0]);
+        public function remove_tipo($id_tipo, $revive=false){
+            $status = 0;
+            if($revive) $status = 1;
 
             $this->db->where('id_tipo', $id_tipo);
-            $this->db->update('veiculos_modelos', ['status' => 0]);
+            $this->db->update('veiculos_marcas', ['status' => $status]);
+
+            $this->db->where('id_tipo', $id_tipo);
+            $this->db->update('veiculos_modelos', ['status' => $status]);
             
             $this->db->where('id_tipo', $id_tipo);
-            $this->db->update('veiculos', ['status' => 0]);
+            $this->db->update('veiculos', ['status' => $status]);
 
             $this->db->where('id_tipo', $id_tipo);
-            $this->db->update('veiculos_tipos', ['status' => 0]);
+            $this->db->update('veiculos_tipos', ['status' => $status]);
         }
 
 
@@ -59,6 +66,19 @@
             return $query->result_array();
         }
 
+        public function get_marcas_lista($status=false){
+            $status_query= '';
+            if($status !== false) $status_query = 'WHERE m.status = '.$status;
+
+            $query = $this->db->query(''.
+                'SELECT m.id_marca AS id_marca, t.nome AS tipo, m.nome AS nome, SUBSTRING(m.imagem, 1, 59) AS imagem, m.status AS status '.
+                'FROM veiculos_marcas AS m LEFT JOIN '.
+                    'veiculos_tipos AS t ON (m.id_tipo=t.id_tipo) '.
+                $status_query.' '.
+                'GROUP BY m.id_marca');
+            return $query->result_array();            
+        }
+
         public function insert_marca($marca){
             $this->db->insert('veiculos_marcas', $marca);
             return $this->db->insert_id();
@@ -69,22 +89,43 @@
             $this->db->update('veiculos_marcas', $marca);        
         }
 
-        public function remove_marca($id_marca){
-            $this->db->where('id_marca', $id_marca);
-            $this->db->update('veiculos_modelos', ['status' => 0]);
+        public function remove_marca($id_marca, $revive=false){
+            $status = 0;
+            if($revive) $status = 1;
 
             $this->db->where('id_marca', $id_marca);
-            $this->db->update('veiculos', ['status' => 0]);
+            $this->db->update('veiculos_modelos', ['status' => $status]);
 
             $this->db->where('id_marca', $id_marca);
-            $this->db->delete('veiculos_marcas');
+            $this->db->update('veiculos', ['status' => $status]);
+
+            $this->db->where('id_marca', $id_marca);
+            $this->db->update('veiculos_marcas', ['status' => $status]);
         }
 
 
 
-        public function get_modelos(){
+        public function get_modelos($status=false){
+            if($status !== false) {
+                $this->db->where('status', $status);
+            }
+
             $query = $this->db->get('veiculos_modelos');
             return $query->result_array();
+        }
+
+        public function get_modelos_lista($status=false){
+            $status_query= '';
+            if($status !== false) $status_query = 'WHERE m.status = '.$status;
+
+            $query = $this->db->query(''.
+                'SELECT m.id_modelo AS id_modelo, t.nome AS tipo, b.nome AS marca, m.nome AS nome, m.status AS status '.
+                'FROM veiculos_modelos AS m LEFT JOIN '.
+                    'veiculos_tipos AS t ON (m.id_tipo=t.id_tipo) LEFT JOIN '.
+                    'veiculos_marcas AS b ON (m.id_marca=b.id_marca) '.
+                $status_query.' '.
+                'GROUP BY m.id_modelo');
+            return $query->result_array();            
         }
 
         public function insert_modelo($modelo){
@@ -97,12 +138,15 @@
             $this->db->update('veiculos_modelos', $modelo);        
         }
 
-        public function remove_modelos($id_modelos){
+        public function remove_modelos($id_modelos, $revive=false){
+            $status = 0;
+            if($revive) $status = 1;
+
             $this->db->where('id_modelo', $id_modelo);
-            $this->db->update('veiculos', ['status' => 0]);
+            $this->db->update('veiculos', ['status' => $status]);
 
             $this->db->where('id_modelos', $id_modelos);
-            $this->db->delete('veiculos_modeloss');
+            $this->db->update('veiculos_modeloss', ['status' => $status]);
         }
 
         
