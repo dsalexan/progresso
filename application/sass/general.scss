@@ -60,7 +60,7 @@
     }
 
     &.mask, & .mask{
-        $skew-degree: 6;
+        $skew-degree: 8;
 
         @include skew($skew-degree * -1, 0);
 
@@ -68,7 +68,7 @@
             @include transform(translate(-50%, -50%) skew(#{$skew-degree}deg, 0));
             top: 50%;
             left: 50%;
-            height: 75%;
+            height: 100%;
             width: auto;
             max-width: none;
         }
@@ -81,6 +81,20 @@
             
             
     }
+}
+
+a:hover ~ div.content{
+    a.header{
+        color: #d11717 !important;
+        background: none;
+        text-decoration: none;
+    }
+}
+
+.hovered{
+    color: #d11717 !important;
+    background: none;
+    text-decoration: none;
 }
 
 
@@ -96,6 +110,14 @@
 
         i{
             font-size: 2em;
+        }
+    }
+
+    .carousel-inner{
+        .carousel-item{
+            .ui.container{
+                height: 50vh;
+            }
         }
     }
 }

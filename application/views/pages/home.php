@@ -26,9 +26,9 @@
                         ?>
                         <div class="carousel-item <?php if($i==0) echo 'active'; ?>" data-slide="<?=$i?>">
                                     
-                            <div class="ui container" style="height: 400px; background-color: #111111 ">
+                            <div class="ui container" style=" background-color: #111111 ">
 
-                            <div class="ui middle aligned centered grid"  style="height: 400px;">
+                            <div class="ui middle aligned centered grid"  style="height: 100%;">
                                 <div class="five wide column mask" style="overflow-x: hidden; height: 110%;">
                                     <!-- <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>"> -->
                                     <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>">
@@ -37,10 +37,10 @@
                                 <div class="one wide computer only column"></div>
                                 <div class="seven wide column mask" style="background-color: black">
                                     <div class="content">
-                                        <h2 class="ui header"  style="color: #ddd;">
-                                            <a href="<?=base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo'])?>"><?= $veiculo['modelo']['nome']?></a>
-                                            <div class="sub header"  style="color: #d11717;">
-                                                <span><a href="<?=base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']);?>"><?= $veiculo['marca']['nome']?></a></span>
+                                        <h2 class="ui header">
+                                            <a style="color: #ddd;" href="<?=base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo'])?>"><?= $veiculo['modelo']['nome']?></a>
+                                            <div class="sub header"  >
+                                                <span><a style="color: #d11717;" href="<?=base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']);?>"><?= $veiculo['marca']['nome']?></a></span>
                                             </div>                                    
                                         </h2>
                                         <div class="description"  style="color: #bbb;">
@@ -211,6 +211,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
                                 <div class="ui slide masked reveal image">
                                     <?php 
                                     if(count($veiculo['imagens']) == 0){
@@ -234,6 +235,7 @@
                                     <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
                                     <img src="<?= base_url('assets/img/veiculos/'.$img2) ?>" class="hidden content">
                                 </div>
+                                </a>
                                 <div class="content">
                                     <?php if($veiculo['estado'] == 'Novo'): ?>
                                     <div class="ui red ribbon label colapsed-hidden"><?= $veiculo['estado']; ?></div>

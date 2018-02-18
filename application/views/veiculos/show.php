@@ -67,6 +67,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
                                 <div class="ui slide masked reveal image">
                                     <?php 
                                     if(count($veiculo['imagens']) == 0){
@@ -90,6 +91,7 @@
                                     <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
                                     <img src="<?= base_url('assets/img/veiculos/'.$img2) ?>" class="hidden content">
                                 </div>
+                                </a>
                                 <div class="content">
                                     <?php if($veiculo['estado'] == 'Novo'): ?>
                                     <div class="ui red ribbon label colapsed-hidden"><?= $veiculo['estado']; ?></div>

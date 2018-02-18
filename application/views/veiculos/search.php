@@ -18,6 +18,7 @@
                     <div class="ui four doubling cards">
                     <?php foreach($results as $veiculo){ ?>
                         <div class="ui card">
+                            <a href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
                             <div class="ui slide masked reveal image">
                                 <?php 
                                 if(count($veiculo['imagens']) == 0){
@@ -38,9 +39,11 @@
                                 }
 
                                 ?>
+                                
                                 <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
                                 <img src="<?= base_url('assets/img/veiculos/'.$img2) ?>" class="hidden content">
                             </div>
+                            </a>
                             <div class="content">
                                 <a class="ui grey right ribbon label hoverable" href="<?= base_url($veiculo['tipo']['url']); ?>"><?= $veiculo['tipo']['nome']; ?></a>
                                 <a class="header" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>"><?= $veiculo['modelo']['nome']; ?></a>
