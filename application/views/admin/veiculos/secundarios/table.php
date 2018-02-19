@@ -6,6 +6,9 @@
     </div>
     <div class="scrolling content">
         <div class=" ui basic segment dimmable dimmed" style="width: 100%">
+            <div class="ui container message-holder">
+
+            </div>
 
             <div id="toolbar-<?=$objeto['tabela']['nome']?>" class="btn-group">
                 <button button-id="remove" type="button" class="btn btn-default has-popup" data-inverted="" data-position="bottom left" data-tooltip="Remover <?=strtolower($objeto['tabela']['alt']);?> selecionados">

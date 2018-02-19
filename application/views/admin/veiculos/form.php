@@ -28,16 +28,7 @@
                             Listar
                         </div>
                     </div>
-                    <?php
-                    $tipos = $this->veiculos_model->get_tipos(1);
-                    foreach($tipos as $tipo){
-                        ?><div class="item" data-value="<?=$tipo['id_tipo']?>">
-                        <div><?=$tipo['nome']?></div>
-                        <div class="ui icon button edit" data-value="<?=$tipo['id_tipo']?>"><i class="ui write icon"></i></div>
-                        </div>
-                        <?php
-                    }
-                    ?>
+                    <?php $this->load->view('admin/veiculos/secundarios/dropdown-tipo.php');?>
                 </div>
             </div>
         </div>
@@ -59,16 +50,7 @@
                             Listar
                         </div>
                     </div>
-                    <?php
-                    $marcas = $this->veiculos_model->get_marcas_lista(1);
-                    foreach($marcas as $marca){
-                        ?><div class="item" data-value="<?=$marca['id_marca']?>">
-                        <div><?=$marca['nome']?></div>
-                        <div class="ui icon button edit" data-value="<?=$marca['id_marca']?>"><i class="ui write icon"></i></div>
-                        </div>
-                        <?php
-                    }
-                    ?>
+                    <?php $this->load->view('admin/veiculos/secundarios/dropdown-marca.php');?>
                 </div>
             </div>
         </div>
@@ -90,16 +72,7 @@
                             Listar
                         </div>
                     </div>
-                    <?php
-                    $modelos = $this->veiculos_model->get_modelos(1);
-                    foreach($modelos as $modelo){
-                        ?><div class="item" data-value="<?=$modelo['id_modelo']?>">
-                        <div><?=$modelo['nome']?></div>
-                        <div class="ui icon button edit" data-value="<?=$modelo['id_modelo']?>"><i class="ui write icon"></i></div>
-                        </div>
-                        <?php
-                    }
-                    ?>
+                    <?php $this->load->view('admin/veiculos/secundarios/dropdown-modelo.php');?>
                 </div>
             </div>
         </div>
@@ -172,16 +145,7 @@
                             Listar
                         </div>
                     </div>
-                    <?php
-                    $opcionais = $this->veiculos_model->get_opcionais_lista();
-                    foreach($opcionais as $opcional){
-                        ?><div class="item" data-value="<?=$opcional['id_opcional']?>">
-                        <div><?=$opcional['nome']?></div>
-                        <div class="ui icon button edit" data-value="<?=$opcional['id_opcional']?>"><i class="ui write icon"></i></div>
-                        </div>
-                        <?php
-                    }
-                    ?>
+                    <?php $this->load->view('admin/veiculos/secundarios/dropdown-opcional.php');?>
                 </div>
             </div>
         </div>
@@ -203,16 +167,7 @@
                             Listar
                         </div>
                     </div>
-                    <?php
-                    $combustiveis = $this->veiculos_model->get_combustiveis_lista();
-                    foreach($combustiveis as $combustivel){
-                        ?><div class="item" data-value="<?=$combustivel['id_combustivel']?>">
-                        <div><?=$combustivel['nome']?></div>
-                        <div class="ui icon button edit" data-value="<?=$combustivel['id_combustivel']?>"><i class="ui write icon"></i></div>
-                        </div>
-                        <?php
-                    }
-                    ?>
+                    <?php $this->load->view('admin/veiculos/secundarios/dropdown-combustivel.php');?>
                 </div>
             </div>
         </div>

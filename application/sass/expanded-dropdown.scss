@@ -24,5 +24,15 @@
         div.text div.button{
             display: none;
         }
+
+        .ui.label{
+            div{
+                display: inline-block;
+
+                &.button{
+                    display: none;
+                }
+            }
+        }
     }
 }

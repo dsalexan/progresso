@@ -93,10 +93,11 @@
                 'id' => false,
                 'tipo' => 'dropdown',
                 'dados' => [
-                    'origem' => $this->veiculos_model->get_tipos(),
+                    'origem' => $this->veiculos_model->get_tipos(1),
                     'valor' => 'id_tipo',
                     'texto' => 'nome'
-                ]
+                ],
+                'edit' => 'non-edit'
             ],[
                 'label' => 'Nome',
                 'icone' => 'card',
@@ -126,10 +127,11 @@
                 'id' => false,
                 'tipo' => 'dropdown',
                 'dados' => [
-                    'origem' => $this->veiculos_model->get_tipos(),
+                    'origem' => $this->veiculos_model->get_tipos(1),
                     'valor' => 'id_tipo',
                     'texto' => 'nome'
-                ]
+                ],
+                'edit' => 'non-edit'
             ],[
                 'label' => 'Marca',
                 'icone' => 'cubes',
@@ -138,10 +140,11 @@
                 'id' => false,
                 'tipo' => 'dropdown',
                 'dados' => [
-                    'origem' => $this->veiculos_model->get_marcas(),
+                    'origem' => $this->veiculos_model->get_marcas_lista(1),
                     'valor' => 'id_marca',
                     'texto' => 'nome'
-                ]
+                ],
+                'edit' => 'non-edit'
             ],[
                 'label' => 'Nome',
                 'icone' => 'card',

@@ -77,7 +77,8 @@
                         'form.min.js',
                         'checkbox.min.js',
                         'popup.min.js',
-                        'dropdown.min.js'
+                        'dropdown.min.js',
+                        'message.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css', 'expanded-dropdown.css'],
                                 'js' => [     
@@ -152,6 +153,59 @@
             $data['title'] = 'google-oauth';
 
             $this->load->view('admin/google-api/oauth', $data);
+        }
+
+        public function dropdown($table='tipo', $edit=false){
+            $edit = (!$edit) ? 'non-edit' : $edit;
+            
+            $campos = [];
+
+            $campos['tipo'] = [
+                'label' => 'Tipo',
+                'icone' => 'car',
+                'nome' => 'tipo',
+                'placeholder' => 'Tipo',
+                'id' => false,
+                'tipo' => 'dropdown',
+                'dados' => [
+                    'origem' => $this->veiculos_model->get_tipos(1),
+                    'valor' => 'id_tipo',
+                    'texto' => 'nome'
+                ],
+                'edit' => $edit
+            ];
+
+            $campos['marca'] = [
+                'label' => 'Marca',
+                'icone' => 'cubes',
+                'nome' => 'marca',
+                'placeholder' => 'Marca',
+                'id' => false,
+                'tipo' => 'dropdown',
+                'dados' => [
+                    'origem' => $this->veiculos_model->get_marcas_lista(1),
+                    'valor' => 'id_marca',
+                    'texto' => 'nome'
+                ],
+                'edit' => $edit
+            ];
+
+            $campos['modelo'] = [
+                'label' => 'Modelo',
+                'icone' => 'cube',
+                'nome' => 'modelo',
+                'placeholder' => 'Modelo',
+                'id' => false,
+                'tipo' => 'dropdown',
+                'dados' => [
+                    'origem' => $this->veiculos_model->get_modelos_lista(1),
+                    'valor' => 'id_modelo',
+                    'texto' => 'nome'
+                ],
+                'edit' => $edit
+            ];
+
+            $this->load->view('admin/veiculos/secundarios/dropdown.php', ['campo' => $campos[$table]]);
         }
 
         public function analytics($table){
@@ -511,7 +565,9 @@
                     $result = $tipos;
                 }
             }elseif($action == 'revive'){
-                $this->veiculos_model->remove_tipo($id_tipo, true);
+                $result = [];
+                $erro = $this->veiculos_model->remove_tipo($id_tipo, true);
+                $result[$id_tipo] = $erro;
             }
 
             
@@ -549,17 +605,20 @@
                 $result = $marca;
             }elseif($action == 'remove'){
                 if($id_marca != false){
-                    $this->veiculos_model->remove_marca($id_marca);
+                    $marcas = [$id_marca];
                 }else{
                     $marcas = $this->input->post('ids');
-                    foreach($marcas as $id_marca){
-                        $this->veiculos_model->remove_marca($id_marca);
-                    }
+                }
 
-                    $result = $marcas;
+                $result = [];
+                foreach($marcas as $id_marca){
+                    $erro = $this->veiculos_model->remove_marca($id_marca);
+                    $result[$id_marca] = $erro;
                 }
             }elseif($action == 'revive'){
-                $this->veiculos_model->remove_marca($id_marca, true);
+                $result = [];
+                $erro = $this->veiculos_model->remove_marca($id_marca, true);
+                $result[$id_marca] = $erro;
             }
 
             
@@ -609,7 +668,9 @@
                     $result = $modelos;
                 }
             }elseif($action == 'revive'){
-                $this->veiculos_model->remove_modelo($id_modelo, true);
+                $result = [];
+                $erro = $this->veiculos_model->remove_modelo($id_modelo, true);
+                $result[$id_modelo] = $erro;
             }
 
             

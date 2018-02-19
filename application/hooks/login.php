@@ -17,8 +17,10 @@ function is_logged() {
             if(!isset($usuario_logado)){
                 $currentURL = current_url(); //http://myhost/main
                 $params   = $_SERVER['QUERY_STRING']; //my_id=1,3
+                $fullURL = $currentURL . '?' . $params;
+                if($params  == '') $fullURL = $currentURL;
 
-                $ci->session->set_userdata('last_page', $currentURL . '?' . $params);
+                $ci->session->set_userdata('last_page', $fullURL);
                 $ci->session->set_flashdata('forbidden_access', 'Somente usuários autenticados podem acessar essa seção. Por favor, entre com suas credenciais:');
                 redirect(base_url('admin/login'));
             }

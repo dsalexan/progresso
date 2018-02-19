@@ -52,6 +52,8 @@
 
             $this->db->where('id_tipo', $id_tipo);
             $this->db->update('veiculos_tipos', ['status' => $status]);
+
+            return true;
         }
 
 
@@ -93,6 +95,21 @@
             $status = 0;
             if($revive) $status = 1;
 
+            if($status == 1) { // reviver marca
+                //verificar se tipo ta ok
+                $tipo = $this->db->query(''.
+                    'SELECT t.id_tipo AS id_tipo, t.status AS status '.
+                    'FROM veiculos_tipos AS t RIGHT JOIN '.
+                        'veiculos_marcas AS m ON (t.id_tipo = m.id_tipo) '.
+                    'WHERE id_marca='.$id_marca
+                )->result_array()[0];
+
+                if($tipo['status'] == "0"){
+                    return [[ 'error' => 'type_inactive',
+                                'on' => $tipo['id_tipo']]];
+                }
+            }
+
             $this->db->where('id_marca', $id_marca);
             $this->db->update('veiculos_modelos', ['status' => $status]);
 
@@ -101,6 +118,8 @@
 
             $this->db->where('id_marca', $id_marca);
             $this->db->update('veiculos_marcas', ['status' => $status]);
+
+            return true;
         }
 
 
@@ -138,15 +157,42 @@
             $this->db->update('veiculos_modelos', $modelo);        
         }
 
-        public function remove_modelos($id_modelos, $revive=false){
+        public function remove_modelo($id_modelo, $revive=false){
             $status = 0;
             if($revive) $status = 1;
+
+            if($status == 1) { // reviver marca
+                //verificar se tipo ta ok
+                $tipo = $this->db->query(''.
+                    'SELECT t.id_tipo AS id_tipo, t.status AS status_tipo, m.id_marca AS id_marca, m.status AS status_marca '.
+                    'FROM veiculos_modelos AS n RIGHT JOIN '.
+                        'veiculos_marcas AS m ON (m.id_marca = n.id_marca) RIGHT JOIN '.
+                        'veiculos_tipos AS t ON (t.id_tipo = n.id_tipo) '.
+                    'WHERE id_modelo='.$id_modelo
+                )->result_array()[0];
+
+                if($tipo['status_tipo'] == "0" || $tipo['status_marca'] == "0"){
+                    $return = []; 
+
+                    if($tipo['status_tipo'] == "0"){
+                        $return[] = [ 'error' => 'type_inactive',
+                                        'on' => $tipo['id_tipo']];
+                    }
+
+                    if($tipo['status_marca'] == "0"){
+                        $return[] = [ 'error' => 'brand_inactive',
+                                        'on' => $tipo['id_marca']];
+                    }
+
+                    return $return;
+                }
+            }
 
             $this->db->where('id_modelo', $id_modelo);
             $this->db->update('veiculos', ['status' => $status]);
 
-            $this->db->where('id_modelos', $id_modelos);
-            $this->db->update('veiculos_modeloss', ['status' => $status]);
+            $this->db->where('id_modelo', $id_modelo);
+            $this->db->update('veiculos_modelos', ['status' => $status]);
         }
 
         

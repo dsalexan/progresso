@@ -103,6 +103,9 @@ $route['admin/vehicle/fuel/(:any)/(:any)'] = 'admin/fuel/$1/$2';
 
 $route['admin/analytics/(:any)'] = 'admin/analytics/$1';
 
+$route['admin/dropdown/(:any)'] = 'admin/dropdown/$1';
+$route['admin/dropdown/(:any)/(:any)'] = 'admin/dropdown/$1/$2';
+
 $route['admin/(:any)'] = 'admin/view/$1';
 
 

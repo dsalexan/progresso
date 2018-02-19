@@ -15,7 +15,10 @@ $(document).ready(function(){
     }else{
         disable_tab('update');
     }
-    
+
+    // $menu = $('[form-id=insert_form]').find('[dropdown-id=veiculo-tipo] .menu');
+    // $menu.fetch('dropdown/tipo');
+
     // FUNCAO REMOCAO, TABELA
     $('#remove').click(function () {
         var ids = getIdSelections();
@@ -103,6 +106,9 @@ $(document).ready(function(){
                     }
 
                     $('nav.navbar').removeClass('to-back');
+                    
+                    $holder = $(this).find('.message-holder');
+                    $holder.empty();
                 }
               })
               .modal('show')
@@ -114,7 +120,6 @@ $(document).ready(function(){
     
     $('[button-id=remove]').click(function () {
         $table = $(this).closest('[data-id=table]').find('[table-id=table]');
-        console.log($table.bootstrapTable('getSelections'));
 
         var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
             if($table.data('link-name')=='vehicle') return row.id_veiculo;
@@ -125,36 +130,44 @@ $(document).ready(function(){
             else if($table.data('link-name')=='fuel') return row.id_combustivel;
         });
 
-        $("#remove-confirmation").find('.items').text(ids.join(', '));
-        $("#remove-confirmation")
-            .modal({
-            closable  : false,
-            onDeny    : function(){
-                $table.bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
-            },
-            onApprove : function() {
-                $.ajax({
-                    url: base_url('admin/vehicle/' + $table.data('link-name') + '/remove'),
-                    type: 'POST',
-                    dataType : "json",
-                    data: {
-                        'ids': ids
-                    },
-                    success: function(data) {
-    
-                        $table.bootstrapTable('remove', {
-                            field: $table.data('id-name'),
-                            values: ids
-                        });
-    
-                        $table.bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
+        if(ids.length > 0){
+            $("#remove-confirmation").find('.items').text(ids.join(', '));
+            $("#remove-confirmation")
+                .modal({
+                closable  : false,
+                onDeny    : function(){
+                    $table.bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
+                },
+                onApprove : function() {
+                    $.ajax({
+                        url: base_url('admin/vehicle/' + $table.data('link-name') + '/remove'),
+                        type: 'POST',
+                        dataType : "json",
+                        data: {
+                            'ids': ids
+                        },
+                        success: function(data) {
+        
+                            $table.bootstrapTable('remove', {
+                                field: $table.data('id-name'),
+                                values: ids
+                            });
+        
+                            $table.bootstrapTable('togglePagination').bootstrapTable('uncheckAll').bootstrapTable('togglePagination');
 
-                        $('.table-secondary[data-table='+$table.data('table-name')+']').click();
-    
-                    }
-                });
-            }
-            }).modal('show');
+                            $('.table-secondary[data-table='+$table.data('table-name')+']').click();
+
+                            $menu = $('[dropdown-id=veiculo-'+$table.data('table-name')+'] .menu');
+                            $menu.each(function(){
+                                var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
+                                $(this).find('div.item').remove();
+                                $(this).fetch('dropdown/'+$table.data('table-name')+'/'+edit, bindEvents);      
+                            });  
+                        }
+                    });
+                }
+                }).modal('show');
+        }
 
     });
 
@@ -171,6 +184,7 @@ $(document).ready(function(){
         }
     });
 
+    bindEvents();
 
     $('.insert-secondary').click(function(){
         // alert($(this).closest('.ui.dropdown').attr('class'));
@@ -230,7 +244,7 @@ $(document).ready(function(){
                             $form.find("input, select, button, textarea").removeAttr('disabled');;
                                         
                             var data = JSON.parse(response);
-                            console.log(data);
+                            // console.log(data);
 
                             //inserir tipo na dropdown
                             
@@ -283,6 +297,32 @@ $(document).ready(function(){
         $modal.css('margin-top', $modal.data('fix'));
     });
 
+    $('.remove-register').click(function(){
+        var id = $('#tmp-id-field').val();
+
+        $modal = $(this).closest('.ui.modal');
+        var table = $modal.attr('id').replace('insert-', '');
+
+        var func = 'type';
+        if(table == 'marca') func = 'brand';
+        else if(table == 'modelo') func = 'model';
+        else if(table == 'opcional') func = 'optional';
+        else if(table == 'combustivel') func = 'fuel';
+
+        $.ajax({
+            url: base_url('admin/vehicle/' + func + '/remove/' + id),
+            type: 'GET',
+            dataType : "json",
+            success: function(data) {
+
+                console.log(data);
+                
+            }
+        });
+    });
+});
+
+function bindEvents(){
     $('.ui.dropdown.editable').find('div.button.edit').click(function(){
         // console.log('edit: ' + $(this).data('value'));
         $edit_button = $(this);
@@ -302,6 +342,7 @@ $(document).ready(function(){
                 $form  = $(this).find('.ui.form');
                 $form.form('reset');
                 $('#tmp-id-field').remove();
+
                 $modal.find('.header.insert').show();
                 $modal.find('.header.update').hide();
 
@@ -310,6 +351,13 @@ $(document).ready(function(){
                     
                     $edit_button.removeData('go-back');
                 }
+
+                $menu = $('[dropdown-id='+ $modal.data('dropdown-id') +'] .menu');
+                $menu.each(function(){
+                    var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
+                    $(this).find('div.item').remove();
+                    $(this).fetch('dropdown/'+$modal.data('table-name')+'/'+edit, bindEvents);      
+                });  
             },
             onDeny: function(){
                 $form  = $(this).find('.ui.form');
@@ -354,31 +402,9 @@ $(document).ready(function(){
                             $form.find("input, select, button, textarea").removeAttr('disabled');;
                                         
                             var data = JSON.parse(response);
-                            console.log(data);
+                            // console.log(data);
 
-                            // //inserir tipo na dropdown
-                            
-                            // //optional, set new value as selected option
-                            // var id = -1;
-                            // if('id_modelo' in data)
-                            //     id = data.id_modelo;
-                            // else if('id_marca' in data)
-                            //     id = data.id_marca;
-                            // else if('id_tipo' in data)
-                            //     id = data.id_tipo;  
-                            // else if('id_opcional' in data)
-                            //     id = data.id_opcional;  
-                            // else if('id_combustivel' in data)
-                            //     id = data.id_combustivel;  
 
-                            // //get menu
-                            // var $menu =  $dropdown.find('.menu');
-                            // //append new option to menu
-                            // $menu.append('<div class="item" data-value="' + id + '">' + data.nome + '</div>');
-                            // //reinitialize drop down
-                            // $dropdown.dropdown();
-
-                            // $main.dropdown('set selected',[id]);  
                     });
 
                     request.fail(function (jqXHR, textStatus, errorThrown){
@@ -405,38 +431,13 @@ $(document).ready(function(){
 
         $modal.css('margin-top', $modal.data('fix'));
     });
-
-    $('.remove-register').click(function(){
-        var id = $('#tmp-id-field').val();
-
-        $modal = $(this).closest('.ui.modal');
-        var table = $modal.attr('id').replace('insert-', '');
-
-        var func = 'type';
-        if(table == 'marca') func = 'brand';
-        else if(table == 'modelo') func = 'model';
-        else if(table == 'opcional') func = 'optional';
-        else if(table == 'combustivel') func = 'fuel';
-
-        $.ajax({
-            url: base_url('admin/vehicle/' + func + '/remove/' + id),
-            type: 'GET',
-            dataType : "json",
-            success: function(data) {
-
-                console.log(data);
-                
-            }
-        });
-    });
-});
-
+}
 
 
 
 // FUNCOES PARA TABELA
 function updateFormatter(value, row){
-    console.log(row);
+    // console.log(row);
 
     $edit = '<button type="button" class="btn btn-default edit">' +
         '<i class="ui write icon" style="margin: 0;"></i>' +
@@ -526,7 +527,7 @@ function getIdSelections(table_id="table", table="vehicle") {
 
 
 function secondaryFormatter(value, row){
-    console.log(row);
+    // console.log(row);
 
     $edit = '<button type="button" class="btn btn-default edit">' +
         '<i class="ui write icon" style="margin: 0;"></i>' +
@@ -576,8 +577,52 @@ window.secondaryEvents = {
             type: 'GET',
             dataType : "json",
             success: function(data) {
+                // console.log(data);
 
-                $(e.currentTarget).closest('[table-id=table]').bootstrapTable('refresh', {url: $table.data('url-primary')});
+
+                var error = '';
+                $.each(data, function(id, erros){
+                    // console.log([index, value]);
+                    if(erros !== true){ // se houve um erro
+                        var msg_erro = 'Não foi possível reativar o item <b>'+ id + '</b> ';
+
+                        $.each(erros, function(i, erro){
+                            var msg_motivo = '';
+
+                            if(erro.error == 'type_inactive'){
+                                msg_motivo = 'porque o tipo <b>' + erro.on + '</b> está inativo.';
+                            }else if(erro.error == 'brand_inactive'){
+                                msg_motivo = 'porque a marca <b>' + erro.on + '</b> está inativa.';
+                            }
+
+                            error += '<li>' + msg_erro + ' ' + msg_motivo + '</li>';
+                        });
+                    }
+                });
+
+                $holder = $(e.currentTarget).closest('[data-id=table]').find('.message-holder');
+                $holder.empty();
+                if(error != ''){
+                    $holder.append('<div class="ui error message">'+
+                                        '<i class="close icon"></i>'+
+                                        '<div class="header">'+
+                                            'Detectamos alguns erros na sua submissão'+
+                                        '</div>'+
+                                        '<ul class="list">'+
+                                            error +
+                                        '</ul>'+
+                                    '</div>');
+                }
+
+                $(e.currentTarget).closest('[data-id=table]').find('button[name=refresh]').click();
+                
+                $table = $(e.currentTarget).closest('[table-id=table]');
+                $menu = $('[dropdown-id=veiculo-'+$table.data('table-name')+'] .menu');
+                $menu.each(function(){
+                    var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
+                    $(this).find('div.item').remove();
+                    $(this).fetch('dropdown/'+$table.data('table-name')+'/'+edit, bindEvents);      
+                });  
             }
         });
     }
@@ -704,7 +749,7 @@ function set_update_modal(id, table){
         tabela: table,
         success: function(data) {
 
-            console.log(data);
+            // console.log(data);
             var corr = {};
             
             if(this.tabela == 'tipo'){

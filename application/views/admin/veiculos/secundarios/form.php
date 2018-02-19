@@ -1,5 +1,5 @@
 
-<div id="insert-<?=$objeto['tabela']['nome']?>" class="ui modal" data-dropdown-id="veiculo-<?=$objeto['tabela']['nome']?>" style="bottom: auto; overflow: visible;">
+<div id="insert-<?=$objeto['tabela']['nome']?>" class="ui modal" data-dropdown-id="veiculo-<?=$objeto['tabela']['nome']?>" data-table-name="<?=$objeto['tabela']['nome']?>" style="bottom: auto; overflow: visible;">
     <i class="ui close icon"></i>
     <div class="header insert">
         Cadastrar Novo <?=$objeto['tabela']['alt']?>
@@ -36,7 +36,7 @@
                             <div class="ui labeled input">
                                 <label for="<?=$campo['nome']?>" class="ui label"><i class="id <?=$campo['icone']?> icon"></i></label>
                                 
-                                <input <?php if($campo['id']!==false) echo 'id="'.$campo['id'].'"'; ?> type="text" name="<?=$campo['nome']?>" placeholder="<?=$campo['placeholder']?>">
+                                <input tabindex=0 autofocus <?php if($campo['id']!==false) echo 'id="'.$campo['id'].'"'; ?> type="text" name="<?=$campo['nome']?>" placeholder="<?=$campo['placeholder']?>">
                             </div>
 
                         <?php endif;
@@ -47,11 +47,7 @@
                                 <i class="<?=$campo['icone']?> icon"></i>
                                 <div class="default text"><?=$campo['placeholder']?></div>
                                 <div class="menu">
-                                    <?php
-                                    foreach($campo['dados']['origem'] as $dado){
-                                        ?><div class="item" data-value="<?=$dado[$campo['dados']['valor']]?>"><?=$dado[$campo['dados']['texto']]?></div><?php
-                                    }
-                                    ?>
+                                    <?php $this->load->view('admin/veiculos/secundarios/dropdown.php', ['campo' => $campo]);?>
                                 </div>
                             </div>
 

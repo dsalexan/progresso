@@ -13,3 +13,7 @@
       opacity: 1; }
 .ui.dropdown.editable div.text div.button {
   display: none; }
+.ui.dropdown.editable .ui.label div {
+  display: inline-block; }
+  .ui.dropdown.editable .ui.label div.button {
+    display: none; }
