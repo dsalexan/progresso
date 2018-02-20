@@ -81,6 +81,19 @@
             return $query->result_array();            
         }
 
+        public function get_marcas_lista_by_tipo($id_tipo, $status=false){
+            $status_query= '';
+            if($status !== false) $status_query = ' AND m.status = '.$status;
+
+            $query = $this->db->query(''.
+                'SELECT m.id_marca AS id_marca, t.nome AS tipo, m.nome AS nome, SUBSTRING(m.imagem, 1, 59) AS imagem, m.status AS status '.
+                'FROM veiculos_marcas AS m LEFT JOIN '.
+                    'veiculos_tipos AS t ON (m.id_tipo=t.id_tipo) '.
+                'WHERE m.id_tipo='.$id_tipo.$status_query.' '.
+                'GROUP BY m.id_marca');
+            return $query->result_array();            
+        }
+
         public function insert_marca($marca){
             $this->db->insert('veiculos_marcas', $marca);
             return $this->db->insert_id();
@@ -143,6 +156,34 @@
                     'veiculos_tipos AS t ON (m.id_tipo=t.id_tipo) LEFT JOIN '.
                     'veiculos_marcas AS b ON (m.id_marca=b.id_marca) '.
                 $status_query.' '.
+                'GROUP BY m.id_modelo');
+            return $query->result_array();            
+        }
+
+        public function get_modelos_lista_by_tipo($id_tipo, $status=false){
+            $status_query= '';
+            if($status !== false) $status_query = ' AND m.status = '.$status;
+
+            $query = $this->db->query(''.
+                'SELECT m.id_modelo AS id_modelo, t.nome AS tipo, b.nome AS marca, m.nome AS nome, m.status AS status '.
+                'FROM veiculos_modelos AS m LEFT JOIN '.
+                    'veiculos_tipos AS t ON (m.id_tipo=t.id_tipo) LEFT JOIN '.
+                    'veiculos_marcas AS b ON (m.id_marca=b.id_marca) '.
+                'WHERE m.id_tipo='.$id_tipo.$status_query.' '.
+                'GROUP BY m.id_modelo');
+            return $query->result_array();            
+        }
+
+        public function get_modelos_lista_by_marca($id_marca, $status=false){
+            $status_query= '';
+            if($status !== false) $status_query = ' AND m.status = '.$status;
+
+            $query = $this->db->query(''.
+                'SELECT m.id_modelo AS id_modelo, t.nome AS tipo, b.nome AS marca, m.nome AS nome, m.status AS status '.
+                'FROM veiculos_modelos AS m LEFT JOIN '.
+                    'veiculos_tipos AS t ON (m.id_tipo=t.id_tipo) LEFT JOIN '.
+                    'veiculos_marcas AS b ON (m.id_marca=b.id_marca) '.
+                'WHERE m.id_marca='.$id_marca.$status_query.' '.
                 'GROUP BY m.id_modelo');
             return $query->result_array();            
         }
@@ -454,10 +495,47 @@
             return sizeof($result)>0;
         }
 
-        public function remove_veiculo($id_veiculo){
+        public function remove_veiculo($id_veiculo, $revive=false){
+            $status = 0;
+            if($revive) $status = 1;
+
+            if($status == 1) { // reviver veiculo
+                //verificar se tipo ta ok
+                $tipo = $this->db->query(''.
+                    'SELECT t.id_tipo AS id_tipo, t.status AS status_tipo, m.id_marca AS id_marca, m.status AS status_marca, n.id_modelo AS id_modelo, n.status AS status_modelo '.
+                    'FROM veiculos AS v RIGHT JOIN '.
+                        'veiculos_marcas AS m ON (m.id_marca = v.id_marca) RIGHT JOIN '.
+                        'veiculos_tipos AS t ON (t.id_tipo = v.id_tipo) RIGHT JOIN '.
+                        'veiculos_modelos AS n ON (n.id_modelo = v.id_modelo) '.
+                    'WHERE id_veiculo='.$id_veiculo
+                )->result_array()[0];
+
+                if($tipo['status_tipo'] == "0" || $tipo['status_marca'] == "0" || $tipo['status_modelo'] == "0"){
+                    $return = []; 
+
+                    if($tipo['status_tipo'] == "0"){
+                        $return[] = [ 'error' => 'type_inactive',
+                                        'on' => $tipo['id_tipo']];
+                    }
+
+                    if($tipo['status_marca'] == "0"){
+                        $return[] = [ 'error' => 'brand_inactive',
+                                        'on' => $tipo['id_marca']];
+                    }
+
+                    if($tipo['status_modelo'] == "0"){
+                        $return[] = [ 'error' => 'model_inactive',
+                                        'on' => $tipo['id_modelo']];
+                    }
+
+                    return $return;
+                }
+            }
+
             $this->db->where('id_veiculo', $id_veiculo);
-            $this->db->update('veiculos', ['status' => 0]);
+            $this->db->update('veiculos', ['status' => $status]);
         }
+        
 
         public function insert_veiculo($veiculo){        
             $this->db->insert('veiculos', $veiculo);

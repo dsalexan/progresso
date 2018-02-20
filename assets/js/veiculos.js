@@ -157,12 +157,8 @@ $(document).ready(function(){
 
                             $('.table-secondary[data-table='+$table.data('table-name')+']').click();
 
-                            $menu = $('[dropdown-id=veiculo-'+$table.data('table-name')+'] .menu');
-                            $menu.each(function(){
-                                var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
-                                $(this).find('div.item').remove();
-                                $(this).fetch('dropdown/'+$table.data('table-name')+'/'+edit, bindEvents);      
-                            });  
+                            $dropdown = $('[dropdown-id=veiculo-'+$table.data('table-name')+']');
+                            reloadDropdown($dropdown);
                         }
                     });
                 }
@@ -185,6 +181,36 @@ $(document).ready(function(){
     });
 
     bindEvents();
+
+    $('.clear-secondary').click(function(){
+        $form = $(this).closest('form');
+
+        $dropdown = $(this).closest('.ui.dropdown');
+        $dropdown.dropdown('restore defaults');
+
+        var i = $dropdown.data('group');
+        
+        $table = $(this).attr('dropdown-id').replace('veiculo-', '');
+
+        if($table == 'tipo'){
+            //set marcas, vehicle/brand/type/ID_TIPO
+            $dropdown = $form.find('[dropdown-id=veiculo-marca][data-group='+i+']');
+            if($dropdown.length > 0) reloadDropdown($dropdown);
+
+            //set modelos, vehicle/model/type/ID_TIPO
+            $dropdown = $form.find('[dropdown-id=veiculo-modelo][data-group='+i+']');
+            if($dropdown.length > 0) reloadDropdown($dropdown);
+        }else if($table == 'marca'){
+            //set TIPO, vehicle/brand/select/ID_MARCA -> ['id_tipo']
+            
+            //set modelos, vehicle/model/brand/ID_MARCA
+            $dropdown = $form.find('[dropdown-id=veiculo-modelo][data-group='+i+']');
+            if($dropdown.length > 0) reloadDropdown($dropdown);  
+        }else if($table == 'modelo'){
+            //set TIPO, vehicle/model/select/ID_MODELO -> ['id_tipo']
+            //set MARCA, vehicle/model/select/ID_MODELO -> ['id_marca']
+        }
+    });
 
     $('.insert-secondary').click(function(){
         // alert($(this).closest('.ui.dropdown').attr('class'));
@@ -320,6 +346,60 @@ $(document).ready(function(){
             }
         });
     });
+
+    n = [1, 2];
+    $.each(n, function(index, i){
+        $('[data-group='+i+']').change(function(){
+            // console.log($(this));
+            $form = $(this).closest('form');
+
+            if(($(this).dropdown('get value')).length > 0 && !$(this).data('frozen')){
+                $table = $(this).attr('dropdown-id').replace('veiculo-', '');
+                $value = $(this).dropdown('get value');
+
+                if($table == 'tipo'){
+                    //set marcas, vehicle/brand/type/ID_TIPO
+                    $dropdown = $form.find('[dropdown-id=veiculo-marca][data-group='+i+']');
+                    if($dropdown.length > 0) reloadDropdown($dropdown, ['marca', 'tipo', $value]);
+
+                    //set modelos, vehicle/model/type/ID_TIPO
+                    $dropdown = $form.find('[dropdown-id=veiculo-modelo][data-group='+i+']');
+                    if($dropdown.length > 0) reloadDropdown($dropdown, ['modelo', 'tipo', $value]);
+                }else if($table == 'marca'){
+                    //set TIPO, vehicle/brand/select/ID_MARCA -> ['id_tipo']
+                    $.get('vehicle/brand/select/'+$value, function(data){
+                        marca = JSON.parse(data);
+
+                        $dropdown = $form.find('[dropdown-id=veiculo-tipo][data-group='+i+']');
+                        if($dropdown.length > 0) $dropdown.data('frozen', '1');
+                        if($dropdown.length > 0) $dropdown.dropdown('set selected', marca.id_tipo);
+                    })
+                    
+                    //set modelos, vehicle/model/brand/ID_MARCA
+                    $dropdown = $form.find('[dropdown-id=veiculo-modelo][data-group='+i+']');
+                    if($dropdown.length > 0) reloadDropdown($dropdown, ['modelo', 'marca', $value]);  
+                }else if($table == 'modelo'){                    
+                    $.get('vehicle/model/select/'+$value, function(data){
+                        modelo = JSON.parse(data);
+
+                        //set TIPO, vehicle/model/select/ID_MODELO -> ['id_tipo']
+                        $dropdown = $form.find('[dropdown-id=veiculo-tipo][data-group='+i+']');
+                        if($dropdown.length > 0) $dropdown.data('frozen', '1');
+                        if($dropdown.length > 0) $dropdown.dropdown('set selected', modelo.id_tipo);
+                       
+                        //set MARCA, vehicle/model/select/ID_MODELO -> ['id_marca']
+                        $dropdown = $form.find('[dropdown-id=veiculo-marca][data-group='+i+']');
+                        if($dropdown.length > 0) $dropdown.data('frozen', '1');
+                        if($dropdown.length > 0) $dropdown.dropdown('set selected', modelo.id_marca);
+                    });
+
+                    
+                }
+            }
+
+            if($(this).data('frozen')) $(this).removeData('frozen');
+        });
+    });
 });
 
 function bindEvents(){
@@ -352,12 +432,8 @@ function bindEvents(){
                     $edit_button.removeData('go-back');
                 }
 
-                $menu = $('[dropdown-id='+ $modal.data('dropdown-id') +'] .menu');
-                $menu.each(function(){
-                    var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
-                    $(this).find('div.item').remove();
-                    $(this).fetch('dropdown/'+$modal.data('table-name')+'/'+edit, bindEvents);      
-                });  
+                $dropdown = $('[dropdown-id='+ $modal.data('dropdown-id') +']');
+                reloadDropdown($dropdown);
             },
             onDeny: function(){
                 $form  = $(this).find('.ui.form');
@@ -433,6 +509,27 @@ function bindEvents(){
     });
 }
 
+function reloadDropdown($dropdown, $bind=false){
+    if($bind !== false){
+        $dropdown.dropdown('restore defaults');
+        $menu = $dropdown.find('.menu');
+        $menu.each(function(){
+            var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
+            $(this).find('div.item').remove();
+            $(this).fetch('dropdown/'+$bind[0]+'/'+edit+'/'+$bind[1]+'/'+$bind[2], bindEvents);   
+        });  
+    }else{
+        $tabela = ($dropdown.attr('dropdown-id')).replace('veiculo-', '');
+        $dropdown.dropdown('restore defaults');
+        $menu = $dropdown.find('.menu');
+        $menu.each(function(){
+            var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
+            $(this).find('div.item').remove();
+            $(this).fetch('dropdown/'+$tabela+'/'+edit, bindEvents);      
+        });  
+    }
+}
+
 
 
 // FUNCOES PARA TABELA
@@ -481,7 +578,46 @@ window.updateEvents = {
             dataType : "json",
             success: function(data) {
 
-                $('button[name=refresh]').click();
+
+                var error = '';
+                $.each(data, function(id, erros){
+                    // console.log([index, value]);
+                    if(erros !== true){ // se houve um erro
+                        var msg_erro = 'Não foi possível reativar o item <b>'+ id + '</b> ';
+
+                        $.each(erros, function(i, erro){
+                            var msg_motivo = '';
+
+                            if(erro.error == 'type_inactive'){
+                                msg_motivo = 'porque o tipo <b>' + erro.on + '</b> está inativo.';
+                            }else if(erro.error == 'brand_inactive'){
+                                msg_motivo = 'porque a marca <b>' + erro.on + '</b> está inativa.';
+                            }else if(erro.error == 'model_inactive'){
+                                msg_motivo = 'porque o modelo <b>' + erro.on + '</b> está inativo.';
+                            }
+
+                            error += '<li>' + msg_erro + ' ' + msg_motivo + '</li>';
+                        });
+                    }
+                });
+
+                $holder = $(e.currentTarget).closest('[data-id=table]').find('.message-holder');
+                $holder.empty();
+                if(error != ''){
+                    $holder.append('<div class="ui error message">'+
+                                        '<i class="close icon"></i>'+
+                                        '<div class="header">'+
+                                            'Detectamos alguns erros na sua submissão'+
+                                        '</div>'+
+                                        '<ul class="list">'+
+                                            error +
+                                        '</ul>'+
+                                    '</div>');                                
+                    bindCloseMessage();
+                }
+
+                $(e.currentTarget).closest('[data-id=table]').find('button[name=refresh]').click();
+
             }
         });
     },
@@ -593,6 +729,8 @@ window.secondaryEvents = {
                                 msg_motivo = 'porque o tipo <b>' + erro.on + '</b> está inativo.';
                             }else if(erro.error == 'brand_inactive'){
                                 msg_motivo = 'porque a marca <b>' + erro.on + '</b> está inativa.';
+                            }else if(erro.error == 'model_inactive'){
+                                msg_motivo = 'porque o modelo <b>' + erro.on + '</b> está inativo.';
                             }
 
                             error += '<li>' + msg_erro + ' ' + msg_motivo + '</li>';
@@ -617,22 +755,17 @@ window.secondaryEvents = {
                 $(e.currentTarget).closest('[data-id=table]').find('button[name=refresh]').click();
                 
                 $table = $(e.currentTarget).closest('[table-id=table]');
-                $menu = $('[dropdown-id=veiculo-'+$table.data('table-name')+'] .menu');
-                $menu.each(function(){
-                    var edit = ($(this).closest('.dropdown').hasClass('editable')) ? 'edit' : 'non-edit';
-                    $(this).find('div.item').remove();
-                    $(this).fetch('dropdown/'+$table.data('table-name')+'/'+edit, bindEvents);      
-                });  
+                $dropdown = $('[dropdown-id=veiculo-'+$table.data('table-name')+']');
+                reloadDropdown($dropdown);
             }
         });
     }
 };
 
 
-
 //FUNCOES PARA FORMULARIO
 var request;
-$('.ui.form.vechicle').submit(function(event){
+$('.ui.form.vehicle').submit(function(event){
 
     if( $(this).form('is valid') ){
         event.preventDefault();

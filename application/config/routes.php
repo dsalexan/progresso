@@ -105,6 +105,7 @@ $route['admin/analytics/(:any)'] = 'admin/analytics/$1';
 
 $route['admin/dropdown/(:any)'] = 'admin/dropdown/$1';
 $route['admin/dropdown/(:any)/(:any)'] = 'admin/dropdown/$1/$2';
+$route['admin/dropdown/(:any)/(:any)/(:any)'] = 'admin/dropdown/$1/$2/$3';
 
 $route['admin/(:any)'] = 'admin/view/$1';
 

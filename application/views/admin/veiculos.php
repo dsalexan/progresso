@@ -131,7 +131,8 @@
                     'valor' => 'id_tipo',
                     'texto' => 'nome'
                 ],
-                'edit' => 'non-edit'
+                'edit' => 'non-edit',
+                'group' => 2
             ],[
                 'label' => 'Marca',
                 'icone' => 'cubes',
@@ -144,7 +145,8 @@
                     'valor' => 'id_marca',
                     'texto' => 'nome'
                 ],
-                'edit' => 'non-edit'
+                'edit' => 'non-edit',
+                'group' => 2
             ],[
                 'label' => 'Nome',
                 'icone' => 'card',

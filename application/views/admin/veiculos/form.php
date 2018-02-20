@@ -14,18 +14,21 @@
 
         <div class="field">
             <label>Tipo</label>
-            <div dropdown-id="veiculo-tipo" class="ui fluid dropdown labeled search icon button editable">
+            <div dropdown-id="veiculo-tipo" class="ui fluid dropdown labeled search icon button editable" data-group="1">
                 <input type="hidden" name="tipo">
                 <i class="car icon"></i>
                 <div class="default text">Tipo</div>
                 <div class="menu">
                     <div class="ui buttons grid fluid top attached">
-                        <div class="ui thirteen wide column button insert-secondary" clear data-insert="tipo">
+                        <div class="ui eleven wide column button insert-secondary" clear data-insert="tipo">
                             <i class="plus icon"></i>
                             Cadastrar Novo Tipo
                         </div>
                         <div class="ui three wide column button table-secondary" clear data-table="tipo">
                             Listar
+                        </div>
+                        <div class="ui two wide column button clear-secondary" clear dropdown-id="veiculo-tipo">
+                            <i class="icon minus circle"></i>
                         </div>
                     </div>
                     <?php $this->load->view('admin/veiculos/secundarios/dropdown-tipo.php');?>
@@ -36,18 +39,21 @@
         
         <div class="field">
             <label>Marca</label>
-            <div dropdown-id="veiculo-marca" class="ui fluid dropdown labeled search icon button editable">
+            <div dropdown-id="veiculo-marca" class="ui fluid dropdown labeled search icon button editable" data-group="1">
                 <input type="hidden" name="marca">
                 <i class="cubes icon"></i>
                 <div class="default text">Marca</div>
                 <div class="menu">
                     <div class="ui buttons grid fluid top attached">
-                        <div class="ui thirteen wide column button insert-secondary" clear data-insert="marca">
+                        <div class="ui eleven wide column button insert-secondary" clear data-insert="marca">
                             <i class="plus icon"></i>
                             Cadastrar Nova Marca
                         </div>
                         <div class="ui three wide column button table-secondary" clear data-table="marca">
                             Listar
+                        </div>
+                        <div class="ui two wide column button clear-secondary" clear dropdown-id="veiculo-tipo">
+                            <i class="icon minus circle"></i>
                         </div>
                     </div>
                     <?php $this->load->view('admin/veiculos/secundarios/dropdown-marca.php');?>
@@ -58,18 +64,21 @@
                     
         <div class="field">
             <label>Modelo</label>
-            <div dropdown-id="veiculo-modelo" class="ui fluid dropdown labeled search icon button editable">
+            <div dropdown-id="veiculo-modelo" class="ui fluid dropdown labeled search icon button editable" data-group="1">
                 <input type="hidden" name="modelo">
                 <i class="cube icon"></i>
                 <div class="default text">Modelo</div>
                 <div class="menu">
                     <div class="ui buttons grid fluid top attached">
-                        <div class="ui thirteen wide column button insert-secondary" clear data-insert="modelo">
+                        <div class="ui eleven wide column button insert-secondary" clear data-insert="modelo">
                             <i class="plus icon"></i>
                             Cadastrar Novo Modelo
                         </div>
                         <div class="ui three wide column button table-secondary" clear data-table="modelo">
                             Listar
+                        </div>
+                        <div class="ui two wide column button clear-secondary" clear dropdown-id="veiculo-tipo">
+                            <i class="icon minus circle"></i>
                         </div>
                     </div>
                     <?php $this->load->view('admin/veiculos/secundarios/dropdown-modelo.php');?>
@@ -137,12 +146,15 @@
                 <div class="default text">Opcionais</div>
                 <div class="menu">
                     <div class="ui buttons grid fluid top attached">
-                        <div class="ui thirteen wide column button insert-secondary" clear data-insert="opcional">
+                        <div class="ui eleven wide column button insert-secondary" clear data-insert="opcional">
                             <i class="plus icon"></i>
                             Cadastrar Novo Opcional
                         </div>
                         <div class="ui three wide column button table-secondary" clear data-table="opcional">
                             Listar
+                        </div>
+                        <div class="ui two wide column button clear-secondary" clear dropdown-id="veiculo-tipo">
+                            <i class="icon minus circle"></i>
                         </div>
                     </div>
                     <?php $this->load->view('admin/veiculos/secundarios/dropdown-opcional.php');?>
@@ -159,12 +171,15 @@
                 <div class="default text">Tipos de Combustível</div>
                 <div class="menu">
                     <div class="ui buttons grid fluid top attached">
-                        <div class="ui thirteen wide column button insert-secondary" clear data-insert="combustivel">
+                        <div class="ui eleven wide column button insert-secondary" clear data-insert="combustivel">
                             <i class="plus icon"></i>
                             Cadastrar Novo Tipo de Combustível
                         </div>
                         <div class="ui three wide column button table-secondary" clear data-table="combustivel">
                             Listar
+                        </div>
+                        <div class="ui two wide column button clear-secondary" clear dropdown-id="veiculo-tipo">
+                            <i class="icon minus circle"></i>
                         </div>
                     </div>
                     <?php $this->load->view('admin/veiculos/secundarios/dropdown-combustivel.php');?>

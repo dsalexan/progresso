@@ -53,8 +53,15 @@
         }));
         return this;
     }
+
+    
 }(jQuery));
 
+function bindCloseMessage(){
+    $('.ui.message > i.icon.close').click(function(){
+        $(this).parent().remove();
+    });
+}
 
 
 function removeAcento (text){       
@@ -77,8 +84,6 @@ $(document).ready(function(){
     $('.ui.dropdown').dropdown();
 
     $("#logout").click(function(event){
-        //return confirm("Tem certeza que deseja sair?");
-
         event.preventDefault();
 
         $("#logout-confirmation").modal('show');
@@ -118,6 +123,7 @@ $(document).ready(function(){
         }
     });
 });
+
 
 
 

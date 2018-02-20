@@ -77,8 +77,7 @@
                         'form.min.js',
                         'checkbox.min.js',
                         'popup.min.js',
-                        'dropdown.min.js',
-                        'message.min.js'
+                        'dropdown.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css', 'expanded-dropdown.css'],
                                 'js' => [     
@@ -155,7 +154,7 @@
             $this->load->view('admin/google-api/oauth', $data);
         }
 
-        public function dropdown($table='tipo', $edit=false){
+        public function dropdown($table='tipo', $edit=false, $alternative=false, $id_alternative=false){
             $edit = (!$edit) ? 'non-edit' : $edit;
             
             $campos = [];
@@ -187,7 +186,8 @@
                     'valor' => 'id_marca',
                     'texto' => 'nome'
                 ],
-                'edit' => $edit
+                'edit' => $edit,
+                'alternative_tipo' => 'get_marcas_lista_by_tipo'
             ];
 
             $campos['modelo'] = [
@@ -202,8 +202,15 @@
                     'valor' => 'id_modelo',
                     'texto' => 'nome'
                 ],
-                'edit' => $edit
+                'edit' => $edit,
+                'alternative_tipo' => 'get_modelos_lista_by_tipo',
+                'alternative_marca' => 'get_modelos_lista_by_marca'
             ];
+
+            if($alternative !== false){
+                $func = $campos[$table]['alternative_'.$alternative];
+                $campos[$table]['dados']['origem'] = $this->veiculos_model->$func($id_alternative, 1);
+            }
 
             $this->load->view('admin/veiculos/secundarios/dropdown.php', ['campo' => $campos[$table]]);
         }
@@ -494,13 +501,9 @@
                 $images = $_FILES;
                 $result = $images;
             }elseif($action == 'revive'){
-                
-                $veiculo = [
-                    'id_veiculo' => $id_veiculo,
-                    'status' => 1
-                ];
-
-                $this->veiculos_model->update_veiculo($veiculo);
+                $result = [];
+                $erro = $this->veiculos_model->remove_veiculo($id_veiculo, true);
+                $result[$id_veiculo] = $erro;
             }elseif($action == 'pin'){
                 
                 $veiculo = [
@@ -619,6 +622,9 @@
                 $result = [];
                 $erro = $this->veiculos_model->remove_marca($id_marca, true);
                 $result[$id_marca] = $erro;
+            }elseif($action == 'type'){
+                $id_tipo = $id_marca;
+                $result = $this->veiculos_model->get_marcas_lista_by_tipo($id_tipo, 1);
             }
 
             
@@ -671,6 +677,12 @@
                 $result = [];
                 $erro = $this->veiculos_model->remove_modelo($id_modelo, true);
                 $result[$id_modelo] = $erro;
+            }elseif($action == 'type'){
+                $id_tipo = $id_modelo;
+                $result = $this->veiculos_model->get_modelos_lista_by_tipo($id_tipo, 1);
+            }elseif($action == 'brand'){
+                $id_marca = $id_modelo;
+                $result = $this->veiculos_model->get_modelos_lista_by_marca($id_marca, 1);
             }
 
             

@@ -1,8 +1,8 @@
 <div id="user_table" class="ui basic segment dimmable dimmed" data-id="table">
         
-    <!-- <div class="ui active inverted dimmer">
-        <div class="ui text loader">Acessando Banco de Dados</div>
-    </div> -->
+    <div class="ui container message-holder">
+
+    </div>
 
     <div id="toolbar" class="btn-group">
         <button id="remove" type="button" class="btn btn-default has-popup" data-inverted="" data-position="bottom left" data-tooltip="Remover veículos selecionados">
