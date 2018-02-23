@@ -386,7 +386,7 @@
 
                 $opcionais = $this->input->post('opcionais');
                 if($opcionais == '') $opcionais = [];
-                if(!is_array($opcionais)) $opcionais = [$opcionais];
+                else $opcionais = explode(',', $opcionais);
                 $opcionais_banco = $this->veiculos_model->get_opcionais($id_veiculo, true);
                 foreach($opcionais as $id_opcional){ // INSERIR NOVOS
                     if(!in_array($id_opcional, $opcionais_banco)){
@@ -401,7 +401,7 @@
 
                 $combustiveis = $this->input->post('combustivel');
                 if($combustiveis == '') $combustiveis = [];
-                if(!is_array($combustiveis)) $combustiveis = [$combustiveis];
+                else $combustiveis = explode(',', $combustiveis);
                 $combustiveis_banco = $this->veiculos_model->get_combustiveis($id_veiculo, true);
                 foreach($combustiveis as $id_combustivel){ // INSERINDO NOVOS
                     if(!in_array($id_combustivel, $combustiveis_banco)){
@@ -414,32 +414,18 @@
                     }
                 }
 
+                
                 $imagens = [];
-                for($i=0; $i < 7; $i++){
-                    $files = $_FILES['image'.$i];
-                    if($files['error'] == "0"){
-
-                        $now = new DateTime();
-                        $ext_file = '.'.explode('/',$files['type'])[1];
-                        $nome_imagem =  $now->format('Ymd_His').'_'.microtime(true).$ext_file;
-                        
-
-                        $path = FCPATH . '/assets/img/veiculos/';
-                        $configuracao = array(
-                            'upload_path'   => $path,
-                            'allowed_types' => 'gif|jpg|png',
-                            'file_name' => $nome_imagem
-                        );      
-                        $this->upload->initialize($configuracao);
-                        
-                        if ($this->upload->do_upload('image'.$i))
-                            $imagens[] = ['id' => -1, 'url' => $nome_imagem, 'nome' => null];
-                        else{
-                            $imagens[] = $this->upload->display_errors(). '    ('.$path.')';
-                        }
-                    }
+                $ids = [];
+                if($this->input->post('image-count') != '') $ids = explode(',', $this->input->post('image-count'));
+                for($index=0; $index < count($ids); $index++){
+                    $i = $ids[$index];
+                    $imagens[] = [
+                        'id' => $this->input->post('imageID'.$i),
+                        'url' => $this->input->post('image'.$i), 
+                        'nome' => null ];
                 }
-                $imagens_banco = $this->input->get_imagens($id_veiculo, true);
+                $imagens_banco = $this->veiculos_model->get_imagens($id_veiculo, true);
                 $ids = [];
                 foreach($imagens as $data_imagem){ // INSERINDO NOVAS
                     
@@ -452,12 +438,12 @@
                     if($id_imagem == -1){
                         // $imagem['id_imagem'] = $this->veiculos_model->insert_imagem($imagem);
                         // $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem']);
-                    }else{
+                    }else{ // se ja esta no banco ta tudo certao, nao modifica isso
                         $ids[] = $id_imagem;
                     }
                 }
                 foreach($imagens_banco as $id_imagem){ // REMOVER VELHOS
-                    if(!in_array($id_imagem, $ids)){
+                    if(!in_array($id_imagem, $ids)){ // se tem algum que tava no banco e nao ta na nova lista, remove
                         // $this->veiculos_model->remove_imagem_veiculo($id_veiculo, $id_imagem);
                     }
                 }
@@ -478,7 +464,7 @@
 
                     $result = $veiculos;
                 }
-            }elseif($action == 'image'){
+            }elseif($action == 'image'){ // pega as imagens pra colocar no fine-uploader como initial files
                 $images = [];
                 foreach($this->veiculos_model->get_imagens($id_veiculo) as $image){
                     $url = $image['url_imagem'];
@@ -488,6 +474,8 @@
                     if(count($exploded) > 1) $name = $exploded[1];
 
                     $images[] = [
+                        'id_imagem' => $image['id_imagem'],
+                        'uploadName' => $name,
                         'name' => $name,
                         'uuid' => $uuid,
                         'thumbnailUrl' => base_url('assets/img/veiculos/'.$url)

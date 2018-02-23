@@ -239,7 +239,7 @@ class Fine {
         $target = join(DIRECTORY_SEPARATOR, array($targetFolder, $uuid));
 
         if (is_dir($target)){
-            // $this->removeDir($target);
+            $this->removeDir($target);
             return array("success" => true, "uuid" => $uuid, "target" => $target);
         } elseif(is_file($target)){
             unlink($target);

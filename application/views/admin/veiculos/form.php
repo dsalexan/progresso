@@ -1,4 +1,4 @@
-<form form-id="<?=$acao?>_form" class="ui form vehicle" url="<?php echo base_url('admin/vehicle/'.$acao);?>" method="post" enctype="multipart/form-data">
+<form form-id="<?=$acao?>_form" data-role="<?=$acao?>" class="ui form vehicle" url="<?php echo base_url('admin/vehicle/'.$acao);?>" method="post" enctype="multipart/form-data">
 
 <div class="ui centered grid">
     <div class="message_spot row hide">

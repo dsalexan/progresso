@@ -24,9 +24,11 @@ $(document).ready(function(){
         $form.form('validate form');
         if( $('.ui.form.vehicle').form('is valid') ){
                 
-            var submittedFileCount = $form.find('.fine-uploader-element').fineUploader('getUploads', 
-            { status: qq.status.SUBMITTED }).length;
+            var submittedFileCount = $form.find('.fine-uploader-element').fineUploader('getUploads',{
+                status: [qq.status.SUBMITTED]
+            }).length;
 
+            // console.log(submittedFileCount);
             if (submittedFileCount > 0) {
                 $form.find('.fine-uploader-element').fineUploader('uploadStoredFiles');
             }else{
@@ -441,6 +443,7 @@ $(document).ready(function(){
     });
 });
 
+var sessionRequest = false;
 function initFineUploader($fine, initialList=false){
     var fineParams = {
         template: 'qq-template-manual-trigger',
@@ -466,7 +469,10 @@ function initFineUploader($fine, initialList=false){
         autoUpload: false
     };
 
-    if(initialList!=false) fineParams.session = {endpoint: initialList};
+    if(initialList!=false) {
+        fineParams.session = {endpoint: initialList};
+        sessionRequest = true;
+    }
     fineParams.retry = {enableAuto: true, showButton: true};
     // fineParams.thumbnails = {
     //     placeholders: {
@@ -475,14 +481,33 @@ function initFineUploader($fine, initialList=false){
     //     }
     // };
     
+    var role = $fine.closest('form').data('action');
     $fine.fineUploader(fineParams).on('complete', function (event, id, name, responseJSON) {
-        fineData.push({data: responseJSON, id: id});
+        fineData[role].push({data: responseJSON, id: id});
     }).on('allComplete', function (event, success, failed) {
-        console.log('all complete');
-        // console.log(fineData);
-        // submitForm.call(this);
+        // console.log('all complete, sessionRequest=' + sessionRequest);
+        // controlar o acionamento errado do evento onAllComplete ao carregar as imagens em initial files
+        if(sessionRequest !== false){
+            sessionRequest--;
+            if(sessionRequest === 0) sessionRequest = false;
+        } else{
+            // console.log(fineData[role]);
+            submitForm.call(this);
+        }
     }).on('sessionRequestComplete', function(response, success, x){
-        console.log(success);
+        // console.log(success);
+
+        fineData[role] = [];
+        $.each(success, function(index, image){
+            fineData[role].push({data: image, id: index});
+        });
+        sessionRequest = success.length;
+    }).on('deleteComplete', function(event, id, xht, isError){
+        // verificar qual foi removido para tirar do array com os dados
+        fineData[role] = fineData[role].filter(function(item) { 
+            return item.id != id; // remove da lista
+        });
+        // console.log(fineData[role]);
     });
 }
 
@@ -854,15 +879,31 @@ function submitForm(){
             { status: qq.status.UPLOAD_FAILED });
         if (failedUploads.length == 0) {    
             $form = $(this).closest('form');
+            var role = $form.data('action')
             //colocar os links upados das imagens em hidden fields dinamicos
-            $form.append('<input type="hidden" class="tmp-hidden-input" name="image-count" value="'+fineData.length+'">');
-            $.each(fineData, function(index, image){
+            $count = $('<input type="hidden" class="tmp-hidden-input" name="image-count">');
+            var ids = [];
+            $.each(fineData[role], function(index, image){
                 var url = image.data.uuid + '/' + image.data.uploadName;
+                // input da url
                 $img = $('<input type="hidden" class="tmp-hidden-input" name="image'+image.id+'">');
                 $img.val(url);
 
                 $img.appendTo($form);
+
+                var id = -1;
+                if(image.data.id_imagem != undefined) id = image.data.id_imagem;
+                // input do id
+                $img = $('<input type="hidden" class="tmp-hidden-input" name="imageID'+image.id+'">');
+                $img.val(id);
+
+                $img.appendTo($form);
+
+                //array com os ids
+                ids.push(image.id);
             });
+            $count.val(ids);
+            $form.append($count);
 
             $form.submit();
 
@@ -870,7 +911,7 @@ function submitForm(){
 
             $fine = $form.find('.fine-uploader-element');
             $fine.unbind().empty();
-            fineData = [];
+            fineData[role] = [];
             initFineUploader($fine);
         }
     }
@@ -878,7 +919,7 @@ function submitForm(){
 
 
 var request;
-var fineData = [];
+var fineData = {insert: [], update: []};
 $('.ui.form.vehicle').submit(function(event){
 
     if( $(this).form('is valid') ){
@@ -969,7 +1010,7 @@ function set_update_tab(id_veiculo){
             
             $fine = $('[form-id=update_form].ui.form').find('.fine-uploader-element');
             $fine.unbind().empty();
-            fineData = [];
+            fineData['update'] = [];
             initFineUploader($fine, 'vehicle/image/' + id_veiculo);
 
             // var imgs = [];
