@@ -28,7 +28,7 @@
                                         <div class="ui centered small images" style="text-align: center">
                                             <?php for($i=1; $i < 5; $i++){
                                                 $url_image = '';
-                                                if(count($veiculo['imagens'])-1 > $i){ //ainda tem imagens pra colocar
+                                                if(count($veiculo['imagens']) > $i){ //ainda tem imagens pra colocar
                                                     $url_image = $veiculo['imagens'][$i]['url_imagem'];
 
                                                     if (!@getimagesize(base_url('assets/img/veiculos/'.$url_image))) {
@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
+                                <a class="ui cover" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
                                 <div class="ui slide masked reveal image">
                                     <?php 
                                     if(count($veiculo['imagens']) == 0){
@@ -77,7 +77,7 @@
                                         $img2 = 'image_frame.png';
                                     }else{
                                         $img1 = $veiculo['imagens'][0]['url_imagem'];
-                                        $img2 = $veiculo['imagens'][0]['url_imagem'];
+                                        $img2 = $veiculo['imagens'][1]['url_imagem'];
                                     }
                                     
                                     if (!@getimagesize(base_url('assets/img/veiculos/'.$img1))) {

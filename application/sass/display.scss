@@ -5,6 +5,31 @@
             padding-right: calc((33.33333333% - 2.0em) * 0.15);
             z-index: 1;
 
+            & .ui.cover{
+                position: relative;
+                width: 100%;
+
+                &:before{
+                    content: "";
+                    display: block;
+                    margin-top: 75%;
+                }
+
+                & .ui.image{
+                    position: absolute !important;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+
+                    & img{
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+            }
+
             &.expanded{
                 padding-right: 0;
                 margin-right: 0;

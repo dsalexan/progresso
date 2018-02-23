@@ -123,3 +123,11 @@ function set_click_function(){
 $(document).ready(function(){
     set_click_function();
 });
+
+// $(window).resize(function(){
+
+//     $('.displayed.card .ui.slide.image img').each(function(){
+//         var w = $(this).width();
+//         $(this).height(w * 0.75);
+//     });
+// });
