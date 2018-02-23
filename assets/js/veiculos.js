@@ -15,6 +15,28 @@ $(document).ready(function(){
     }else{
         disable_tab('update');
     }
+    
+    initFineUploader($('.fine-uploader-element'));
+
+    $('.submit-form').click(function() {
+        $form = $(this).closest('form');
+
+        $form.form('validate form');
+        if( $('.ui.form.vehicle').form('is valid') ){
+                
+            var submittedFileCount = $form.find('.fine-uploader-element').fineUploader('getUploads', 
+            { status: qq.status.SUBMITTED }).length;
+
+            if (submittedFileCount > 0) {
+                $form.find('.fine-uploader-element').fineUploader('uploadStoredFiles');
+            }else{
+                submitForm.call($form.find('.fine-uploader-element').get(0));
+            }
+        }
+
+        $("html, body").animate({ scrollTop: 0 }, "fast");
+        
+    });
 
     // $menu = $('[form-id=insert_form]').find('[dropdown-id=veiculo-tipo] .menu');
     // $menu.fetch('dropdown/tipo');
@@ -400,7 +422,69 @@ $(document).ready(function(){
             if($(this).data('frozen')) $(this).removeData('frozen');
         });
     });
+
+    //teste
+    $('.roll-test').click(function(){
+        $form = $(this).closest('form');
+        $form.form('set values', {
+            tipo     : 1,
+            marca   : 74,
+            modelo   : 372,
+            estado    : "Novo",
+            cor   : "Vermelho",
+            ano   : 2016,
+            observacoes   : "Ferrari né meu",
+            valor   : 999999,
+            opcionais: ["1","2","8","9","12"],
+            combustivel: ["1","4","5"]
+        });
+    });
 });
+
+function initFineUploader($fine, initialList=false){
+    var fineParams = {
+        template: 'qq-template-manual-trigger',
+        request: {
+            endpoint: 'upload'
+        },
+        deleteFile: {
+            enabled: true,
+            endpoint: "upload"
+        },
+        chunking: {
+            enabled: true,
+            concurrent: {
+                enabled: true
+            },
+            success: {
+                endpoint: "upload?done"
+            }
+        },
+        resume: {
+            enabled: true
+        },
+        autoUpload: false
+    };
+
+    if(initialList!=false) fineParams.session = {endpoint: initialList};
+    fineParams.retry = {enableAuto: true, showButton: true};
+    // fineParams.thumbnails = {
+    //     placeholders: {
+    //         waitingPath: '/source/placeholders/waiting-generic.png',
+    //         notAvailablePath: '/source/placeholders/not_available-generic.png'
+    //     }
+    // };
+    
+    $fine.fineUploader(fineParams).on('complete', function (event, id, name, responseJSON) {
+        fineData.push({data: responseJSON, id: id});
+    }).on('allComplete', function (event, success, failed) {
+        console.log('all complete');
+        // console.log(fineData);
+        // submitForm.call(this);
+    }).on('sessionRequestComplete', function(response, success, x){
+        console.log(success);
+    });
+}
 
 function bindEvents(){
     $('.ui.dropdown.editable').find('div.button.edit').click(function(){
@@ -764,7 +848,37 @@ window.secondaryEvents = {
 
 
 //FUNCOES PARA FORMULARIO
+function submitForm(){
+    if ($(this).fineUploader('getInProgress') == 0) {
+        var failedUploads = $(this).fineUploader('getUploads', 
+            { status: qq.status.UPLOAD_FAILED });
+        if (failedUploads.length == 0) {    
+            $form = $(this).closest('form');
+            //colocar os links upados das imagens em hidden fields dinamicos
+            $form.append('<input type="hidden" class="tmp-hidden-input" name="image-count" value="'+fineData.length+'">');
+            $.each(fineData, function(index, image){
+                var url = image.data.uuid + '/' + image.data.uploadName;
+                $img = $('<input type="hidden" class="tmp-hidden-input" name="image'+image.id+'">');
+                $img.val(url);
+
+                $img.appendTo($form);
+            });
+
+            $form.submit();
+
+            $('.tmp-hidden-input').remove();
+
+            $fine = $form.find('.fine-uploader-element');
+            $fine.unbind().empty();
+            fineData = [];
+            initFineUploader($fine);
+        }
+    }
+}
+
+
 var request;
+var fineData = [];
 $('.ui.form.vehicle').submit(function(event){
 
     if( $(this).form('is valid') ){
@@ -836,6 +950,7 @@ function set_update_tab(id_veiculo){
             $.each(data.combustiveis, function( index, value ){
                 cmb.push(value.id_combustivel);
             });
+            
 
             $('[form-id=update_form].ui.form').form('set values', {
                 id : id_veiculo,
@@ -851,10 +966,16 @@ function set_update_tab(id_veiculo){
                 combustivel: cmb
             });
             
-            var imgs = [];
-            $.each(data.imagens, function( index, value ){
-                $('[form-id=update_form].ui.form').find('.field [image-id=img'+index+']').attr('src', base_url('assets/img/veiculos/'+value.url_imagem));
-            });
+            
+            $fine = $('[form-id=update_form].ui.form').find('.fine-uploader-element');
+            $fine.unbind().empty();
+            fineData = [];
+            initFineUploader($fine, 'vehicle/image/' + id_veiculo);
+
+            // var imgs = [];
+            // $.each(data.imagens, function( index, value ){
+            //     $('[form-id=update_form].ui.form').find('.field [image-id=img'+index+']').attr('src', base_url('assets/img/veiculos/'+value.url_imagem));
+            // });
 
         }
     });

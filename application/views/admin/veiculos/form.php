@@ -7,7 +7,12 @@
     </div>
 
     <div class="eight wide column">
-        
+
+        <div class="field">
+        <label>Teste</label>
+        <div class="ui button fluid roll-test">Rodar Teste</div>
+        </div>
+
         <?php if($acao=='update'): ?>
         <input type="hidden" name="id">
         <?php endif; ?>
@@ -192,7 +197,7 @@
             Imagens
         </h4>
 
-        <?php for($index=0; $index< 7; $index++){ ?>
+        <?php for($index=0; $index< 0; $index++){ ?>
         <div class="field">
         <!-- <form id="form-img<?=$index?>" method="post" enctype="multipart/form-data"  action="<?=base_url('admin/vehicle/image');?>"> -->
             <img image-id="img<?=$index?>" class="ui small image left floated middle aligned" src="<?=base_url('assets/img/image_frame.png')?>">
@@ -204,8 +209,10 @@
             </div>
         <!-- </form> -->
         </div>
-            </br>
+        </br>
         <?php } ?>
+
+        <div class="fine-uploader-element"></div>
 
     </div>
     <div class="eight wide column">
@@ -213,7 +220,7 @@
     </div>
     <div class="row">
         <div class="sixteen wide column">
-            <div class="fluid ui submit button"  tabindex="0">
+            <div class="fluid ui submit-form button"  tabindex="0">
                 <?php
                     if($acao=='insert') echo 'Cadastrar';
                     elseif($acao=='update') echo 'Modificar';

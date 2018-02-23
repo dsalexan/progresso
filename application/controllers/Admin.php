@@ -1,8 +1,7 @@
 <?php
     class Admin extends CI_Controller{
 
-        public function view($page = 'home')
-        {
+        public function view($page = 'home'){
             $pageNames = array(
                 "home" => "Home",
                 "conteudos" => "Conteúdos",
@@ -79,7 +78,8 @@
                         'popup.min.js',
                         'dropdown.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
-            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css', 'expanded-dropdown.css'],
+            $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css', 'expanded-dropdown.css',
+                                    'fine-uploader-new.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
                                     'Chart.min.js',
@@ -89,7 +89,9 @@
                                     'bootstrap-table.js',
                                     'popper.min.js',
                                     'bootstrap-table-toolbar.js',
-                                    'expanded-tab.js']];
+                                    'expanded-tab.js',
+                                    'dropzone.js',
+                                    'jquery.fine-uploader.js']];
             $data['title'] = $pageNames[$page];
     
             $this->load->view('templates/header', $data);
@@ -332,42 +334,21 @@
 
                 $opcionais = $this->input->post('opcionais');
                 if($opcionais == '') $opcionais = [];
-                if(!is_array($opcionais)) $opcionais = [$opcionais];
+                else $opcionais = explode(',', $opcionais);
                 foreach($opcionais as $id_opcional){
                     $this->veiculos_model->insert_opcional_veiculo($id_veiculo, $id_opcional);
                 }
 
                 $combustiveis = $this->input->post('combustivel');
                 if($combustiveis == '') $combustiveis = [];
-                if(!is_array($combustiveis)) $combustiveis = [$combustiveis];
+                else $combustiveis = explode(',', $combustiveis);
                 foreach($combustiveis as $id_combustivel){
                     $this->veiculos_model->insert_combustivel_veiculo($id_veiculo, $id_combustivel);
                 }
 
                 $imagens = [];
-                for($i=0; $i < 7; $i++){
-                    $files = $_FILES['image'.$i];
-                    if($files['error'] == "0"){
-
-                        $now = new DateTime();
-                        $ext_file = '.'.explode('/',$files['type'])[1];
-                        $nome_imagem =  $now->format('Ymd_His').'_'.microtime(true).$ext_file;
-                        
-
-                        $path = FCPATH . '/assets/img/veiculos/';
-                        $configuracao = array(
-                            'upload_path'   => $path,
-                            'allowed_types' => 'gif|jpg|png',
-                            'file_name' => $nome_imagem
-                        );      
-                        $this->upload->initialize($configuracao);
-                        
-                        if ($this->upload->do_upload('image'.$i))
-                            $imagens[] = ['url' => $nome_imagem, 'nome' => null];
-                        else{
-                            $imagens[] = $this->upload->display_errors(). '    ('.$path.')';
-                        }
-                    }
+                for($i=0; $i < $this->input->post('image-count'); $i++){
+                    $imagens[] = ['url' => $this->input->post('image'.$i), 'nome' => null ];
                 }
                 foreach($imagens as $data_imagem){
                     $imagem = [
@@ -498,7 +479,21 @@
                     $result = $veiculos;
                 }
             }elseif($action == 'image'){
-                $images = $_FILES;
+                $images = [];
+                foreach($this->veiculos_model->get_imagens($id_veiculo) as $image){
+                    $url = $image['url_imagem'];
+                    $exploded = explode('/', $url);
+                    $uuid = $exploded[0];
+                    $name = $uuid;
+                    if(count($exploded) > 1) $name = $exploded[1];
+
+                    $images[] = [
+                        'name' => $name,
+                        'uuid' => $uuid,
+                        'thumbnailUrl' => base_url('assets/img/veiculos/'.$url)
+                    ];
+                }
+
                 $result = $images;
             }elseif($action == 'revive'){
                 $result = [];
@@ -801,6 +796,10 @@
             
             // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function upload(){
+            $this->load->view('admin/upload');
         }
 
         

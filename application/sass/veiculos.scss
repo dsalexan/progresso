@@ -19,6 +19,16 @@
         position: absolute;
         z-index: -1;
     }
+
+    &.input .qq-editing{
+
+        .qq-edit-filename{
+            // opacity: 1;
+            // filter: alpha(opacity=100);
+            // -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+            // z-index: inherit;
+        }
+    }
 }
 
 
@@ -38,4 +48,24 @@
             }
         }
     }
+}
+
+
+#trigger-upload {
+    color: white;
+    background-color: #00ABC7;
+    font-size: 14px;
+    padding: 7px 20px;
+    background-image: none;
+}
+
+#fine-uploader-manual-trigger {
+    
+    .qq-upload-button {
+        margin-right: 15px;
+    }
+}
+
+.qq-hide {
+    display: none;
 }
