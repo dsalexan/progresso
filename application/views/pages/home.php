@@ -135,19 +135,19 @@
                             <div class="ui blue empty circular label"></div>
                             Menor > Maior
                         </div>
-                        <!-- <div class="divider"></div>
+                        <div class="divider"></div>
                         <div class="header">
                             <i class="calendar icon"></i>
                             Filtrar por Ano
                         </div>
-                        <div class="item" data-value="">
+                        <div class="item" data-value="veiculo_ano(ano) DESC">
                             <i class="olive circle icon"></i>
                             Maior > Menor
                         </div>
-                        <div class="item" data-value="">
+                        <div class="item" data-value="veiculo_ano(ano) ASC">
                             <i class="violet circle icon"></i>
                             Menor > Maior
-                        </div> -->
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -304,10 +304,12 @@
                 </div>
             </div>
         </div>
+        <a class="ui cover" href="#">
         <div class="ui slide masked reveal image">
             <img field="imagem1" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>" class="visible content">
             <img field="imagem2" src="<?= base_url('assets/img/veiculos/image_frame.png') ?>" class="hidden content">
         </div>
+        </a>
         <div class="content">
             <div class="ui red ribbon label colapsed-hidden" value="Novo" hidden><span field="estado"></span></div>
             <div class="ui grey ribbon label colapsed-hidden" value="Usado" hidden><span field="estado"></span></div>

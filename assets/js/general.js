@@ -11,6 +11,7 @@ $(document).ready(function(){
     $('#filtro-marca, #filtro-outros').change(function(){
         var marcas = $(this).find('[name=marcas]').val();
         var opcao = $(this).find('[name=filtro]').val();
+        console.log(opcao);
         
         $('#vehicle-display').dimmer('show');
         $('#vehicle-display').find('.cards').css('opacity', 0.5);
@@ -46,7 +47,7 @@ $(document).ready(function(){
                 $lastSon.appendTo($cards);
 
                 $.each(data, function (index, veiculo){
-                    console.log(veiculo);
+                    // console.log(veiculo);
                     $card = renderCard(veiculo);
 
                     $card.insertBefore($lastSon);
@@ -73,6 +74,9 @@ $(document).ready(function(){
 function renderCard(veiculo){
     var sampleCard = $("#sample-card").find('.card');
     var card = sampleCard.clone(false);
+
+    card.find('a.ui.cover').attr('href', base_url(veiculo.tipo.url + '/' + veiculo.id_veiculo));
+    //<a class="ui cover" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
 
     $.each(veiculo['imagens'], function(i, imagem){
         var url = base_url('assets/img/veiculos/' + imagem['url_imagem']);

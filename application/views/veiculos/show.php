@@ -66,7 +66,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>  
                                 <a class="ui cover" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
                                 <div class="ui slide masked reveal image">
                                     <?php 

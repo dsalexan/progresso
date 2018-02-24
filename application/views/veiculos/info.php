@@ -47,7 +47,8 @@
 									<li><span>Tipo:</span><a href="<?=base_url($veiculo['tipo']['url']);?>"><?=$veiculo['tipo']['nome']?></a></li>
 									<li><span>Cor:</span><?=$veiculo['cor']?></li>
 									<li><span>Estado:</span><?=$veiculo['estado']?></li>
-                                    <li><span>Combustível:</span>
+									<li><span>Ano:</span><?=$veiculo['ano']?></li>
+									<li><span>Combustível:</span>
                                         <?php 
                                         $i = 0;
                                         foreach($veiculo['combustiveis'] as $combustivel){
