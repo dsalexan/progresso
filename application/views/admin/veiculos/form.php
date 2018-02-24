@@ -8,10 +8,10 @@
 
     <div class="eight wide column">
 
-        <div class="field">
+        <!-- <div class="field">
         <label>Teste</label>
         <div class="ui button fluid roll-test">Rodar Teste</div>
-        </div>
+        </div> -->
 
         <?php if($acao=='update'): ?>
         <input type="hidden" name="id">
