@@ -48,3 +48,7 @@ a:hover ~ div.content a.header {
       font-size: 2em; }
   .carousel .carousel-inner .carousel-item .ui.container {
     height: 50vh; }
+
+.max-height70 {
+  max-height: 70vh !important;
+  overflow: hidden !important; }

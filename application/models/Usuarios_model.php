@@ -69,4 +69,19 @@
             $this->db->where('id_usuario', $id_usuario);
             $this->db->update('usuarios', ['status' => 0]);
         }
+
+        public function check_username($username, $id_usuario=false){
+            $this->db->select('id_usuario');
+            $this->db->select('username');
+            $this->db->where('username', $username);
+            $query = $this->db->get('usuarios')->result_array();
+
+            if(count($query) == 0) return false;
+            
+            if($id_usuario != false){
+                return ($query[0]['id_usuario'] != $id_usuario);
+            }else{
+                return true;
+            }
+        }
     }

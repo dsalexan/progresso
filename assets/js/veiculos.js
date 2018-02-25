@@ -654,7 +654,7 @@ function updateFormatter(value, row){
     '</button>';
     
     $remove_destaque = '<button type="button" class="btn btn-default remove-destaque">' +
-        '<i style="color:red" class="ui pin icon" style="margin: 0;"></i>' +
+        '<i style="color:#d11717" class="ui pin icon" style="margin: 0;"></i>' +
     '</button>';
 
     $revive = '<button type="button" class="btn btn-default revive">' +
@@ -871,6 +871,11 @@ window.secondaryEvents = {
     }
 };
 
+function onSuccessCallback(res){
+    $('.ui.segment[data-tab=list]').dimmer('hide');
+    return res;
+}
+
 
 //FUNCOES PARA FORMULARIO
 function submitForm(){
@@ -923,6 +928,9 @@ var fineData = {insert: [], update: []};
 $('.ui.form.vehicle').submit(function(event){
 
     if( $(this).form('is valid') ){
+        
+        $(this).closest('.ui.segment').dimmer('show');
+
         event.preventDefault();
     
         if (request) {
@@ -943,17 +951,44 @@ $('.ui.form.vehicle').submit(function(event){
             form: $(this)
         });
 
-        request.done(function (response, textStatus, jqXHR){
+        request.done(function (response, textStatus, jqXHR){            
             $form = this.form;
+
+            var verbo = "criado";
+            if($form.data('role') == 'update') verbo = "modificado";
+
             $form.find("input, select, button, textarea").removeAttr('disabled');;
 
-            $form.find('.message_spot').removeClass('hide');
-            $form.find('.message_spot .column').empty();
-            $form.find('.message_spot .column').append(
-                '<div class="ui positive message small">'+
-                    '<div class="header">Veículo criado com sucesso</div>'+
-                '</div>'
-            );
+            $messageSpot = $form.find('.message_spot');
+            if($form.data('role') == 'update') {
+                
+                $holder = $('#user_table').find('.message-holder');
+                $holder.empty();
+                $holder.append('<div class="ui positive message">'+
+                                    '<i class="close icon"></i>'+
+                                    '<div class="header">'+
+                                        'Veiculo '+verbo+' com sucesso'+
+                                    '</div>'+
+                                '</div>');                                
+                bindCloseMessage();
+                
+            }else{
+                $messageSpot.removeClass('hide');
+                $messageSpot.find('.column').empty();
+                $messageSpot.find('.column').append(
+                    '<div class="ui positive message small">'+
+                        '<div class="header">Veículo '+verbo+' com sucesso</div>'+
+                    '</div>'
+                );
+            }
+
+            $form.closest('.ui.segment').dimmer('hide');
+            // resetar tab de modificação
+            if($form.data('role') == 'update') $('.ui.menu .item[data-tab=update]').text('Modificar');
+            if($form.data('role') == 'update') disable_tab('update');
+            change_tab('list');
+            if($form.data('role') == 'update') $form.closest('.ui.segment').dimmer('show');
+            if($form.data('role') == 'update') $form.closest('.ui.segment').addClass('max-height70');
         });
 
         request.fail(function (jqXHR, textStatus, errorThrown){
@@ -1013,11 +1048,8 @@ function set_update_tab(id_veiculo){
             fineData['update'] = [];
             initFineUploader($fine, 'vehicle/image/' + id_veiculo);
 
-            // var imgs = [];
-            // $.each(data.imagens, function( index, value ){
-            //     $('[form-id=update_form].ui.form').find('.field [image-id=img'+index+']').attr('src', base_url('assets/img/veiculos/'+value.url_imagem));
-            // });
-
+            $('[form-id=update_form].ui.form').closest('.ui.segment').dimmer('hide');
+            $('[form-id=update_form].ui.form').closest('.ui.segment').removeClass('max-height70');
         }
     });
 }

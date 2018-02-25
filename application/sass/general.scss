@@ -121,3 +121,8 @@ a:hover ~ div.content{
         }
     }
 }
+
+.max-height70{
+    max-height: 70vh !important;
+    overflow: hidden !important;
+}

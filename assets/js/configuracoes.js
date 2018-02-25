@@ -7,6 +7,8 @@ $('.ui.form').submit(function(event){
 
     if( $(this).form('is valid') ){
 
+        $(this).closest('.ui.segment').dimmer('show');
+
         // Prevent default posting of form - put here to work in case of errors
         event.preventDefault();
     
@@ -39,7 +41,7 @@ $('.ui.form').submit(function(event){
             $form = this.form;
             $form.find("input, select, button, textarea").removeAttr('disabled');;
 
-            console.log(response);
+            // console.log(response);
 
             $form.find('.message_spot').removeClass('hide');
             $form.find('.message_spot .column').empty();
@@ -48,6 +50,8 @@ $('.ui.form').submit(function(event){
                     '<div class="header">Configurações alteradas com sucesso</div>'+
                 '</div>'
             );
+            
+            $form.closest('.ui.segment').dimmer('hide');
         });
 
         // Callback handler that will be called on failure
@@ -93,6 +97,9 @@ function set_update_tab(){
                 telefone2   : data.telefone2,
                 email   : data.email
             });
+
+            $('.ui.form').closest('.ui.segment').removeClass('max-height70');
+            $('.ui.form').closest('.ui.segment').dimmer('hide');
 
         }
     });

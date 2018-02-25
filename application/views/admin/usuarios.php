@@ -5,11 +5,16 @@
 </div>
 <div class="ui tab segment active" data-tab="list">
 
-    <div id="user_table" class="ui basic segment dimmable dimmed">
-            
-        <!-- <div class="ui active inverted dimmer">
+    <div id="user_table" class="ui basic blurring dimmed segment">
+             
+        <div class="ui active inverted dimmer">
             <div class="ui text loader">Acessando Banco de Dados</div>
-        </div> -->
+        </div>
+        
+        <div class="message_spot row hide">
+            <div class="sixteen wide column">
+            </div>    
+        </div>
 
         <div id="toolbar" class="btn-group">
             <button id="remove" type="button" class="btn btn-default has-popup" data-inverted="" data-position="bottom left" data-tooltip="Remover usuários selecionados">
@@ -30,7 +35,8 @@
             data-search="true"
             data-url="<?= base_url('admin/user/list'); ?>"
             data-url-primary="<?= base_url('admin/user/list'); ?>"
-            data-url-secondary="<?= base_url('admin/user/list-all'); ?>">
+            data-url-secondary="<?= base_url('admin/user/list-all'); ?>"
+            data-response-handler="onSuccessCallback">
             <thead>
             <tr>
                 <th data-field="state" data-checkbox="true"></th>
@@ -47,7 +53,11 @@
     </div>    
 </div>
 
-<div class="ui tab segment " data-tab="insert">
+<div class="ui tab blurring segment" data-tab="insert">
+
+    <div class="ui inverted dimmer">
+        <div class="ui large text loader">Acessando Banco de Dados</div>
+    </div>
     
     <form id="insert_form" class="ui form" url="<?php echo base_url('admin/user/insert');?>" method="post" enctype="multipart/form-data">
 
@@ -190,7 +200,11 @@
 
 </div>
 
-<div class="ui tab segment" data-tab="update">
+<div class="ui tab blurring segment dimmed" data-tab="update">
+
+    <div class="ui active inverted dimmer">
+        <div class="ui large text loader">Acessando Banco de Dados</div>
+    </div>
     
     <form id="update_form" class="ui form" url="<?php echo base_url('admin/user/update');?>" enctype="multipart/form-data">
 

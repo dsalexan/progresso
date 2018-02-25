@@ -24,7 +24,8 @@
         data-search="true"
         data-url="<?= base_url('admin/vehicle/list'); ?>"
         data-url-primary="<?= base_url('admin/vehicle/list'); ?>"
-        data-url-secondary="<?= base_url('admin/vehicle/list-all'); ?>">
+        data-url-secondary="<?= base_url('admin/vehicle/list-all'); ?>"
+        data-response-handler="onSuccessCallback">
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>

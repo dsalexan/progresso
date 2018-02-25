@@ -1,6 +1,8 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="<?= base_url(); ?>">Progresso Veículos</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="<?= base_url(); ?>">
+        <img class="ui image" src="<?=base_url('assets/img/logo.png');?>"></img>
+    </a>
     <div id="searcher" class="ui fluid category search" style="width: 100%">
         <div class="ui left icon input" style="width: 100%">
             <input class="dark-prompt prompt form-control form-control-dark w-100" type="text" placeholder="Procurar" aria-label="Procurar">

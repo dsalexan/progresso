@@ -39,7 +39,7 @@ $(document).ready(function(){
     
     $('#remove').click(function () {
         var ids = getIdSelections();
-        console.log(ids);
+        // console.log(ids);
 
         $("#remove-confirmation").find('.items').text(ids.join(', '));
         $("#remove-confirmation")
@@ -89,7 +89,7 @@ function verifyCheckboxState(){
 }
 
 function updateFormatter(value, row){
-    console.log(row);
+    // console.log(row);
 
     $edit = '<button type="button" class="btn btn-default edit">' +
         '<i class="ui write icon" style="margin: 0;"></i>' +
@@ -124,7 +124,7 @@ window.updateEvents = {
             }
         });
     }
-};
+}
 
 function change_tab(data_tab){
     $('.ui.tab.active').removeClass('active');
@@ -155,6 +155,10 @@ function set_update_tab(id_usuario){
                 nivel    : data.nivel
             });
 
+            $('#update_form.ui.form input[name=username]').data('id-usuario', id_usuario);
+            window.validation.usernameExists = false;
+
+
             if(data.permissoes == 'all')
                 $('#update_form.ui.form').form('set value', 'permissions', permissions);
             else
@@ -162,6 +166,11 @@ function set_update_tab(id_usuario){
 
             if(data.nivel == 1)
                 verifyCheckboxState();
+
+            $('#update_form.ui.form').form('remove rule', 'password');
+
+            $('#update_form.ui.form').closest('.ui.segment').dimmer('hide');
+            
         }
     });
 }
@@ -172,9 +181,17 @@ function getIdSelections() {
     });
 }
 
+function onSuccessCallback(res){
+    $('.ui.segment[data-tab=list] > div.ui.segment').dimmer('hide');
+    return res;
+}
+
 var request;
 $('.ui.form').submit(function(event){
+
     if( $(this).form('is valid') ){
+
+        $(this).closest('.ui.segment').dimmer('show');
 
         // Prevent default posting of form - put here to work in case of errors
         event.preventDefault();
@@ -200,15 +217,29 @@ $('.ui.form').submit(function(event){
         request.done(function (response, textStatus, jqXHR){
             // Log a message to the console
             $form = this.form;
+
+            var verbo = "criado";
+            if($form.attr('id') == 'update_form') verbo = "modificado";
+
             $form.find("input, select, button, textarea").removeAttr('disabled');;
 
-            $form.find('.message_spot').removeClass('hide');
-            $form.find('.message_spot .column').empty();
-            $form.find('.message_spot .column').append(
+            $messageSpot = $form.find('.message_spot');
+            if($form.attr('id') == 'update_form') $messageSpot = $('#user_table').find('.message_spot');
+
+            $messageSpot.removeClass('hide');
+            $messageSpot.find('.column').empty();
+            $messageSpot.find('.column').append(
                 '<div class="ui positive message small">'+
-                    '<div class="header">Usuário criado com sucesso</div>'+
+                    '<div class="header">Usuário '+verbo+' com sucesso</div>'+
                 '</div>'
             );
+
+            $form.closest('.ui.segment').dimmer('hide');
+            // resetar tab de modificação
+            if($form.attr('id') == 'update_form') $('.ui.menu .item[data-tab=update]').text('Modificar');
+            if($form.attr('id') == 'update_form') disable_tab('update');
+            change_tab('list');
+            if($form.attr('id') == 'update_form')  $form.closest('.ui.segment').dimmer('show');
         });
 
         // Callback handler that will be called on failure
@@ -233,6 +264,38 @@ $('.ui.form').submit(function(event){
 
 });
     
+
+window.validation = {
+    usernameExists: true //nao existe, VÁLIDO como estado inicial
+};
+
+$.fn.form.settings.rules.uniqueUsername = function(value){
+    if(value == '') return true;
+    return !window.validation.usernameExists;
+}
+
+var usernameRequest;
+$('input[name=username]').keyup(function(){
+    // console.log($(this).val());
+    if(usernameRequest){
+        usernameRequest.abort();
+        window.validation.usernameExists = true;
+    }
+
+    var id=-1; //caso seja um insert, nao tem id
+    if($(this).data('id-usuario') != undefined) id= $(this).data('id-usuario');
+
+    usernameRequest = $.ajax({
+        url: base_url('admin/user/username/' + encodeURIComponent($(this).val()) + '?id=' + id),
+        type: 'GET',
+        dataType : "json",
+        success: function(data) {
+            window.validation.usernameExists = data;
+        }
+    });
+    
+});
+
 $('.ui.form')
   .form({
     fields: {
@@ -260,6 +323,10 @@ $('.ui.form')
           {
             type   : 'empty',
             prompt : 'Por favor informe um usuário'
+          },
+          {
+              type: 'uniqueUsername',
+              prompt: 'Esse nome de usuário já existe, por favor escolha outro'
           }
         ]
       },

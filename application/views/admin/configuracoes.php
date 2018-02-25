@@ -2,7 +2,11 @@
   <a class="item active" data-tab="update">Modificar</a>
 </div>
 
-<div class="ui tab segment active" data-tab="update">
+<div class="ui tab segment active dimmed max-height70" data-tab="update">
+
+    <div class="ui active inverted dimmer">
+        <div class="ui large text loader">Acessando Banco de Dados</div>
+    </div>
     
     <form id="insert_form" class="ui form" url="<?php echo base_url('admin/config/update');?>" method="post" enctype="multipart/form-data">
 

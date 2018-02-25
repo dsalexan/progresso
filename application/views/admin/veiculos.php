@@ -10,13 +10,21 @@
   <a class="item <?php if($options['action']=='insert') echo 'active'?>" data-tab="insert">Cadastrar</a>
   <a class="item <?php if($options['action']=='update') echo 'active'?>" data-tab="update" disabled>Modificar</a>
 </div>
-<div class="ui tab segment <?php if($options['action']=='list') echo 'active'?>" data-tab="list">
+<div class="ui tab segment dimmed <?php if($options['action']=='list') echo 'active'?>" data-tab="list">
+             
+    <div class="ui active inverted dimmer">
+        <div class="ui text loader">Acessando Banco de Dados</div>
+    </div>
 
     <?php $this->load->view('admin/veiculos/table.php'); ?>
     
 </div>
 
 <div class="ui tab segment <?php if($options['action']=='insert') echo 'active';?>" data-tab="insert">
+    
+    <div class="ui inverted dimmer">
+        <div class="ui large text loader">Acessando Banco de Dados</div>
+    </div>
     
     <?php 
     $data = [
@@ -26,7 +34,11 @@
 
 </div>
 
-<div class="ui tab segment <?php if($options['action']=='update') echo 'active';?>" data-tab="update">
+<div class="ui tab dimmed max-height70 segment <?php if($options['action']=='update') echo 'active';?>" data-tab="update">
+
+    <div class="ui active inverted dimmer">
+        <div class="ui large text loader">Acessando Banco de Dados</div>
+    </div>
     
     <?php 
     $data = [

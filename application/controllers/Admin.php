@@ -273,12 +273,13 @@
                     'status' => 1,
                 ];
 
-                if($this->input->post('password') !== null){
+                if($this->input->post('password') !== null && $this->input->post('password') != ''){
                     $passwordMD5 = md5($this->input->post('password'));
                     $usuario['senha'] = $passwordMD5;
                 }
 
                 $this->usuarios_model->update_usuario($usuario);
+                $result = $usuario;
             }elseif($action == 'remove'){
                 if($id_usuario != false)
                     $this->usuarios_model->remove_usuario($id_usuario);
@@ -288,7 +289,7 @@
                         $this->usuarios_model->remove_usuario($id_usuario);
                     }
                 }
-            }if($action == 'revive'){
+            }elseif($action == 'revive'){
                 
                 $usuario = [
                     'id_usuario' => $id_usuario,
@@ -296,6 +297,10 @@
                 ];
 
                 $this->usuarios_model->update_usuario($usuario);
+            }if($action == 'username'){
+                $username = $id_usuario;
+                $id_usuario = $this->input->get('id') != -1 ? $this->input->get('id') : false;
+                $result = $this->usuarios_model->check_username($username, $id_usuario);
             }
 
             // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';

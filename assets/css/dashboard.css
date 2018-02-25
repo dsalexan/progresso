@@ -43,7 +43,8 @@ body {
 }
 
 .sidebar .nav-link.active {
-  color: #007bff;
+  /* color: #007bff; */
+  color: #d11717;
 }
 
 .sidebar .nav-link:hover .feather,
