@@ -345,6 +345,7 @@ div#wrap-body{
             #template-wise{
                 .heading{
                     margin-left: 15px;
+                    margin-top: 1em;
                 }
             }
 
@@ -364,6 +365,10 @@ div#wrap-body{
                         z-index: 9999;
                     }
                 }
+            }
+
+            #vehicle-display{
+                padding: 0;
             }
 
             .heading{
