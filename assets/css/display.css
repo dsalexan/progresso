@@ -1,6 +1,22 @@
+@media only screen and (max-width: 768px) {
+  .ui.stackable.cards {
+    margin-top: 1rem; } }
+@media only screen and (max-width: 768px) {
+  .ui.stackable.cards > .card.displayed:not(.expanded) {
+    padding-bottom: 42px !important; } }
 .ui.card.displayed {
   padding-right: calc((33.33333333% - 2.0em) * 0.15);
   z-index: 1; }
+  @media only screen and (max-width: 768px) {
+    .ui.card.displayed.expanded {
+      padding-bottom: 0 !important;
+      margin-bottom: 0;
+      border-bottom-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      -webkit-box-shadow: 0 1px 7px 0 #d4d4d5,0 0 0 1px #d4d4d5;
+      box-shadow: 0 1px 7px 0 #d4d4d5,0 0 0 1px #d4d4d5; }
+      .ui.card.displayed.expanded + .content {
+        margin-top: 0; } }
   .ui.card.displayed .ui.cover {
     position: relative;
     width: 100%; }
@@ -51,6 +67,19 @@
     .ui.card.displayed + .content.segment {
       padding-right: calc((7.5% - .25em) * 0.6666666 + 1em);
       background: #2b2b2b08; }
+    @media only screen and (max-width: 768px) {
+      .ui.card.displayed + .content {
+        margin-left: 1rem;
+        width: calc(100% - 2rem);
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        padding-bottom: calc(1em + 42px); }
+        .ui.card.displayed + .content .ui.images.small img {
+          width: 110px; }
+        .ui.card.displayed + .content .ui.grid .column {
+          text-align: center; }
+          .ui.card.displayed + .content .ui.grid .column:first-of-type {
+            padding-bottom: 0 !important; } }
   .ui.card.displayed.expanded .content a, .ui.card.displayed.expanded .content div {
     float: right; }
   .ui.card.displayed .colapsed-hidden {
@@ -98,6 +127,14 @@
   display: flex;
   justify-content: center;
   align-items: center; }
+  @media only screen and (max-width: 768px) {
+    .ui.display {
+      width: 100%;
+      height: auto;
+      bottom: 0;
+      top: auto; } }
+  .ui.display p {
+    margin-bottom: 0; }
   .expanded .ui.display {
     width: 0;
     visibility: hidden;
@@ -129,3 +166,6 @@
     display: none; }
   .content .ui.display {
     width: calc(7.5% - .25em); }
+    @media only screen and (max-width: 768px) {
+      .content .ui.display {
+        width: 100%; } }

@@ -60,7 +60,7 @@ function expand_display(display){
 
     
     $('html,body').animate({
-        scrollTop: card.offset().top - $(window).height()/3},
+        scrollTop: card.offset().top},
         'fast');
 
     

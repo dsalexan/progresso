@@ -2,7 +2,7 @@
 <section class="block-sl">
     <div class="container">
         <div class="row">
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div ida="myCarousel" class="carousel slidae" data-ridae="carousel">
                 <ol class="carousel-indicators">
                     <?php
                     for($i=0; $i < count($destaques); $i++){ ?>
@@ -28,7 +28,7 @@
                                     
                             <div class="ui container" style=" background-color: #111111 ">
 
-                            <div class="ui middle aligned centered grid"  style="height: 100%;">
+                            <div class="ui middle aligned centered stackable grid"  style="height: 100%;">
                                 <div class="five wide column mask" style="overflow-x: hidden; height: 110%;">
                                     <!-- <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>"> -->
                                     <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>">
@@ -93,7 +93,7 @@
                     </div>
                 </wrapper>
 
-                <div class="ui right aligned top attached segment basic">
+                <div class="filtros ui right aligned top attached segment basic">
 
 
                     
@@ -191,7 +191,7 @@
                                             Informações
                                         </div>
 
-                                        <div class="ui grid">
+                                        <div class="ui grid stackable">
                                       
                                             <div class="eleven wide left floated right aligned column">
                                                 <?= $veiculo['observacoes'] ?>
@@ -211,8 +211,32 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a class="ui cover" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
-                                <div class="ui slide masked reveal image">
+                                <a class="computer-only ui cover" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">
+                                    <div class="ui slide masked reveal image">
+                                        <?php 
+                                        if(count($veiculo['imagens']) == 0){
+                                            $img1 = 'image_frame.png';
+                                            $img2 = 'image_frame.png';
+                                        }elseif(count($veiculo['imagens']) == 1){
+                                            $img2 = 'image_frame.png';
+                                        }else{
+                                            $img1 = $veiculo['imagens'][0]['url_imagem'];
+                                            $img2 = $veiculo['imagens'][1]['url_imagem'];
+                                        }
+                                        
+                                        if (!@getimagesize(base_url('assets/img/veiculos/'.$img1))) {
+                                            $img1 = 'image_frame.png';
+                                        }
+                                        if (!@getimagesize(base_url('assets/img/veiculos/'.$img2))) {
+                                            $img2 = 'image_frame.png';
+                                        }
+
+                                        ?>
+                                        <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
+                                        <img src="<?= base_url('assets/img/veiculos/'.$img2) ?>" class="hidden content">
+                                    </div>
+                                </a>
+                                <div class="mobile-only ui slide masked reveal image">
                                     <?php 
                                     if(count($veiculo['imagens']) == 0){
                                         $img1 = 'image_frame.png';
@@ -235,7 +259,6 @@
                                     <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
                                     <img src="<?= base_url('assets/img/veiculos/'.$img2) ?>" class="hidden content">
                                 </div>
-                                </a>
                                 <div class="content">
                                     <?php if($veiculo['estado'] == 'Novo'): ?>
                                     <div class="ui red ribbon label colapsed-hidden"><?= $veiculo['estado']; ?></div>

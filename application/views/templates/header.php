@@ -77,6 +77,8 @@
         <!-- LOADING GENERAL ASSETS -->
 
         <link href="<?php echo base_url('assets/css/general.css'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url('assets/css/bootstrap4.css'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url('assets/css/mobile.css'); ?>" rel="stylesheet" type="text/css" />
 
         <script>
             function base_url(url = '', type = ''){

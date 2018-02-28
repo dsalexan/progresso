@@ -79,7 +79,7 @@
                         'font-awesome.min.css', 
                         'search.css',
                         'display.css',
-                        'home-templace.css'
+                        'home-templace.css',
                     ],
                     'js' => [
                         'tether.min.js',
