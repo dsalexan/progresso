@@ -1,6 +1,8 @@
 @media only screen and (max-width: 768px) {
   .ui.stackable.cards {
-    margin-top: 1rem; } }
+    margin-top: 1rem;
+    margin-left: .5em;
+    width: calc(100% - 1em); } }
 @media only screen and (max-width: 768px) {
   .ui.stackable.cards > .card.displayed:not(.expanded) {
     padding-bottom: 42px !important; } }

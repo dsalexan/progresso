@@ -15,7 +15,7 @@
                     ?>
                 </div>
                 <?php endif; ?>
-                    <div class="ui four doubling cards">
+                    <div class="ui four stackable cards">
                     <?php foreach($results as $veiculo){ ?>
                         <div class="ui card">
                             <a href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>">

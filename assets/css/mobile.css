@@ -30,6 +30,12 @@
   .mobile-only {
     display: none !important; } }
 
+@media only screen and (max-width: 768px) {
+  .ui.stackable.cards {
+    margin-top: 1rem;
+    margin-left: .5em;
+    width: calc(100% - 1em); } }
+
 .bootstrap4 {
   padding: 0;
   height: 100%; }
@@ -181,4 +187,6 @@
           div#wrap-body > .container .filtros .ui.dropdown:first-of-type {
             margin-bottom: 1px; }
           div#wrap-body > .container .filtros .ui.dropdown .menu {
-            z-index: 9999; } }
+            z-index: 9999; }
+      div#wrap-body > .container .heading {
+        margin: 0; } }

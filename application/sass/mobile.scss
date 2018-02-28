@@ -107,6 +107,17 @@ body{
     }
 }
 
+.ui{
+    &.stackable.cards{
+        @media only screen and (max-width: 768px){
+            margin-top: 1rem;
+            
+            margin-left: .5em; 
+            width: calc(100% - 1em);
+        }
+    }
+}
+
 .bootstrap4{
     padding: 0;
     height: 100%;
@@ -353,6 +364,11 @@ div#wrap-body{
                         z-index: 9999;
                     }
                 }
+            }
+
+            .heading{
+                margin: 0;
+
             }
         }
     }
