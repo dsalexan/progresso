@@ -4,6 +4,7 @@ $('#header-navbar').find('a[data-page=veiculos]').addClass('active');
 
 
 $(document).ready(function(){
+
     if(options['action'] !== undefined){
         change_tab(options['action']);
 
@@ -436,7 +437,7 @@ $(document).ready(function(){
             cor   : "Vermelho",
             ano   : 2016,
             observacoes   : "Ferrari né meu",
-            valor   : 999999,
+            valor   : 9999999999,
             opcionais: ["1","2","8","9","12"],
             combustivel: ["1","4","5"]
         });
@@ -481,8 +482,8 @@ function initFineUploader($fine, initialList=false){
     //     }
     // };
     
-    var role = $fine.closest('form').data('action');
     $fine.fineUploader(fineParams).on('complete', function (event, id, name, responseJSON) {
+        var role = $(this).closest('form').data('role');
         fineData[role].push({data: responseJSON, id: id});
     }).on('allComplete', function (event, success, failed) {
         // console.log('all complete, sessionRequest=' + sessionRequest);
@@ -496,13 +497,14 @@ function initFineUploader($fine, initialList=false){
         }
     }).on('sessionRequestComplete', function(response, success, x){
         // console.log(success);
-
+        var role = $(this).closest('form').data('role');
         fineData[role] = [];
         $.each(success, function(index, image){
             fineData[role].push({data: image, id: index});
         });
         sessionRequest = success.length;
     }).on('deleteComplete', function(event, id, xht, isError){
+        var role = $(this).closest('form').data('role');
         // verificar qual foi removido para tirar do array com os dados
         fineData[role] = fineData[role].filter(function(item) { 
             return item.id != id; // remove da lista
@@ -884,7 +886,7 @@ function submitForm(){
             { status: qq.status.UPLOAD_FAILED });
         if (failedUploads.length == 0) {    
             $form = $(this).closest('form');
-            var role = $form.data('action')
+            var role = $form.data('role')
             //colocar os links upados das imagens em hidden fields dinamicos
             $count = $('<input type="hidden" class="tmp-hidden-input" name="image-count">');
             var ids = [];

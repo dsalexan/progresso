@@ -12,7 +12,8 @@
         text-align: center; } }
 
 .main-menu {
-  background-color: transparent; }
+  background-color: transparent;
+  width: 100%; }
 
 @media only screen and (max-width: 768px) {
   .full-width-mobile {
@@ -62,11 +63,14 @@
         color: #eee;
         height: 100%;
         border-radius: 0;
-        padding: 0 .75em; }
+        padding: 0 .75em;
+        position: absolute;
+        right: 0;
+        width: 55px; }
         .bootstrap4 .navbar .button-collapse button::before {
           position: absolute;
           top: 0px;
-          right: 52.5px;
+          right: 54px;
           content: '';
           border-width: 35px;
           border-style: solid;
@@ -169,7 +173,8 @@
               section.block-sl > .container .carousel .carousel-inner .carousel-item .ui.container .ui.grid .column:first-of-type {
                 height: auto !important; }
                 section.block-sl > .container .carousel .carousel-inner .carousel-item .ui.container .ui.grid .column:first-of-type .ui.image {
-                  max-width: 100vw; } }
+                  max-width: 100vw;
+                  height: auto; } }
 
 @media only screen and (max-width: 768px) {
   div#wrap-body {

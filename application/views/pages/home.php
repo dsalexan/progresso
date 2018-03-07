@@ -2,7 +2,7 @@
 <section class="block-sl">
     <div class="container">
         <div class="row">
-            <div ida="myCarousel" class="carousel slidae" data-ridae="carousel">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <?php
                     for($i=0; $i < count($destaques); $i++){ ?>

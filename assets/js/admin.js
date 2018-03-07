@@ -79,6 +79,18 @@ function removeAcento (text){
 
 
 $(document).ready(function(){
+    $('.collapse-button').click(function(){
+        var state = $(this).data('state');
+
+        if(state == 'hide'){
+            $('[data-hiddable=true]').hide();
+            $(this).data('state', 'show');
+        }else if(state == 'show'){
+            $('[data-hiddable=true]').show();
+            $(this).data('state', 'hide');
+        }
+    });
+
     $('.menu .item').tab();
     $('.has-popup').popup();
     $('.ui.dropdown').dropdown();

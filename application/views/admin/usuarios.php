@@ -61,133 +61,137 @@
     
     <form id="insert_form" class="ui form" url="<?php echo base_url('admin/user/insert');?>" method="post" enctype="multipart/form-data">
 
-    <div class="ui centered grid">
+    <div class="ui centered stackable grid">
         <div class="message_spot row hide">
             <div class="sixteen wide column">
             </div>    
         </div>
 
-        <div class="eight wide column">
-
-            <div class="field">
-            <label>Nome/Razão Social</label>
-            <div class="ui labeled input">
-                <label for="name" class="ui label"><i class="id card icon"></i></label>
-                
-                <input type="text" name="name" placeholder="Nome/Razão Social">
-            </div>
+        <div class="computer reversed row">
+            <div class="eight wide column">
+                <div class="ui error message"></div>
             </div>
 
-            <div class="field">
-                <label>E-mail</label>
-                <div class="ui labeled input">
-                    <label for="email" class="ui label"><i class="mail icon"></i></label>
-                    
-                    <input type="text"  name="email" placeholder="E-mail">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Nome de Usuário</label>
-                <div class="ui labeled input">
-                    <label for="username" class="ui label"><i class="user icon"></i></label>
-                    
-                    <input type="text"  name="username" placeholder="Usuário">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Senha</label>
-                <div class="ui labeled input">
-                    <label for="password" class="ui label"><i class="lock icon"></i></label>
-                    
-                    <input type="password"  name="password" placeholder="Senha">
-                </div>
-            </div>
-
-            <h4 class="ui horizontal divider header">
-                <i class="database icon"></i>
-                Acesso Administrativo
-            </h4>
-
-            <div class="inline fields access-level">
-                <label>Nível de Acesso</label>
+            <div class="eight wide column">
 
                 <div class="field">
-                <div class="ui radio checkbox">
-                    <input type="radio" name="nivel" value='1'>
-                    <label>Administrador</label>
+                <label>Nome/Razão Social</label>
+                <div class="ui labeled input">
+                    <label for="name" class="ui label"><i class="id card icon"></i></label>
+                    
+                    <input type="text" name="name" placeholder="Nome/Razão Social">
                 </div>
                 </div>
+
                 <div class="field">
-                <div class="ui radio checkbox">
-                    <input type="radio" value="2" name="nivel">
-                    <label>Usuário Avançado</label>
-                </div>
-                </div>
-                
-            </div>
-
-            <div class="ui grid permissions">
-                <div class="three wide column">
-                    <label><b>Permissões</b></label>
-                </div>
-                
-                <div class="thirteen wide column">
-
-                    <div class="inline fields">
-                        <div class="field">
-                        <div class="ui fixed checkbox">
-                            <input type="checkbox" name="permissions[]" value="principal" checked="checked">
-                            <label>Principal</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="usuarios">
-                            <label>Usuários</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="textos">
-                            <label>Textos</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox checked">
-                            <input type="checkbox" name="permissions[]" value="veiculos">
-                            <label>Veiculos</label>
-                        </div>
-                        </div>
+                    <label>E-mail</label>
+                    <div class="ui labeled input">
+                        <label for="email" class="ui label"><i class="mail icon"></i></label>
+                        
+                        <input type="text"  name="email" placeholder="E-mail">
                     </div>
-
-                    <div class="inline fields">
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="configuracoes">
-                            <label>Configurações</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="estatisticas">
-                            <label>Estatistísticas</label>
-                        </div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
 
+                <div class="field">
+                    <label>Nome de Usuário</label>
+                    <div class="ui labeled input">
+                        <label for="username" class="ui label"><i class="user icon"></i></label>
+                        
+                        <input type="text"  name="username" placeholder="Usuário">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Senha</label>
+                    <div class="ui labeled input">
+                        <label for="password" class="ui label"><i class="lock icon"></i></label>
+                        
+                        <input type="password"  name="password" placeholder="Senha">
+                    </div>
+                </div>
+
+                <h4 class="ui horizontal divider header">
+                    <i class="database icon"></i>
+                    Acesso Administrativo
+                </h4>
+
+                <div class="inline fields access-level">
+                    <label>Nível de Acesso</label>
+
+                    <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="nivel" value='1'>
+                        <label>Administrador</label>
+                    </div>
+                    </div>
+                    <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" value="2" name="nivel">
+                        <label>Usuário Avançado</label>
+                    </div>
+                    </div>
+                    
+                </div>
+
+                <div class="ui grid permissions">
+                    <div class="three wide column">
+                        <label><b>Permissões</b></label>
+                    </div>
+                    
+                    <div class="thirteen wide column">
+
+                        <div class="inline fields">
+                            <div class="field">
+                            <div class="ui fixed checkbox">
+                                <input type="checkbox" name="permissions[]" value="principal" checked="checked">
+                                <label>Principal</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="usuarios">
+                                <label>Usuários</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="textos">
+                                <label>Textos</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox checked">
+                                <input type="checkbox" name="permissions[]" value="veiculos">
+                                <label>Veiculos</label>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="configuracoes">
+                                <label>Configurações</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="estatisticas">
+                                <label>Estatistísticas</label>
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="eight wide column">
-            <div class="ui error message"></div>
-        </div>
+
         <div class="row">
             <div class="sixteen wide column">
                 <div class="fluid ui submit button"  tabindex="0">Cadastrar</div>
@@ -208,135 +212,140 @@
     
     <form id="update_form" class="ui form" url="<?php echo base_url('admin/user/update');?>" enctype="multipart/form-data">
 
-    <div class="ui centered grid">
+    <div class="ui centered stackable mobile reversed grid">
         <div class="message_spot row hide">
             <div class="sixteen wide column">
             </div>    
         </div>
 
-        <div class="eight wide column">
-            
-            <input type="hidden" name="id">
+        <div class="computer reversed row">
 
-            <div class="field">
-            <label>Nome/Razão Social</label>
-            <div class="ui labeled input">
-                <label for="name" class="ui label"><i class="id card icon"></i></label>
+            <div class="eight wide column">
+                <div class="ui error message"></div>
+            </div>
+
+            <div class="eight wide column">
                 
-                <input type="text" name="name" placeholder="Nome/Razão Social">
-            </div>
-            </div>
-
-            <div class="field">
-                <label>E-mail</label>
-                <div class="ui labeled input">
-                    <label for="email" class="ui label"><i class="mail icon"></i></label>
-                    
-                    <input type="text"  name="email" placeholder="E-mail">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Nome de Usuário</label>
-                <div class="ui labeled input">
-                    <label for="username" class="ui label"><i class="user icon"></i></label>
-                    
-                    <input type="text"  name="username" placeholder="Usuário">
-                </div>
-            </div>
-
-            <div class="field">
-                <label>Senha</label>
-                <div class="ui labeled input">
-                    <label for="password" class="ui label"><i class="lock icon"></i></label>
-                    
-                    <input type="password"  name="password" placeholder="Senha">
-                </div>
-            </div>
-
-            <h4 class="ui horizontal divider header">
-                <i class="database icon"></i>
-                Acesso Administrativo
-            </h4>
-
-            <div class="inline fields access-level">
-                <label>Nível de Acesso</label>
+                <input type="hidden" name="id">
 
                 <div class="field">
-                <div class="ui radio checkbox">
-                    <input type="radio" name="nivel" value='1'>
-                    <label>Administrador</label>
+                <label>Nome/Razão Social</label>
+                <div class="ui labeled input">
+                    <label for="name" class="ui label"><i class="id card icon"></i></label>
+                    
+                    <input type="text" name="name" placeholder="Nome/Razão Social">
                 </div>
                 </div>
+
                 <div class="field">
-                <div class="ui radio checkbox">
-                    <input type="radio" value="2" name="nivel">
-                    <label>Usuário Avançado</label>
-                </div>
-                </div>
-                
-            </div>
-
-            <div class="ui grid permissions">
-                <div class="three wide column">
-                    <label><b>Permissões</b></label>
-                </div>
-                
-                <div class="thirteen wide column">
-
-                    <div class="inline fields">
-                        <div class="field">
-                        <div class="ui fixed checkbox">
-                            <input type="checkbox" name="permissions[]" value="principal" checked="checked">
-                            <label>Principal</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="usuarios">
-                            <label>Usuários</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="textos">
-                            <label>Textos</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox checked">
-                            <input type="checkbox" name="permissions[]" value="veiculos">
-                            <label>Veiculos</label>
-                        </div>
-                        </div>
+                    <label>E-mail</label>
+                    <div class="ui labeled input">
+                        <label for="email" class="ui label"><i class="mail icon"></i></label>
+                        
+                        <input type="text"  name="email" placeholder="E-mail">
                     </div>
-
-                    <div class="inline fields">
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="configuracoes">
-                            <label>Configurações</label>
-                        </div>
-                        </div>
-
-                        <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="permissions[]" value="estatisticas">
-                            <label>Estatistísticas</label>
-                        </div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
 
+                <div class="field">
+                    <label>Nome de Usuário</label>
+                    <div class="ui labeled input">
+                        <label for="username" class="ui label"><i class="user icon"></i></label>
+                        
+                        <input type="text"  name="username" placeholder="Usuário">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Senha</label>
+                    <div class="ui labeled input">
+                        <label for="password" class="ui label"><i class="lock icon"></i></label>
+                        
+                        <input type="password"  name="password" placeholder="Senha">
+                    </div>
+                </div>
+
+                <h4 class="ui horizontal divider header">
+                    <i class="database icon"></i>
+                    Acesso Administrativo
+                </h4>
+
+                <div class="inline fields access-level">
+                    <label>Nível de Acesso</label>
+
+                    <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="nivel" value='1'>
+                        <label>Administrador</label>
+                    </div>
+                    </div>
+                    <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" value="2" name="nivel">
+                        <label>Usuário Avançado</label>
+                    </div>
+                    </div>
+                    
+                </div>
+
+                <div class="ui grid permissions">
+                    <div class="three wide column">
+                        <label><b>Permissões</b></label>
+                    </div>
+                    
+                    <div class="thirteen wide column">
+
+                        <div class="inline fields">
+                            <div class="field">
+                            <div class="ui fixed checkbox">
+                                <input type="checkbox" name="permissions[]" value="principal" checked="checked">
+                                <label>Principal</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="usuarios">
+                                <label>Usuários</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="textos">
+                                <label>Textos</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox checked">
+                                <input type="checkbox" name="permissions[]" value="veiculos">
+                                <label>Veiculos</label>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="inline fields">
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="configuracoes">
+                                <label>Configurações</label>
+                            </div>
+                            </div>
+
+                            <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="permissions[]" value="estatisticas">
+                                <label>Estatistísticas</label>
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="eight wide column">
-            <div class="ui error message"></div>
-        </div>
+        
         <div class="row">
             <div class="seven wide column">
                 <div class="fluid ui submit button"  tabindex="0">Modificar</div>

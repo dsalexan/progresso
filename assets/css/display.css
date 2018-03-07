@@ -35,6 +35,10 @@
       .ui.card.displayed .ui.cover .ui.image img {
         height: 100%;
         object-fit: cover; }
+  @media only screen and (max-width: 768px) {
+    .ui.card.displayed .ui.slide.image img {
+      height: 57vw;
+      object-fit: cover; } }
   .ui.card.displayed.expanded {
     padding-right: 0;
     margin-right: 0;

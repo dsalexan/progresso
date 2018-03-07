@@ -15,12 +15,19 @@
         <div class="ui input left icon action">
             <i class="calendar icon"></i>
             <input type="text" placeholder="Data Final">
-            <div class="ui animated button" tabindex="0" id="rangesubmit">
+            <div class="computer-only ui animated button rangesubmit" tabindex="0">
                 <div class="visible content">Mostrar</div>
                 <div class="hidden content">
                     <i class="area chart icon"></i>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="mobile-only ui animated button rangesubmit" tabindex="0">
+        <div class="visible content">Mostrar</div>
+        <div class="hidden content">
+            <i class="area chart icon"></i>
         </div>
     </div>
 </div>
@@ -35,7 +42,7 @@
 </br>
 </br>
 <div class="ui grid">
-    <div class="six wide column">
+    <div class="six wide computer sixteen wide mobile column">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h3>Origem de Tráfego</h3>
         </div>
@@ -46,7 +53,7 @@
                 <div class="ui text loader">Acessando Google Analytics</div>
             </div>
 
-            <table class="ui table">
+            <table class="ui table unstackable small">
                 <thead>
                     <tr>
                         <th>Origem</th>

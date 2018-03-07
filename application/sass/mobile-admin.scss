@@ -1,0 +1,117 @@
+.sticky-top{
+    position: fixed;
+    width: 100%;
+}
+
+.sidebar-sticky{
+    position: relative;
+    margin-top: 48px;
+    top: 0;
+}
+
+@media only screen and (max-width: 768px){
+    .ui.action.input:not([class*="left action"])>input {
+        border-top-right-radius: 4px!important;
+        border-bottom-right-radius: 4px!important;
+        border-right-color: rgba(34, 36, 38, 0.15)!important;
+    }
+}
+
+.navbar{
+    @media only screen and (max-width: 768px){
+        height: auto;
+
+        #searcher{
+            background-color: #494E54;
+            height: 42px;
+            display: none;
+        }
+
+        .navbar-nav{
+            background-color: #343A40;
+            margin: 0 auto;
+            font-size: 1.125em;
+            display: none;
+        }
+
+        div ul.nav{
+            .nav-item{
+                width: 100%;
+                padding: 0.6em 0;
+                
+                .nav-link{
+                    width: 100%;
+                    text-decoration: none;
+                    color: rgba(255,255,255,.5);
+
+                    &:hover, &:focus{
+                        background: none;
+                    }
+
+                    &:hover, &.active{
+                        // color: #d11717;
+                        color: #cc5a5a;
+                    }
+                }
+            }
+        }
+    }
+
+    .collapse-button{
+        display: none;
+        color: #aaa;
+        
+        @media only screen and (max-width: 768px){
+            position: absolute;
+            display: block;
+            top: 0;
+            right: 0;
+            background: none;
+            margin: 0 !important;
+            height: 50px;
+
+            &:active, &:focus{
+                background: none;
+                color: #aaa;
+            }
+
+            &:hover{
+                background: none;
+                color: #fff;
+            }
+        }
+
+        .sidebar{
+            margin: 0 !important;
+            position: unset;
+            top: initial;
+            bottom: initial;
+            left: initial;
+            z-index: unset;
+            padding: unset;
+            box-shadow: unset;
+        }
+        
+    }
+}
+
+.container-fluid{
+    margin-top: 50px;
+    @media only screen and (max-width: 768px){
+
+        .ui.segment{
+            &>div{
+                width: 100%;
+                margin-bottom: 6px;
+
+                div.ui.input{
+                    width: 100%;
+                }
+
+                &:last-of-type{
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

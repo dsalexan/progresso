@@ -28,7 +28,7 @@ $(document).ready(function(){
         maxDate: new Date()
     });
 
-    $('#rangesubmit').click(function(){
+    $('.rangesubmit').click(function(){
         var s = moment($('#rangestart').calendar('get date'));
         var e = moment($('#rangeend').calendar('get date'));
         

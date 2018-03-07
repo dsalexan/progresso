@@ -79,7 +79,7 @@
                         'dropdown.min.js'
                     ]]; // setar a variavel para o template HEADER identificar que deve puxar certos arquivos pro cabeçalho
             $data['assets'] = ['css' => ['dashboard.css', 'range.css', 'admin.css', $page.'.css', 'bootstrap-table.css', 'expanded-dropdown.css',
-                                    'fine-uploader-new.css'],
+                                    'fine-uploader-new.css', 'mobile-admin.css'],
                                 'js' => [     
                                     'moment-with-locales.js',
                                     'Chart.min.js',
@@ -352,8 +352,12 @@
                 }
 
                 $imagens = [];
-                for($i=0; $i < $this->input->post('image-count'); $i++){
-                    $imagens[] = ['url' => $this->input->post('image'.$i), 'nome' => null ];
+                if($this->input->post('image-count') != '') $ids = explode(',', $this->input->post('image-count'));
+                for($index=0; $index < count($ids); $index++){
+                    $i = $ids[$index];
+                    $imagens[] = [
+                        'url' => $this->input->post('image'.$i), 
+                        'nome' => null ];
                 }
                 foreach($imagens as $data_imagem){
                     $imagem = [
@@ -395,12 +399,12 @@
                 $opcionais_banco = $this->veiculos_model->get_opcionais($id_veiculo, true);
                 foreach($opcionais as $id_opcional){ // INSERIR NOVOS
                     if(!in_array($id_opcional, $opcionais_banco)){
-                        // $this->veiculos_model->insert_opcional_veiculo($id_veiculo, $id_opcional);
+                        $this->veiculos_model->insert_opcional_veiculo($id_veiculo, $id_opcional);
                     }
                 }
                 foreach($opcionais_banco as $id_opcional){ // REMOVER VELHOS
                     if(!in_array($id_opcional, $opcionais)){
-                        // $this->veiculos_model->remove_opcional_veiculo($id_veiculo, $id_opcional);
+                        $this->veiculos_model->remove_opcional_veiculo($id_veiculo, $id_opcional);
                     }
                 }
 
@@ -410,12 +414,12 @@
                 $combustiveis_banco = $this->veiculos_model->get_combustiveis($id_veiculo, true);
                 foreach($combustiveis as $id_combustivel){ // INSERINDO NOVOS
                     if(!in_array($id_combustivel, $combustiveis_banco)){
-                       // $this->veiculos_model->insert_combustivel_veiculo($id_veiculo, $id_combustivel);
+                       $this->veiculos_model->insert_combustivel_veiculo($id_veiculo, $id_combustivel);
                     }
                 }
                 foreach($combustiveis_banco as $id_combustivel){ // REMOVER VELHOS
                     if(!in_array($id_combustivel, $combustiveis)){
-                        // $this->veiculos_model->remove_combustivel_veiculo($id_veiculo, $id_combustivel);
+                        $this->veiculos_model->remove_combustivel_veiculo($id_veiculo, $id_combustivel);
                     }
                 }
 
@@ -441,15 +445,15 @@
                     ];
 
                     if($id_imagem == -1){
-                        // $imagem['id_imagem'] = $this->veiculos_model->insert_imagem($imagem);
-                        // $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem']);
+                        $imagem['id_imagem'] = $this->veiculos_model->insert_imagem($imagem);
+                        $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem']);
                     }else{ // se ja esta no banco ta tudo certao, nao modifica isso
                         $ids[] = $id_imagem;
                     }
                 }
                 foreach($imagens_banco as $id_imagem){ // REMOVER VELHOS
                     if(!in_array($id_imagem, $ids)){ // se tem algum que tava no banco e nao ta na nova lista, remove
-                        // $this->veiculos_model->remove_imagem_veiculo($id_veiculo, $id_imagem);
+                        $this->veiculos_model->remove_imagem_veiculo($id_veiculo, $id_imagem);
                     }
                 }
 
