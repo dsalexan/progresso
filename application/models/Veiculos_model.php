@@ -287,13 +287,24 @@
                                         OFFSET '. $offset);
             return $query->result_array();
         }
+        
+        /**
+         * Rotina recuperar veículos de forma paginada
+         * @param type $qtd_por_pagina Qtd registros por página
+         * @param type $numero_pagina Numero corrente da página
+         * @param type $order Ordem de exibição
+         * @param type $marcas Lista de marcas (separados por ',')
+         * @return type
+         */
         public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina, $order='venda_valor DESC', $marcas=false){
             $offset = (($numero_pagina-1) * $qtd_por_pagina);
             $query_marca = '';
-            if($marcas !== false) $query_marca = 'WHERE id_marca IN (' .implode(',', $marcas). ')';
+            if($marcas !== false) $query_marca = 'AND id_marca IN (' .implode(',', $marcas). ')';
             $query = $this->db->query('SELECT id_veiculo
-                                        FROM veiculos '.
-                                        $query_marca . ' 
+                                        FROM veiculos 
+                                        WHERE 1 = 1 '.
+                                        $query_marca . '
+                                        AND STATUS = 1
                                         ORDER BY '.$order.' 
                                         LIMIT '. $qtd_por_pagina . ' 
                                         OFFSET '. $offset);
