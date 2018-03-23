@@ -48,7 +48,7 @@
                                         </div>
                                         </br>
                                         <div class="extra">
-                                            <div class="ui label"><?= $veiculo['ano']?></div>
+                                            <!--div class="ui label"><?= $veiculo['ano']?></div-->
                                             <div class="ui label"><?= $veiculo['cor']?></div>
                                         </div>
                                     </div>
@@ -248,7 +248,7 @@
                                     <?php endif; ?>
                                     <a class="header" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>"><?= $veiculo['modelo']['nome']; ?></a>
                                     <div class="description">
-                                    <span class="date"><?= $veiculo['ano'] ?> - <?= $veiculo['cor']; ?></span>
+                                    <span class="date"><?= $veiculo['cor']; ?></span>
                                     </div>
                                 </div>
                                 <div class="extra content">
