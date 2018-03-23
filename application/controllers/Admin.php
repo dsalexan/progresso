@@ -315,8 +315,10 @@
                 $status = ($action == 'list-all') ? false    : 1 ;
 
                 $result = $this->veiculos_model->get_veiculos_lista($status);
+            
             }elseif($action == 'select'){
                 $result = $this->veiculos_model->get_veiculo($id_veiculo);
+                
             }elseif ($action == 'insert'){
                 $agora = new DateTime();
                 $veiculo = [
