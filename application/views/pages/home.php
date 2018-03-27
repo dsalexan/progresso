@@ -48,7 +48,7 @@
                                         </div>
                                         </br>
                                         <div class="extra">
-                                            <div class="ui label"><?= $veiculo['ano']?></div>
+                                            <!--div class="ui label"><?= $veiculo['ano']?></div-->
                                             <div class="ui label"><?= $veiculo['cor']?></div>
                                         </div>
                                     </div>
@@ -160,7 +160,9 @@
                     <div class="ui three stackable cards">
                         <?php 
                         $idx=0;
-                        foreach($results as $veiculo){ ?>
+                        foreach($results as $veiculo){ 
+                            $url_image = '';
+                            ?>
                             <div class="ui displayed card" data-index="<?=$idx?>">
                                 <div class="ui display" tabindex="0">
                                     <p><i class="chevron right icon"></i> </p>
@@ -174,7 +176,6 @@
                                                 $url_image = '';
                                                 if(count($veiculo['imagens']) > $i){ //ainda tem imagens pra colocar
                                                     $url_image = $veiculo['imagens'][$i]['url_imagem'];
-
                                                     if (!@getimagesize(base_url('assets/img/veiculos/'.$url_image))) {
                                                         $url_image = 'image_frame.png';
                                                     }
@@ -218,6 +219,7 @@
                                             $img1 = 'image_frame.png';
                                             $img2 = 'image_frame.png';
                                         }elseif(count($veiculo['imagens']) == 1){
+                                            $img1 = $veiculo['imagens'][0]['url_imagem'];
                                             $img2 = 'image_frame.png';
                                         }else{
                                             $img1 = $veiculo['imagens'][0]['url_imagem'];
@@ -248,7 +250,7 @@
                                     <?php endif; ?>
                                     <a class="header" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>"><?= $veiculo['modelo']['nome']; ?></a>
                                     <div class="description">
-                                    <span class="date"><?= $veiculo['ano'] ?> - <?= $veiculo['cor']; ?></span>
+                                    <span class="date"><?= $veiculo['cor']; ?></span>
                                     </div>
                                 </div>
                                 <div class="extra content">

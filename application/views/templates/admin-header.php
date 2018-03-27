@@ -38,12 +38,12 @@
                 Configurações
             </a>
             </li>
-            <li class="nav-item">
+            <!--li class="nav-item">
             <a class="nav-link" data-page="estatisticas" href="<?= base_url('admin/') ?>">
                 <i class="line chart icon"></i>
                 Estatísticas
             </a>
-            </li>
+            </li-->
         </ul>
     </div>
     <div id="searcher" class="ui fluid category search" data-hiddable="true" style="width: 100%;">
@@ -107,12 +107,12 @@
                 Configurações
             </a>
             </li>
-            <li class="nav-item">
+            <!--li class="nav-item">
             <a class="nav-link" data-page="estatisticas" href="<?= base_url('admin/') ?>">
                 <i class="line chart icon"></i>
                 Estatísticas
             </a>
-            </li>
+            </li-->
         </ul>
 
         </div>

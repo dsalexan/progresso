@@ -162,6 +162,9 @@ class Fine {
             return array('error' => 'File has an invalid extension, it should be one of '. $these . '.');
         }
 
+        // Verifica se o upload que está sendo enviado é uma imagem
+        $isImage = in_array(strtolower($ext), array("jpg", "png", "bmp", "jpeg"));
+        
         // Save a chunk
         $totalParts = isset($_REQUEST['qqtotalparts']) ? (int)$_REQUEST['qqtotalparts'] : 1;
 
@@ -202,6 +205,24 @@ class Fine {
                 if (move_uploaded_file($file['tmp_name'], $target)){
                     return array('success'=> true, "uuid" => $uuid);
                 }
+            }
+            
+            //Adicionado rotina para realizar uma copia de um thumbnail caso seja uma imagem
+            if ($isImage){
+                
+                $targetThumb = join(DIRECTORY_SEPARATOR, array($uploadDirectory, $uuid, "thumb-".$name));
+                
+                if ($targetThumb){
+                    $this->uploadName = basename($target);
+
+                    if (!is_dir(dirname($targetThumb))){
+                        mkdir(dirname($targetThumb), 0777, true);
+                    }
+                    if (move_uploaded_file($file['tmp_name'], $targetThumb)){
+                        return array('success'=> true, "uuid" => $uuid);
+                    }
+                }
+                
             }
 
             return array('error'=> 'Could not save uploaded file.' .
