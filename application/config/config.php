@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$DEV = false;
+$DEV = true;
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -25,7 +25,7 @@ $DEV = false;
 |
 */
 if($DEV)
-    $config['base_url'] = 'http://localhost:90/progresso';
+    $config['base_url'] = 'http://localhost/progresso';
 else
     $config['base_url'] = 'http://progressoveiculos.com.br';
 

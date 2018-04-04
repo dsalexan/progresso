@@ -485,6 +485,8 @@ function initFineUploader($fine, initialList=false){
     $fine.fineUploader(fineParams).on('complete', function (event, id, name, responseJSON) {
         var role = $(this).closest('form').data('role');
         fineData[role].push({data: responseJSON, id: id});
+        console.log("complete");
+        console.log(fineData[role]);
     }).on('allComplete', function (event, success, failed) {
         // console.log('all complete, sessionRequest=' + sessionRequest);
         // controlar o acionamento errado do evento onAllComplete ao carregar as imagens em initial files
@@ -495,6 +497,8 @@ function initFineUploader($fine, initialList=false){
             // console.log(fineData[role]);
             submitForm.call(this);
         }
+        console.log("allComplete");
+        console.log(fineData);
     }).on('sessionRequestComplete', function(response, success, x){
         // console.log(success);
         var role = $(this).closest('form').data('role');
@@ -503,14 +507,23 @@ function initFineUploader($fine, initialList=false){
             fineData[role].push({data: image, id: index});
         });
         sessionRequest = success.length;
+        console.log("sessionRequestComplete");
+        console.log(fineData[role]);
+        resetClicks();
     }).on('deleteComplete', function(event, id, xht, isError){
         var role = $(this).closest('form').data('role');
         // verificar qual foi removido para tirar do array com os dados
         fineData[role] = fineData[role].filter(function(item) { 
             return item.id != id; // remove da lista
         });
-        // console.log(fineData[role]);
+        console.log("deleteComplete");
+        console.log(fineData[role]);
+    }).on('submitted', function(event, id, name){
+        console.log('submit for id: ' + id);
+        resetClicks();
     });
+            
+    resetClicks();
 }
 
 function bindEvents(){
@@ -897,6 +910,13 @@ function submitForm(){
                 $img.val(url);
 
                 $img.appendTo($form);
+                
+                var ordem = parseInt($form.find('.qq-file-id-' + image.id).attr('qq-file-order')) + 1;
+                // input da url
+                $img = $('<input type="hidden" class="tmp-hidden-input" name="imageOrdem'+image.id+'">');
+                $img.val(ordem);
+
+                $img.appendTo($form);
 
                 var id = -1;
                 if(image.data.id_imagem != undefined) id = image.data.id_imagem;
@@ -1123,6 +1143,52 @@ function set_update_modal(id, table){
 $('#tipo_nome_plural').keyup(function(){
     $('#tipo_url').val(removeAcento($(this).val()).toLowerCase());
 });
+
+function resetClicks(){
+    $('ul.qq-upload-list-selector.qq-upload-list li').each(function(){
+        $(this).attr('qq-file-order', $(this).index());
+    });
+
+    $('.qq-move-up').click(function(){
+        slot = $(this).closest("li");
+
+        if (slot.index() > 0){
+            class_name = "qq-file-id-" + slot.index();
+            class_name2 = "qq-file-id-" + slot.prev().index();
+
+            // slot.toggleClass(class_name).toggleClass(class_name2);
+            // slot.prev().toggleClass(class_name).toggleClass(class_name2);
+
+            // slot.attr("qq-file-id", slot.prev().index());
+            // slot.prev().attr("qq-file-id", slot.index());
+
+            slot.attr("qq-file-order", slot.prev().index());
+            slot.prev().attr("qq-file-order", slot.index());
+
+            slot.swapWith(slot.prev());
+        }
+    });
+    
+    $('.qq-move-down').click(function(){
+        slot = $(this).closest("li");
+
+        if (slot.index()!=slot.siblings().length){
+            class_name = "qq-file-id-" + slot.index();
+            class_name2 = "qq-file-id-" + slot.next().index();
+
+            //slot.toggleClass(class_name).toggleClass(class_name2);
+            //slot.next().toggleClass(class_name).toggleClass(class_name2);
+
+            //slot.attr("qq-file-id", slot.next().index());
+            //slot.next().attr("qq-file-id", slot.index());
+
+            slot.attr("qq-file-order", slot.next().index());
+            slot.next().attr("qq-file-order", slot.index());
+
+            slot.swapWith(slot.next());
+        }
+    });
+}
 
 /*PRINCIPAL*/
 $('.ui.form.vehicle').form({

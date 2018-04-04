@@ -428,7 +428,8 @@
                                     FROM veiculos_imagens AS I RIGHT JOIN
                                         relacao_veiculo_imagem AS VI ON (I.id_imagem = VI.id_imagem) JOIN
                                         veiculos AS V ON (VI.id_veiculo = V.id_veiculo)
-                                    WHERE V.id_veiculo = $id_veiculo")->result_array();
+                                    WHERE V.id_veiculo = $id_veiculo 
+                                    ORDER BY VI.ordem ASC")->result_array();
 
             if($id_only){
                 $ids = [];
@@ -640,8 +641,14 @@
             return $this->db->insert_id();
         }
 
-        public function insert_imagem_veiculo($id_veiculo, $id_imagem){
-            $this->db->insert('relacao_veiculo_imagem', ['id_veiculo' => $id_veiculo, 'id_imagem' => $id_imagem]);
+        public function insert_imagem_veiculo($id_veiculo, $id_imagem, $ordem){
+            $this->db->insert('relacao_veiculo_imagem', ['id_veiculo' => $id_veiculo, 'id_imagem' => $id_imagem, 'ordem' => $ordem]);
+        }
+
+        public function update_imagem_veiculo($id_veiculo, $id_imagem, $ordem){
+            $this->db->where('id_veiculo', $id_veiculo);
+            $this->db->where('id_imagem', $id_imagem);
+            $this->db->update('relacao_veiculo_imagem', ['ordem' => $ordem]);   
         }
 
         public function remove_imagem_veiculo($id_veiculo, $id_imagem){
