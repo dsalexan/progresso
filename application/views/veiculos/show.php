@@ -81,6 +81,9 @@
                                         $img2 = $veiculo['imagens'][1]['url_imagem'];
                                     }
                                     
+                                    //$img1 = str_replace("/", "/thumb", $veiculo['imagens'][0]['url_imagem']);
+                                    //$img2 = str_replace("/", "/thumb", $veiculo['imagens'][1]['url_imagem']);
+                                    
                                     if (!@getimagesize(base_url('assets/img/veiculos/'.$img1))) {
                                         $img1 = 'image_frame.png';
                                     }
