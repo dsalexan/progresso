@@ -49,7 +49,7 @@ function chart_update(start_date, end_date){
         s = min_date;
     }
 
-    if(end_date.isAfter(max_date, 'days')){
+    if(end_date.isAfter(max_date)){
         e = end_date;
         re_query = true;
     }else{
@@ -105,12 +105,11 @@ function get_chart_data(start_date=null, end_date=null, period=null){
             chart_data = data;
 
             min_date = moment(data.acesso_semanal.dimensions[0]);
-            max_date = moment(data.acesso_semanal.dimensions[dimensions_formatted.length-1]);
+            max_date = moment(data.acesso_semanal.dimensions[dimensions_formatted.length+2]);
             
             $("#rangestart").calendar('set date', new Date(this.persist[0].format('L')));
             $("#rangeend").calendar('set date', new Date(this.persist[1].format('L')));
 
-            
             chart_update(this.persist[0], this.persist[1]);
         }
     });

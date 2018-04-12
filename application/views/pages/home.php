@@ -219,12 +219,15 @@
                                             $img1 = 'image_frame.png';
                                             $img2 = 'image_frame.png';
                                         }elseif(count($veiculo['imagens']) == 1){
-                                            $img1 = $veiculo['imagens'][0]['url_imagem'];
+                                            $img1 = 'thumb'.$veiculo['imagens'][0]['url_imagem'];
                                             $img2 = 'image_frame.png';
                                         }else{
                                             $img1 = $veiculo['imagens'][0]['url_imagem'];
                                             $img2 = $veiculo['imagens'][1]['url_imagem'];
                                         }
+                                        
+                                        $img1 = str_replace("/", "/thumb", $veiculo['imagens'][0]['url_imagem']);
+                                        $img2 = str_replace("/", "/thumb", $veiculo['imagens'][1]['url_imagem']);
                                         
                                         if (!@getimagesize(base_url('assets/img/veiculos/'.$img1))) {
                                             $img1 = 'image_frame.png';

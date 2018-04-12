@@ -1,5 +1,7 @@
 <?php
 
+use Intervention\Image\ImageManagerStatic as Image;
+
 /**
  * Do not use or reference this directly from your client-side code.
  * Instead, this should be required via the endpoint.php or endpoint-cors.php
@@ -186,7 +188,21 @@ class Fine {
             }
 
             $target = $targetFolder.'/'.$partIndex;
-            $success = move_uploaded_file($_FILES[$this->inputName]['tmp_name'], $target);
+            
+            $img = Image::make($_FILES[$this->inputName]['tmp_name']);
+            $img->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save($target);
+            
+            $target = $targetFolder.'/thumb'.$partIndex;
+            $img = Image::make($_FILES[$this->inputName]['tmp_name']);
+            $img->resize(350, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save($target);
+            
+            //$success = move_uploaded_file($_FILES[$this->inputName]['tmp_name'], $target);
 
             return array("success" => true, "uuid" => $uuid);
 
@@ -195,16 +211,31 @@ class Fine {
         # non-chunked upload
 
             $target = join(DIRECTORY_SEPARATOR, array($uploadDirectory, $uuid, $name));
-
+            $targetThumb = join(DIRECTORY_SEPARATOR, array($uploadDirectory, $uuid, 'thumb'.$name));
+            
             if ($target){
+                
                 $this->uploadName = basename($target);
 
                 if (!is_dir(dirname($target))){
                     mkdir(dirname($target), 0777, true);
                 }
-                if (move_uploaded_file($file['tmp_name'], $target)){
-                    return array('success'=> true, "uuid" => $uuid);
-                }
+                
+                $img = Image::make($file['tmp_name']);
+                $img->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $img->save($target);
+                
+                //Thumbnail
+                $img = Image::make($file['tmp_name']);
+                $img->resize(350, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $img->save($targetThumb);
+                
+                return array('success'=> true, "uuid" => $uuid);
+                
             }
             
             //Adicionado rotina para realizar uma copia de um thumbnail caso seja uma imagem
@@ -218,15 +249,20 @@ class Fine {
                     if (!is_dir(dirname($targetThumb))){
                         mkdir(dirname($targetThumb), 0777, true);
                     }
-                    if (move_uploaded_file($file['tmp_name'], $targetThumb)){
-                        return array('success'=> true, "uuid" => $uuid);
-                    }
+                    
+                    $img = Image::make($file['tmp_name']);
+                    $img->resize(450, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    $img->save($targetThumb);
+
+                    return array('success'=> true, "uuid" => $uuid);
                 }
                 
             }
 
             return array('error'=> 'Could not save uploaded file.' .
-                'The upload was cancelled, or server error encountered');
+                         'The upload was cancelled, or server error encountered');
         }
     }
 
