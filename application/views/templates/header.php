@@ -7,9 +7,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="ECTM Jr">
-        <link rel="icon" href="../../../../favicon.ico">
+        <link rel="icon" href="<?=base_url("assets/img/icon.ico");?>">
         
-        <title>Título do Site</title>
+        <title>Progresso Veículos</title>
 
         <!-- LOADING SPECIFIC ASSETS -->
 
@@ -105,8 +105,8 @@
                     <button type="button" id="trigger-upload" class="btn btn-primary">
                         <i class="icon-upload icon-white"></i> Upload
                     </button> -->
-                    <div class="ui button">
-                        <i class="ui icon cloud upload alternate"   ></i>Select Files</div>
+                    <div class="qq-upload-button-selector qq-upload-button ui button">
+                        <i class="ui icon cloud upload alternate"></i>Select Files</div>
                 </div>
                 <span class="qq-drop-processing-selector qq-drop-processing">
                     <span>Processando imagens...</span>
@@ -124,6 +124,9 @@
                                 </br>
                                 <button type="button" class="ui mini button fluid qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancelar</button>
                                 <button type="button" class="no ui mini button fluid qq-btn qq-upload-delete-selector qq-upload-delete">Remover</button>
+                                </br>
+                                <button type="button" class="ui mini button qq-move-up"><i class="ui icon chevron up" style="margin-right: 0;"></i></button>
+                                <button type="button" class="ui mini button qq-move-down"><i class="ui icon chevron down" style="margin-right: 0;"></i></button>
                                 </br>
                                 <button type="button" class="ui mini positive button fluid qq-btn qq-upload-retry-selector qq-upload-retry">Tentar Novamente</button>
                             </div>

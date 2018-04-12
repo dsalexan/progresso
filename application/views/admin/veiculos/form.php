@@ -13,10 +13,11 @@
 
         <div class="eight wide column">
 
+            <!--
             <div class="field">
             <label>Teste</label>
             <div class="ui button fluid roll-test">Rodar Teste</div>
-            </div>
+            </div>-->
 
             <?php if($acao=='update'): ?>
             <input type="hidden" name="id">
@@ -120,7 +121,7 @@
             </div>
 
             <div class="field">
-                <label>Ano/Modelo</label>
+                <label>Ano</label>
                 <div class="ui labeled input">
                     <label for="ano" class="ui label"><i class="calendar outline icon"></i></label>
                     

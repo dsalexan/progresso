@@ -359,7 +359,8 @@
                     $i = $ids[$index];
                     $imagens[] = [
                         'url' => $this->input->post('image'.$i), 
-                        'nome' => null ];
+                        'nome' => null,
+                        'ordem' =>  $this->input->post('imageOrdem'.$i) ];
                 }
                 foreach($imagens as $data_imagem){
                     $imagem = [
@@ -368,7 +369,7 @@
                     ];
 
                     $imagem['id_imagem'] = $this->veiculos_model->insert_imagem($imagem);
-                    $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem']);
+                    $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem'], $data_imagem['ordem']);
                 }
 
                 $result = $veiculo;
@@ -434,7 +435,8 @@
                     $imagens[] = [
                         'id' => $this->input->post('imageID'.$i),
                         'url' => $this->input->post('image'.$i), 
-                        'nome' => null ];
+                        'nome' => null,
+                        'ordem' =>  $this->input->post('imageOrdem'.$i)  ];
                 }
                 $imagens_banco = $this->veiculos_model->get_imagens($id_veiculo, true);
                 $ids = [];
@@ -448,9 +450,10 @@
 
                     if($id_imagem == -1){
                         $imagem['id_imagem'] = $this->veiculos_model->insert_imagem($imagem);
-                        $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem']);
-                    }else{ // se ja esta no banco ta tudo certao, nao modifica isso
+                        $this->veiculos_model->insert_imagem_veiculo($id_veiculo, $imagem['id_imagem'], $data_imagem['ordem']);
+                    }else{ // se ja esta no banco ta tudo certao, MAS TEM QUE VER A ORDEM
                         $ids[] = $id_imagem;
+                        $this->veiculos_model->update_imagem_veiculo($id_veiculo, $id_imagem, $data_imagem['ordem']);
                     }
                 }
                 foreach($imagens_banco as $id_imagem){ // REMOVER VELHOS

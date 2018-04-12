@@ -249,7 +249,7 @@
                                     <?php if($veiculo['estado'] == 'Novo'): ?>
                                     <div class="ui red ribbon label colapsed-hidden"><?= $veiculo['estado']; ?></div>
                                     <?php else: ?>
-                                    <div class="ui grey ribbon label colapsed-hidden"><?= $veiculo['estado']; ?></div>
+                                    <div class="ui grey ribbon label colapsed-hidden"><?= "Seminovo" ?></div>
                                     <?php endif; ?>
                                     <a class="header" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>"><?= $veiculo['modelo']['nome']; ?></a>
                                     <div class="description">
@@ -321,7 +321,7 @@
         </a>
         <div class="content">
             <div class="ui red ribbon label colapsed-hidden" value="Novo" hidden><span field="estado"></span></div>
-            <div class="ui grey ribbon label colapsed-hidden" value="Usado" hidden><span field="estado"></span></div>
+            <div class="ui grey ribbon label colapsed-hidden" value="Seminovo" hidden><span field="estado"></span></div>
 
             <a class="header" href=""><span field="modelo"></span></a>
             <div class="description">

@@ -20,7 +20,7 @@
         data-toolbar="#toolbar"
         
         data-toggle="table"
-        data-pagination="true"
+        data-pagination="false"
         data-search="true"
         data-url="<?= base_url('admin/vehicle/list'); ?>"
         data-url-primary="<?= base_url('admin/vehicle/list'); ?>"

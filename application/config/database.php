@@ -74,10 +74,10 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> 'mysql:host=progressoveiculos.com.br:3306;dbname=progress_site',
-	'hostname' => 'progressoveiculos.com.br:3306',
-	'username' => 'progress',
-	'password' => 'carrosmarcio',
+	'dsn'	=> 'mysql:host=localhost:3306;dbname=progress_site',
+	'hostname' => 'localhost:3306',
+	'username' => 'root',
+	'password' => 'thinker',
 	'database' => 'progress_site',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',

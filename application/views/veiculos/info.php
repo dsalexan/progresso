@@ -30,13 +30,25 @@
                                             ?>
 										</div>
 										<a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+											<span class="carousel-control-prev-icon" aria-hidden="true">
+												<i class="ui icon chevron circle left" style="color: white;"></i>
+											</span>
+											<span class="sr-only">Previous</span>
+										</a>
+										<a class="carousel-control-next" href="#" role="button" data-slide="next">
+											<span class="carousel-control-next-icon" aria-hidden="true">
+												<i class="ui icon chevron circle right" style="color: white;"></i>
+											</span>
+											<span class="sr-only">Next</span>
+										</a><!--
+										<a class="carousel-control-prev" href="#" role="button" data-slide="prev">
 											<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 											<span class="sr-only">Previous</span>
 										</a>
 										<a class="carousel-control-next" href="#" role="button" data-slide="next">
 											<span class="carousel-control-next-icon" aria-hidden="true"></span>
 											<span class="sr-only">Next</span>
-										</a>
+										</a>-->
 									</div>
 								</div>
 							</div>
@@ -46,7 +58,7 @@
 									<li><span>Marca:</span><a href="<?=base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']);?>"><?=$veiculo['marca']['nome']?></a></li>
 									<li><span>Tipo:</span><a href="<?=base_url($veiculo['tipo']['url']);?>"><?=$veiculo['tipo']['nome']?></a></li>
 									<li><span>Cor:</span><?=$veiculo['cor']?></li>
-									<li><span>Estado:</span><?=$veiculo['estado']?></li>
+									<li><span>Estado:</span><?= $veiculo['estado'] == "Novo" ? "Novo" : "Seminovo"; ?></li>
 									<li><span>Ano:</span><?=$veiculo['ano']?></li>
 									<li><span>Combustível:</span>
                                         <?php 
