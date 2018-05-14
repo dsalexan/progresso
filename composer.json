@@ -13,7 +13,9 @@
 	"require": {
 		"php": ">=5.3.7",
 		"elasticsearch/elasticsearch": "^5.3",
-		"google/apiclient": "2.0"
+		"google/apiclient": "2.0",
+		"intervention/image": "^2.4"
+
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

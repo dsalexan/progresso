@@ -38,6 +38,9 @@
                                     $img2 = 'image_frame.png';
                                 }
 
+                                //$img1 = str_replace("/", "/thumb", $veiculo['imagens'][0]['url_imagem']);
+                                //$img2 = str_replace("/", "/thumb", $veiculo['imagens'][1]['url_imagem']);
+                                
                                 ?>
                                 
                                 <img src="<?= base_url('assets/img/veiculos/'.$img1) ?>" class="visible content">
