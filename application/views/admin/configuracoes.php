@@ -96,6 +96,47 @@
                         <input type="text"  name="email" placeholder="E-mail">
                     </div>
                 </div>
+                
+                <div class="field">
+                    <label>Ordenação dos Veículos</label>
+                    <div class="ui floated fluid labeled icon top right pointing dropdown button">
+                        <input type="hidden" name="filtro">
+                        <i class="filter icon"></i>
+                        <span class="text">Ordenação</span>
+                        <div class="menu">
+                        <div class="ui search icon input">
+                            <i class="search icon"></i>
+                            <input type="text" name="search" placeholder="Pesquisar filtro...">
+                        </div>
+                        <div class="divider"></div>
+                        <div class="header">
+                            <i class="tags icon"></i>
+                            Filtar por Preço
+                        </div>
+                        <div class="item" data-value="venda_valor DESC">
+                            <div class="ui red empty circular label"></div>
+                            Maior > Menor (Preço)
+                        </div>
+                        <div class="item" data-value="venda_valor ASC">
+                            <div class="ui blue empty circular label"></div>
+                            Menor > Maior (Preço)
+                        </div>
+                        <div class="divider"></div>
+                        <div class="header">
+                            <i class="calendar icon"></i>
+                            Filtrar por Ano
+                        </div>
+                        <div class="item" data-value="veiculo_ano(ano) DESC">
+                            <i class="olive circle icon"></i>
+                            Maior > Menor (Ano)
+                        </div>
+                        <div class="item" data-value="veiculo_ano(ano) ASC">
+                            <i class="violet circle icon"></i>
+                            Menor > Maior (Ano)
+                        </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>

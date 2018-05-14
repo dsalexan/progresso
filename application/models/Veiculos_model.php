@@ -281,7 +281,8 @@
             if($marcas !== false) $query_marca = 'AND id_marca IN (' .implode(',', $marcas). ')';
             $query = $this->db->query('SELECT id_veiculo
                                         FROM veiculos 
-                                        WHERE id_tipo = '. $id_tipo . ' ' . $query_marca . ' 
+                                        WHERE status = 1 AND
+                                        id_tipo = '. $id_tipo . ' ' . $query_marca . ' 
                                         ORDER BY '.$order.' 
                                         LIMIT '. $qtd_por_pagina .' 
                                         OFFSET '. $offset);
@@ -304,7 +305,7 @@
                                         FROM veiculos 
                                         WHERE 1 = 1 '.
                                         $query_marca . '
-                                        AND STATUS = 1
+                                        AND status = 1
                                         ORDER BY '.$order.' 
                                         LIMIT '. $qtd_por_pagina . ' 
                                         OFFSET '. $offset);

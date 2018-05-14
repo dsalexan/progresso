@@ -93,13 +93,15 @@
             $order_by = 'venda_valor DESC';
             if(null !== ($this->input->get('filtro'))){
                 $order_by = $this->input->get('filtro');
+            }else{
+                $order_by = $this->config_model->get_config()['ordenacao'];
             }
 
             $id_tipo = ($this->input->get('t')==null) ? false : $this->input->get('t');
             $marcas = ($this->input->get('m')==null) ? false : (!is_array($this->input->get('m')) ? [$this->input->get('m')] : $this->input->get('m'));
             $numero_pagina = intval($this->input->get('page'));
 
-            $qtd_por_pagina = 50; //a quantidade de veiculos por pagina é alterada por meio de um get para [url_tipo]/page/[num_page/]
+            $qtd_por_pagina = 500; //a quantidade de veiculos por pagina é alterada por meio de um get para [url_tipo]/page/[num_page/]
             if($this->input->get('qtd_por_pagina')) $qtd_por_pagina = $this->input->get('qtd_por_pagina');
 
             if($id_tipo == false){

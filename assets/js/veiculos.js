@@ -1,3 +1,22 @@
+function get_veiculo_ano(a){
+    d = a.indexOf("/");
+    if(d == -1){
+        return a;
+    }else{
+        return a.substring(0, d);
+    }
+}
+
+function get_modelo_ano(a){
+    d = a.indexOf("/");
+    if(d == -1){
+        return a;
+    }else{
+        return a.substring(d+1, a.length);
+    }
+}
+
+
 // ARRUMA A COR DO LINK NA HEADER-ADMIN
 $('#header-navbar').find('a.active').removeClass('active');
 $('#header-navbar').find('a[data-page=veiculos]').addClass('active');
@@ -1048,7 +1067,9 @@ function set_update_tab(id_veiculo){
             $.each(data.combustiveis, function( index, value ){
                 cmb.push(value.id_combustivel);
             });
-            
+
+            data.ano_veiculo = get_veiculo_ano(data.ano);
+            data.ano_modelo = get_modelo_ano(data.ano);
 
             $('[form-id=update_form].ui.form').form('set values', {
                 id : id_veiculo,
@@ -1057,7 +1078,8 @@ function set_update_tab(id_veiculo){
                 modelo   : data.modelo.id_modelo,
                 estado    : data.estado,
                 cor   : data.cor,
-                ano   : data.ano,
+                ano_veiculo   : data.ano_veiculo,
+                ano_modelo   : data.ano_modelo,
                 observacoes   : data.observacoes,
                 valor   : data.venda_valor,
                 opcionais: ops,
@@ -1238,12 +1260,21 @@ $('.ui.form.vehicle').form({
           }
         ]
       },
-      ano: {
-        identifier: 'ano',
+      ano_modelo: {
+        identifier: 'ano_modelo',
         rules: [
           {
             type   : 'empty',
-            prompt : 'Por favor informe um ano/modelo'
+            prompt : 'Por favor informe o ano do modelo'
+          }
+        ]
+      },
+      ano_veiculo: {
+        identifier: 'ano_veiculo',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe o ano do veículo'
           }
         ]
       },

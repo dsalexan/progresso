@@ -1,3 +1,23 @@
+<?php 
+	function get_veiculo_ano($a){
+		$d = strpos($a, "/");
+		if($d == false){
+			return $a;
+		}else{
+			return substr($a, 0, $d);
+		}
+	}
+
+	function get_modelo_ano($a){
+		$d = strpos($a, "/");
+		if($d == false){
+			return $a;
+		}else{
+			return substr($a, $d+1, strlen($a));
+		}
+	}
+?>
+	
 	<div id="wrap-body">
 		<div class="container">
 			<div class="wrap-body-inner">
@@ -54,12 +74,15 @@
 							</div>
 							<div class="col-md-5 col-lg-3">
 								<ul class="product_para-1 p-lg-15 bg-gray-f5 bg1-gray-15" style="list-style-type: none;">
-									<li><span>Modelo:</span><?=$veiculo['modelo']['nome']?></li>
+									<li><span style="display: block; width: 25%;">Modelo:</span>
+										<div style="text-align: right;"> <?=$veiculo['modelo']['nome']?> </div>
+										<div style="text-align: right;"> <?=get_modelo_ano($veiculo['ano'])?> </div>
+									</li>
 									<li><span>Marca:</span><a href="<?=base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']);?>"><?=$veiculo['marca']['nome']?></a></li>
 									<li><span>Tipo:</span><a href="<?=base_url($veiculo['tipo']['url']);?>"><?=$veiculo['tipo']['nome']?></a></li>
 									<li><span>Cor:</span><?=$veiculo['cor']?></li>
 									<li><span>Estado:</span><?= $veiculo['estado'] == "Novo" ? "Novo" : "Seminovo"; ?></li>
-									<li><span>Ano:</span><?=$veiculo['ano']?></li>
+									<li><span>Ano:</span><?=get_veiculo_ano($veiculo['ano'])?></li>
 									<li><span>Combustível:</span>
                                         <?php 
                                         $i = 0;

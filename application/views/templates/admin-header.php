@@ -9,9 +9,15 @@
     <div data-hiddable="true" style="display: none;">
         <ul class="nav flex-column">
             <li class="nav-item">
-            <a class="nav-link active" data-page="home" href="<?= base_url('admin/') ?>">
+            <a class="nav-link active" data-page="veiculos" href="<?= base_url('admin/veiculos') ?>">
+                <i class="car icon"></i>
+                Veículos
+            </a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" data-page="home" href="<?= base_url('admin/home') ?>">
                 <i class="home icon"></i>
-                Dashboard <span class="sr-only">(current)</span>
+                Dashboard
             </a>
             </li>
             <li class="nav-item">
@@ -26,12 +32,6 @@
                 Textos
             </a>
             </li> -->
-            <li class="nav-item">
-            <a class="nav-link" data-page="veiculos" href="<?= base_url('admin/veiculos') ?>">
-                <i class="car icon"></i>
-                Veículos
-            </a>
-            </li>
             <li class="nav-item">
             <a class="nav-link" data-page="configuracoes" href="<?= base_url('admin/configuracoes') ?>">
                 <i class="settings icon"></i>
@@ -78,9 +78,15 @@
         <div class="sidebar-sticky">
         <ul class="nav flex-column" id="header-navbar">
             <li class="nav-item">
-            <a class="nav-link active" data-page="home" href="<?= base_url('admin/') ?>">
+            <li class="nav-item">
+            <a class="nav-link active" data-page="veiculos" href="<?= base_url('admin/veiculos') ?>">
+                <i class="car icon"></i>
+                Veículos
+            </a>
+            </li>
+            <a class="nav-link" data-page="home" href="<?= base_url('admin/home') ?>">
                 <i class="home icon"></i>
-                Dashboard <span class="sr-only">(current)</span>
+                Dashboard
             </a>
             </li>
             <li class="nav-item">
@@ -95,12 +101,6 @@
                 Textos
             </a>
             </li> -->
-            <li class="nav-item">
-            <a class="nav-link" data-page="veiculos" href="<?= base_url('admin/veiculos') ?>">
-                <i class="car icon"></i>
-                Veículos
-            </a>
-            </li>
             <li class="nav-item">
             <a class="nav-link" data-page="configuracoes" href="<?= base_url('admin/configuracoes') ?>">
                 <i class="settings icon"></i>

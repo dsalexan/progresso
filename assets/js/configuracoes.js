@@ -85,6 +85,7 @@ function set_update_tab(){
         type: 'GET',
         dataType : "json",
         success: function(data) {
+          
 
             $('.ui.form').form('set values', {
                 id : data.id_config,
@@ -95,7 +96,8 @@ function set_update_tab(){
                 uf   : data.uf,
                 telefone   : data.telefone,
                 telefone2   : data.telefone2,
-                email   : data.email
+                email   : data.email,
+                filtro  : data.ordenacao
             });
 
             $('.ui.form').closest('.ui.segment').removeClass('max-height70');
@@ -171,6 +173,15 @@ $('.ui.form')
         {
           type   : 'email',
           prompt : 'Por favor informe um email'
+        }
+      ]
+    },
+    filtro: {
+      identifier: 'filtro',
+      rules: [
+        {
+          type: 'empty',
+          prompt : 'Por favor selecione uma ordenação padrão de veículos'
         }
       ]
     }

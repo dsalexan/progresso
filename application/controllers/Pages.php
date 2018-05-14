@@ -17,7 +17,7 @@
             $data['title'] = $pageNames[$page];
                 
             if($page == 'home'){
-                $qtd_por_pagina = 50; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
+                $qtd_por_pagina = 500; //a quantidade de veiculos por pagina é alterada por meio de um post para [url_tipo]/page/[num_page/]
                 if($this->input->post('qtd_por_pagina')) $qtd_por_pagina = $this->input->post('qtd_por_pagina');
 
                 $ids = $this->veiculos_model->get_destaques();
@@ -26,8 +26,9 @@
                     $destaques[] = $this->veiculos_model->get_veiculo_display($id_veiculo['id_veiculo']);
                 }
 
-    
-                $ids = $this->veiculos_model->get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, 1);
+                
+                $order_by = $this->config_model->get_config()['ordenacao'];
+                $ids = $this->veiculos_model->get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, 1, $order_by);
                 if($ids == []) $this->session->set_flashdata('no_results', 'Não possuímos veículos desse tipo registrados.');
     
                 $veiculos = array();

@@ -26,7 +26,7 @@
 
         public function update_config($config){
             $this->db->where('id_config', $config['id_config']);
-            $this->db->update('config', $config);        
+            $this->db->update('config', $config);
         }
 
     }

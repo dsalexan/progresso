@@ -121,11 +121,20 @@
             </div>
 
             <div class="field">
-                <label>Ano</label>
+                <label>Ano do Modelo</label>
                 <div class="ui labeled input">
-                    <label for="ano" class="ui label"><i class="calendar outline icon"></i></label>
+                    <label for="ano_modelo" class="ui label"><i class="calendar outline icon"></i></label>
                     
-                    <input type="text"  name="ano" placeholder="Ano">
+                    <input type="text"  name="ano_modelo" placeholder="Modelo">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Ano do Veículo</label>
+                <div class="ui labeled input">
+                    <label for="ano_veiculo" class="ui label"><i class="calendar outline icon"></i></label>
+                    
+                    <input type="text"  name="ano_veiculo" placeholder="Ano">
                 </div>
             </div>
 

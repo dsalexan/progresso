@@ -1,7 +1,7 @@
 <?php
     class Admin extends CI_Controller{
 
-        public function view($page = 'home'){
+        public function view($page = 'veiculos'){
             $pageNames = array(
                 "home" => "Home",
                 "conteudos" => "Conteúdos",
@@ -327,7 +327,7 @@
                     'id_modelo' => $this->input->post('modelo'),
                     'estado' => $this->input->post('estado'),
                     'cor' => $this->input->post('cor'),
-                    'ano' => $this->input->post('ano'),
+                    'ano' => $this->input->post('ano_veiculo')."/".$this->input->post('ano_modelo'),
                     'observacoes' => $this->input->post('observacoes'),
                     'venda_valor' => $this->input->post('valor'),
                     'destaque' => (null == $this->input->post('destaque')) ? 0 : $this->input->post('destaque'),
@@ -386,7 +386,7 @@
                     'id_modelo' => $this->input->post('modelo'),
                     'estado' => $this->input->post('estado'),
                     'cor' => $this->input->post('cor'),
-                    'ano' => $this->input->post('ano'),
+                    'ano' => $this->input->post('ano_veiculo')."/".$this->input->post('ano_modelo'),
                     'observacoes' => $this->input->post('observacoes'),
                     'venda_valor' => $this->input->post('valor'),
                     'destaque' => (null == $this->input->post('destaque')) ? 0 : $this->input->post('destaque'),
@@ -775,7 +775,6 @@
             $result = ['ok'];
 
             if($action == 'list'){
-
                 $result = $this->config_model->get_config();
             }elseif($action == 'update'){
                 $config = [
@@ -787,7 +786,8 @@
                     'uf' => $this->input->post('uf'),
                     'telefone' => $this->input->post('telefone'),
                     'telefone2' => $this->input->post('telefone2'),
-                    'email' => $this->input->post('email')
+                    'email' => $this->input->post('email'),
+                    'ordenacao' => $this->input->post('filtro')
                 ];
 
                 $this->config_model->update_config($config);
@@ -808,7 +808,12 @@
 
         public function test(){
             echo FCPATH;
-            
-            // echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
+
+            $config = ['id_config' => '1','ordenacao' => 'venda_valor ASC'];
+
+            //$this->config_model->update_config($config);
+            $result = $this->config_model->get_config();
+
+             echo '<pre>'; echo json_encode($result, JSON_PRETTY_PRINT); echo '</pre>';
         }
     }
