@@ -1,7 +1,11 @@
 <?php
     class Admin extends CI_Controller{
 
-        public function view($page = 'veiculos'){
+        public function view($page = ''){
+            if($page == ''){
+                redirect(base_url('admin/veiculos'), 'refresh');
+            }
+
             $pageNames = array(
                 "home" => "Home",
                 "conteudos" => "Conteúdos",

@@ -81,6 +81,7 @@ $route['veiculos/auto_complete'] = 'veiculos/auto_complete';
 
 $route['admin'] = 'admin/view';
 $route['admin/upload'] = 'admin/upload';
+$route['admin/admin/upload'] = 'admin/upload';
 $route['admin/test'] = 'admin/test';
 $route['admin/login'] = 'admin/login';
 $route['admin/logout'] = 'admin/logout';
@@ -107,6 +108,11 @@ $route['admin/analytics/(:any)'] = 'admin/analytics/$1';
 $route['admin/dropdown/(:any)'] = 'admin/dropdown/$1';
 $route['admin/dropdown/(:any)/(:any)'] = 'admin/dropdown/$1/$2';
 $route['admin/dropdown/(:any)/(:any)/(:any)'] = 'admin/dropdown/$1/$2/$3';
+
+$route['dropdown/(:any)'] = 'admin/dropdown/$1';
+$route['dropdown/(:any)/(:any)'] = 'admin/dropdown/$1/$2';
+$route['dropdown/(:any)/(:any)/(:any)'] = 'admin/dropdown/$1/$2/$3';
+$route['dropdown/(:any)/(:any)/(:any)/(:any)'] = 'admin/dropdown/$1/$2/$3/$4';
 
 $route['admin/(:any)'] = 'admin/view/$1';
 

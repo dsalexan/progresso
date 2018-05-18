@@ -468,19 +468,19 @@ function initFineUploader($fine, initialList=false){
     var fineParams = {
         template: 'qq-template-manual-trigger',
         request: {
-            endpoint: 'admin/upload'
+            endpoint: 'upload'
         },
         deleteFile: {
             enabled: true,
-            endpoint: "admin/upload"
+            endpoint: "upload"
         },
         chunking: {
-            enabled: false,
+            enabled: true,
             concurrent: {
                 enabled: true
             },
             success: {
-                endpoint: "admin/upload?done"
+                endpoint: "upload?done"
             }
         },
         resume: {
@@ -1067,7 +1067,7 @@ function set_update_tab(id_veiculo){
             $.each(data.combustiveis, function( index, value ){
                 cmb.push(value.id_combustivel);
             });
-            
+
             data.ano_veiculo = get_veiculo_ano(data.ano);
             data.ano_modelo = get_modelo_ano(data.ano);
 
@@ -1260,12 +1260,21 @@ $('.ui.form.vehicle').form({
           }
         ]
       },
-      ano: {
-        identifier: 'ano',
+      ano_modelo: {
+        identifier: 'ano_modelo',
         rules: [
           {
             type   : 'empty',
-            prompt : 'Por favor informe um ano/modelo'
+            prompt : 'Por favor informe o ano do modelo'
+          }
+        ]
+      },
+      ano_veiculo: {
+        identifier: 'ano_veiculo',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Por favor informe o ano do veículo'
           }
         ]
       },
