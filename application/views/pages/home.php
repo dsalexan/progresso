@@ -1,3 +1,22 @@
+<?php 
+	function get_veiculo_ano($a){
+		$d = strpos($a, "/");
+		if($d == false){
+			return $a;
+		}else{
+			return substr($a, 0, $d);
+		}
+	}
+
+	function get_modelo_ano($a){
+		$d = strpos($a, "/");
+		if($d == false){
+			return $a;
+		}else{
+			return substr($a, $d+1, strlen($a));
+		}
+	}
+?>
 
 <section class="block-sl">
     <div class="container">
@@ -29,11 +48,10 @@
                             <div class="ui container" style=" background-color: #111111 ">
 
                             <div class="ui middle aligned centered stackable grid"  style="height: 100%;">
-                                <div class="five wide column mask" style="overflow-x: hidden; height: 110%;">
+                                <a href="<?=base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo'])?>" class="five wide column mask" style="overflow-x: hidden; height: 110%;">
                                     <!-- <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>"> -->
                                     <img class="ui image" src="<?=base_url('assets/img/'.$url_image)?>">
-
-                                </div>
+                                </a>
                                 <div class="one wide computer only column"></div>
                                 <div class="seven wide column mask" style="background-color: black">
                                     <div class="content">
@@ -49,7 +67,7 @@
                                         </br>
                                         <div class="extra">
                                             <!--div class="ui label"><?= $veiculo['ano']?></div-->
-                                            <div class="ui label"><?= $veiculo['cor']?></div>
+                                            <div class="ui label"><?= $veiculo['cor'] ?></div>
                                         </div>
                                     </div>
                                 </div>
@@ -128,26 +146,42 @@
                             Filtar por Preço
                         </div>
                         <div class="item" data-value="venda_valor DESC">
-                            <div class="ui red empty circular label"></div>
+                            <i class="sort number up icon"></i>
                             Maior > Menor
                         </div>
                         <div class="item" data-value="venda_valor ASC">
-                            <div class="ui blue empty circular label"></div>
+                            <i class="sort number down icon"></i>
                             Menor > Maior
                         </div>
+
                         <div class="divider"></div>
                         <div class="header">
                             <i class="calendar icon"></i>
                             Filtrar por Ano
                         </div>
                         <div class="item" data-value="veiculo_ano(ano) DESC">
-                            <i class="olive circle icon"></i>
+                            <i class="sort up icon"></i>
                             Maior > Menor
                         </div>
                         <div class="item" data-value="veiculo_ano(ano) ASC">
-                            <i class="violet circle icon"></i>
+                            <i class="sort down icon"></i>
                             Menor > Maior
                         </div>
+                        
+                        <div class="divider"></div>
+                        <div class="header">
+                            <i class="info icon"></i>
+                            Filtrar Alfabeticamente
+                        </div>
+                        <div class="item" data-value="nome_marca ASC">
+                            <i class="sort alpha up icon"></i>
+                            A > Z
+                        </div>
+                        <div class="item" data-value="nome_marca DESC">
+                            <i class="sort alpha down icon"></i>
+                            Z > A
+                        </div>
+
                         </div>
                     </div>
                 </div>
@@ -201,11 +235,11 @@
                                             <div class="five wide column">
                                             
                                                 <div class="ui horizontal small statistic">
-                                                    <div class="label">
+                                                    <!-- <div class="label">
                                                     R$
-                                                    </div>
+                                                    </div> -->
                                                     <div class="value">
-                                                    <?= $veiculo['venda_valor'];?>
+                                                    R$ <?= number_format($veiculo['venda_valor'], 2, ',', '.') ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,7 +287,7 @@
                                     <?php endif; ?>
                                     <a class="header" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>"><?= $veiculo['modelo']['nome']; ?></a>
                                     <div class="description">
-                                    <span class="date"><?= $veiculo['cor']; ?></span>
+                                    <span class="date"><?= get_modelo_ano($veiculo['ano']) ?></span>
                                     </div>
                                 </div>
                                 <div class="extra content">
@@ -302,9 +336,9 @@
                     <div class="five wide column">
                     
                         <div class="ui horizontal small statistic">
-                            <div class="label">
+                            <!-- <div class="label">
                             R$
-                            </div>
+                            </div> -->
                             <div class="value">
                                 <span field="venda_valor"></span>
                             </div>
@@ -325,7 +359,7 @@
 
             <a class="header" href=""><span field="modelo"></span></a>
             <div class="description">
-            <span class="date"><span field="ano"></span> - <span field="cor"></span></span>
+            <span class="date"><span field="ano"></span></span></span>
             </div>
         </div>
         <div class="extra content">

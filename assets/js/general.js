@@ -71,6 +71,24 @@ $(document).ready(function(){
 });
 
 
+function get_veiculo_ano(a){
+    var d = a.indexOf("/");
+    if(d == false){
+        return a;
+    }else{
+        return a.substring(0, d);
+    }
+}
+
+function get_modelo_ano(a){
+    var d = a.indexOf("/");
+    if(d == false){
+        return a;
+    }else{
+        return a.substring(d+1, a.length);
+    }
+}
+
 function renderCard(veiculo){
     var sampleCard = $("#sample-card").find('.card');
     var card = sampleCard.clone(false);
@@ -87,10 +105,10 @@ function renderCard(veiculo){
         });
     });
 
-    card.find('[field=observacoes]').text(veiculo.observacoes);
-    card.find('[field=venda_valor]').text(veiculo.venda_valor);
-    card.find('[field=ano]').text(veiculo.ano);
-    card.find('[field=cor]').text(veiculo.cor);
+    card.find('[field=observacoes]').text(veiculo.observacoes); 
+    
+    card.find('[field=venda_valor]').text(parseInt(veiculo.venda_valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' }));
+    card.find('[field=ano]').text(get_modelo_ano(veiculo.ano));
 
     card.find('[field=estado]').text(veiculo.estado);
     var ribbon = card.find('[field=estado]').parent();

@@ -52,3 +52,31 @@ a:hover ~ div.content a.header {
 .max-height70 {
   max-height: 70vh !important;
   overflow: hidden !important; }
+
+
+  .icon.sort.down::before{
+    content: '\f160' !important;
+  }
+  
+
+  .icon.sort.up::before{
+    content: '\f161' !important;
+  }
+
+  .icon.sort.alpha.down::before{
+    content: "\f15d" !important;
+  }
+  
+
+  .icon.sort.alpha.up::before{
+    content: "\f15e" !important;
+  }
+
+  .icon.sort.number.down::before{
+    content: "\f162" !important;
+  }
+  
+
+  .icon.sort.number.up::before{
+    content: "\f163" !important;
+  }

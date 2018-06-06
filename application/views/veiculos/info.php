@@ -25,7 +25,7 @@
 					<div class="product_detail no-bg p-lg-0">
 						<h3 class="product-name color1-f">
 							<?=$veiculo['tipo']['nome']?> /
-							<span class="product-price color-red">R$ <?=$veiculo['venda_valor']?></span>
+							<span class="product-price color-red">R$ <?= number_format($veiculo['venda_valor'], 2, ',', '.') ?></span>
 						</h3>
 						<div class="row">
 							<div class="col-lg-9">
