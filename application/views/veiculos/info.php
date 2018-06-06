@@ -28,7 +28,7 @@
 							<span class="product-price color-red">R$ <?= number_format($veiculo['venda_valor'], 2, ',', '.') ?></span>
 						</h3>
 						<div class="row">
-							<div class="col-lg-9">
+							<div class="col-lg-9" style="flex: 0 0 72%; max-width: 72%;">
 								<div class="product-img-lg bg-gray-f5 bg1-gray-15">
 									<div id="myCarousel" class="carousel slide" data-ride="carousel">
 										<div class="carousel-inner">
@@ -71,18 +71,25 @@
 										</a>-->
 									</div>
 								</div>
+								<div class="m-b-lg-30" style="margin-top: 40px;">
+									<div class="heading-1"><h3>Descrição</h3></div>
+									<div class="m-b-lg-30 bg-gray-fa bg1-gray-2 p-lg-30 p-xs-15" style="text-align: justify;text-justify: inter-word;">
+										<p class="color1-9">
+											<?=$veiculo['observacoes'];?>
+										</p>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-5 col-lg-3">
+							<div class="col-md-5 col-lg-3" style="flex: 0 0 28%; max-width: 28%;">
 								<ul class="product_para-1 p-lg-15 bg-gray-f5 bg1-gray-15" style="list-style-type: none;">
-									<li><span style="display: block; width: 25%;">Modelo:</span>
+									<!-- <li><span style="display: block; width: 25%;">Modelo:</span>
 										<div style="text-align: right;"> <?=$veiculo['modelo']['nome']?> </div>
 										<div style="text-align: right;"> <?=get_modelo_ano($veiculo['ano'])?> </div>
-									</li>
-									<li><span>Marca:</span><a href="<?=base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']);?>"><?=$veiculo['marca']['nome']?></a></li>
-									<li><span>Tipo:</span><a href="<?=base_url($veiculo['tipo']['url']);?>"><?=$veiculo['tipo']['nome']?></a></li>
-									<li><span>Cor:</span><?=$veiculo['cor']?></li>
-									<li><span>Estado:</span><?= $veiculo['estado'] == "Novo" ? "Novo" : "Seminovo"; ?></li>
-									<li><span>Ano:</span><?=get_veiculo_ano($veiculo['ano'])?></li>
+									</li> -->
+									<li style="padding-bottom: 0; border-bottom: 0;"><span>Modelo:</span> <?=$veiculo['modelo']['nome']?></li>
+									<li style="padding-top: 0;"><span style="color: transparent;">Modelo:</span> <?=get_modelo_ano($veiculo['ano'])?></li>
+									<li><span>Ano:</span><?=get_veiculo_ano($veiculo['ano'])?>/<?=get_modelo_ano($veiculo['ano'])?></li>
+									<!-- <li><span>Tipo:</span><a href="<?=base_url($veiculo['tipo']['url']);?>"><?=$veiculo['tipo']['nome']?></a></li> -->
 									<li><span>Combustível:</span>
                                         <?php 
                                         $i = 0;
@@ -93,6 +100,10 @@
                                             $i++;
                                         } ?>
                                     </li>
+
+									<li><span>Marca:</span><a href="<?=base_url($veiculo['tipo']['url'].'/marca/'.$veiculo['marca']['id_marca']);?>"><?=$veiculo['marca']['nome']?></a></li>
+									<li><span>Cor:</span><?=$veiculo['cor']?></li>
+									<li><span>Estado:</span><?= $veiculo['estado'] == "Novo" ? "Novo" : "Seminovo"; ?></li>
                                     <li><span>Opcionais:</span></br>
                                         <div style="color: transparent">.</div>
                                         <?php
@@ -113,14 +124,6 @@
 					</div>
 					<div class="row m-t-lg-30 m-b-lg-50">
 						<div class="col-md-8">
-							<div class="m-b-lg-30">
-								<div class="heading-1"><h3>Descrição</h3></div>
-								<div class="m-b-lg-30 bg-gray-fa bg1-gray-2 p-lg-30 p-xs-15" style="text-align: justify;text-justify: inter-word;">
-									<p class="color1-9">
-										<?=$veiculo['observacoes'];?>
-									</p>
-								</div>
-							</div>
 						</div>
 					</div>
 				</section>

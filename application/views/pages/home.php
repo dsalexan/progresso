@@ -145,11 +145,11 @@
                             <i class="tags icon"></i>
                             Filtar por Preço
                         </div>
-                        <div class="item" data-value="venda_valor DESC">
+                        <div class="item" data-value="V.venda_valor DESC">
                             <i class="sort number up icon"></i>
                             Maior > Menor
                         </div>
-                        <div class="item" data-value="venda_valor ASC">
+                        <div class="item" data-value="V.venda_valor ASC">
                             <i class="sort number down icon"></i>
                             Menor > Maior
                         </div>
@@ -159,11 +159,11 @@
                             <i class="calendar icon"></i>
                             Filtrar por Ano
                         </div>
-                        <div class="item" data-value="veiculo_ano(ano) DESC">
+                        <div class="item" data-value="veiculo_ano(V.ano) DESC">
                             <i class="sort up icon"></i>
                             Maior > Menor
                         </div>
-                        <div class="item" data-value="veiculo_ano(ano) ASC">
+                        <div class="item" data-value="veiculo_ano(V.ano) ASC">
                             <i class="sort down icon"></i>
                             Menor > Maior
                         </div>
@@ -173,11 +173,11 @@
                             <i class="info icon"></i>
                             Filtrar Alfabeticamente
                         </div>
-                        <div class="item" data-value="nome_marca ASC">
+                        <div class="item" data-value="M.nome ASC">
                             <i class="sort alpha up icon"></i>
                             A > Z
                         </div>
-                        <div class="item" data-value="nome_marca DESC">
+                        <div class="item" data-value="M.nome DESC">
                             <i class="sort alpha down icon"></i>
                             Z > A
                         </div>

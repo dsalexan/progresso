@@ -297,15 +297,16 @@
          * @param type $marcas Lista de marcas (separados por ',')
          * @return type
          */
-        public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina, $order='venda_valor DESC', $marcas=false){
+        public function get_id_veiculo_por_pagina_sem_tipo($qtd_por_pagina, $numero_pagina, $order='V.venda_valor DESC', $marcas=false){
             $offset = (($numero_pagina-1) * $qtd_por_pagina);
             $query_marca = '';
-            if($marcas !== false) $query_marca = 'AND id_marca IN (' .implode(',', $marcas). ')';
-            $query = $this->db->query('SELECT id_veiculo
-                                        FROM veiculos 
+            if($marcas !== false) $query_marca = 'AND V.id_marca IN (' .implode(',', $marcas). ')';
+            $query = $this->db->query('SELECT V.id_veiculo AS id_veiculo 
+                                        FROM veiculos AS V 
+                                        INNER JOIN veiculos_modelos AS M ON (V.id_modelo = M.id_modelo) 
                                         WHERE 1 = 1 '.
                                         $query_marca . '
-                                        AND status = 1
+                                        AND V.status = 1 
                                         ORDER BY '.$order.' 
                                         LIMIT '. $qtd_por_pagina . ' 
                                         OFFSET '. $offset);
