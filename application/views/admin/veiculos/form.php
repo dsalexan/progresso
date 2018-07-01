@@ -139,6 +139,15 @@
             </div>
 
             <div class="field">
+                <label>Diferencial</label>
+                <div class="ui labeled input">
+                    <label for="diferencial" class="ui label"><i class="quote left outline icon"></i></label>
+                    
+                    <textarea name="diferencial" placeholder="Diferencial" style="height: 0;"></textarea>
+                </div>
+            </div>
+
+            <div class="field">
                 <label>Observações</label>
                 <div class="ui labeled input">
                     <label for="observacoes" class="ui label"><i class="quote left outline icon"></i></label>

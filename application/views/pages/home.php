@@ -68,6 +68,9 @@
                                         <div class="extra">
                                             <!--div class="ui label"><?= $veiculo['ano']?></div-->
                                             <div class="ui label"><?= $veiculo['cor'] ?></div>
+                                            <?php if($veiculo['diferencial'] != "") { ?>
+                                                <div class="ui red label" style="font-weight: 400; background-color: darkred !important;"><?= $veiculo['diferencial'] ?></div>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -287,7 +290,12 @@
                                     <?php endif; ?>
                                     <a class="header" href="<?= base_url($veiculo['tipo']['url'].'/'.$veiculo['id_veiculo']); ?>"><?= $veiculo['modelo']['nome']; ?></a>
                                     <div class="description">
-                                    <span class="date"><?= get_modelo_ano($veiculo['ano']) ?></span>
+                                        <span class="date">
+                                            <?php if(get_modelo_ano($veiculo['ano']) != ""){ ?>
+                                                <div class="ui horizontal label"><?= get_modelo_ano($veiculo['ano']) ?></div>
+                                            <?php } ?>
+                                            <?= $veiculo['diferencial']; ?>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="extra content">

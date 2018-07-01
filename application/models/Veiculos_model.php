@@ -318,6 +318,7 @@
                 ->select('id_veiculo')
                 ->where('id_tipo', $id_tipo)
                 ->where('id_marca', $id_marca)
+                ->where('status', 1)
                 ->get('veiculos')->result_array();
         }
 
@@ -663,22 +664,24 @@
 
         public function sql_pesquisar_termo($search){
             $this->db->select('id_veiculo');
+            
             $this->db->like('nome_marca', $search);
             $this->db->or_like('nome_modelo', $search);
             $this->db->or_like('combustivel', $search);
             $this->db->or_like('estado', $search);
             $this->db->or_like('ano', $search);
-            $lvl3 = $this->db->get('visao_veiculos')->result_array();
+
+            $lvl3 = $this->db->get('visao_veiculos_ativos')->result_array();
 
             $this->db->select('id_veiculo');
             $this->db->like('opcionais', $search);
             $this->db->or_like('opcionais', $search);
-            $lvl2 = $this->db->get('visao_veiculos')->result_array();
+            $lvl2 = $this->db->get('visao_veiculos_ativos')->result_array();
 
             $this->db->select('id_veiculo');
             $this->db->like('nome_tipo', $search);
             $this->db->or_like('observacoes', $search);
-            $lvl1 = $this->db->get('visao_veiculos')->result_array();
+            $lvl1 = $this->db->get('visao_veiculos_ativos')->result_array();
 
             $lvl = array_merge($lvl3, $lvl2, $lvl1);
             $result = array();
@@ -702,7 +705,7 @@
             $this->db->select('nome_marca');
             $this->db->select('nome_modelo');
             $this->db->like('nome_tipo', $search);
-            $lvl3 = $this->db->get('visao_veiculos')->result_array();
+            $lvl3 = $this->db->get('visao_veiculos_ativos')->result_array();
 
             $this->db->select('id_veiculo');
             $this->db->select('nome_tipo');
@@ -710,14 +713,14 @@
             $this->db->select('nome_modelo');
             $this->db->like('nome_marca', $search);
             $this->db->or_like('nome_modelo', $search);
-            $lvl2 = $this->db->get('visao_veiculos')->result_array();
+            $lvl2 = $this->db->get('visao_veiculos_ativos')->result_array();
 
             $this->db->select('id_veiculo');
             $this->db->select('nome_tipo');
             $this->db->select('nome_marca');
             $this->db->select('nome_modelo');
             $this->db->like('observacoes', $search);
-            $lvl1 = $this->db->get('visao_veiculos')->result_array();
+            $lvl1 = $this->db->get('visao_veiculos_ativos')->result_array();
 
             $lvl = array_merge($lvl3, $lvl2, $lvl1);
             $result = array();

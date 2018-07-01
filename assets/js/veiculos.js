@@ -1080,6 +1080,7 @@ function set_update_tab(id_veiculo){
                 cor   : data.cor,
                 ano_veiculo   : data.ano_veiculo,
                 ano_modelo   : data.ano_modelo,
+                diferencial : data.diferencial,
                 observacoes   : data.observacoes,
                 valor   : data.venda_valor,
                 opcionais: ops,
