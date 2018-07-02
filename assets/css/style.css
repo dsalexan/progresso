@@ -121,12 +121,19 @@ ul.nav li.dropdown:hover ul.dropdown-menu li a:hover {
     background: none;
 }
 
-.search-box {
-    position: absolute;
-    top: 13px;
-    text-align: right;
-    right: 13px;
-    z-index: 99;
+@media only screen and (min-width: 768px) {
+	.search-box {
+		position: absolute;
+		top: 13px;
+		text-align: right;
+		right: 13px;
+		z-index: 99;
+	}
+}
+@media only screen and (max-width: 768px) {
+	.search-box{
+		padding-bottom: 15px;
+	}
 }
 
     .search-box > i {
@@ -157,6 +164,7 @@ ul.nav li.dropdown:hover ul.dropdown-menu li a:hover {
         transition-duration: 0.5s;
     }
 
+@media only screen and (min-width: 768px) {
     .search-box .search-btn {
         border: none;
         background: none;
@@ -170,6 +178,7 @@ ul.nav li.dropdown:hover ul.dropdown-menu li a:hover {
         background: #333;
         padding: 11px 20px;
     }
+}
 
     .search-box:hover .search-txt {
         width: 300px;
