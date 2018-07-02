@@ -69,7 +69,7 @@
         width: 55px; }
         .bootstrap4 .navbar .button-collapse button::before {
           position: absolute;
-          top: 0px;
+          top: -1px;
           right: 54px;
           content: '';
           border-width: 35px;

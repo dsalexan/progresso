@@ -28,7 +28,7 @@
 							<span class="product-price color-red">R$ <?= number_format($veiculo['venda_valor'], 2, ',', '.') ?></span>
 						</h3>
 						<div class="row">
-							<div class="col-lg-9" style="flex: 0 0 72%; max-width: 72%;">
+							<div class="col-lg-9">
 								<div class="product-img-lg bg-gray-f5 bg1-gray-15">
 									<div id="myCarousel" class="carousel slide" data-ride="carousel">
 										<div class="carousel-inner">
@@ -80,7 +80,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-5 col-lg-3" style="flex: 0 0 28%; max-width: 28%;">
+							<div class="col-md-5 col-lg-3">
 								<ul class="product_para-1 p-lg-15 bg-gray-f5 bg1-gray-15" style="list-style-type: none;">
 									<!-- <li><span style="display: block; width: 25%;">Modelo:</span>
 										<div style="text-align: right;"> <?=$veiculo['modelo']['nome']?> </div>
